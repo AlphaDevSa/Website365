@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import Section from '../components/Section';
 import Card from '../components/Card';
-import { Crown, Layers, Server, Globe, ArrowRight, ShieldCheck, Zap, CheckCircle } from 'lucide-react';
+import {
+  Crown, Layers, Server, Globe, ArrowRight, ShieldCheck, Zap, CheckCircle,
+  Users, Tag, Lock, Key, Filter, HardDrive, RotateCcw, Cloud,
+  Database, Code, Package, BarChart2, Building, Network
+} from 'lucide-react';
 import Button from '../components/Button';
 import FAQ from '../components/FAQ';
 import PlanOrderModal from '../components/PlanOrderModal';
@@ -54,6 +58,9 @@ const ResellerMaster = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Button to="#plans" className="rounded-full px-8 py-4 text-lg font-semibold bg-yellow-600 hover:bg-yellow-500 text-white shadow-lg hover:shadow-yellow-500/25 transition-all">
               View Master Plans <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+            <Button to="#features" variant="ghost" className="rounded-full px-8 py-4 text-lg font-semibold transition-all backdrop-blur-sm">
+              View Features
             </Button>
           </div>
 
@@ -170,6 +177,192 @@ const ResellerMaster = () => {
               "SiteJet builder"
             ]}
           />
+        </div>
+      </Section>
+
+      {/* ── Master Reseller Features ─────────────────────────── */}
+      <Section id="features" background="gray">
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-100 border border-yellow-300 text-yellow-700 text-sm font-semibold mb-4">
+            <Crown className="w-4 h-4" />
+            The Ultimate Toolkit
+          </div>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
+            Everything You Need to Run a Multi-Tier Hosting Empire
+          </h2>
+          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+            Master Reseller plans unlock the full stack — sell reseller accounts, manage hundreds of WHM instances, and keep everything white-label under your brand.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          {/* Master WHM Tools */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-yellow-100 flex items-center justify-center text-yellow-600">
+                <Crown className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Master WHM Tools</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: Crown,   label: 'Master WHM Access',            desc: 'Root-level tools without managing a server' },
+                { icon: Network, label: 'Create Reseller WHM Accounts', desc: 'Give each partner their own WHM instance' },
+                { icon: Globe,   label: 'Private Nameservers',          desc: 'Free ns1 & ns2 under your domain' },
+                { icon: Tag,     label: '100% White-Label at Every Tier',desc: "Your brand flows all the way down to end clients" },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-yellow-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Performance */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600">
+                <Zap className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Performance</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: Zap,      label: 'LiteSpeed Elite Web Server',  desc: 'Up to 40× faster than Apache' },
+                { icon: Layers,   label: 'CloudLinux OS',               desc: 'Isolated environments across all tiers' },
+                { icon: Cloud,    label: 'SSD NVMe Storage',            desc: 'Ultra-fast storage for every account' },
+                { icon: BarChart2,label: 'Unlimited Disk & Bandwidth',  desc: 'Scale your resellers without limits' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Security */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Security</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: ShieldCheck, label: 'Imunify360 Firewall',       desc: 'AI-powered malware protection for all accounts' },
+                { icon: Lock,        label: 'Free SSL for All Accounts', desc: "Let's Encrypt auto-renew at every level" },
+                { icon: Layers,      label: 'CloudLinux Isolation',      desc: 'Each account sandboxed from the rest' },
+                { icon: Key,         label: 'Two-Factor Authentication', desc: 'Secured logins for master & sub-WHM' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Multi-Tier Management */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600">
+                <Users className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Multi-Tier Management</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: Users,     label: 'Sell Reseller Accounts',     desc: 'Your resellers can create & sell cPanel hosting' },
+                { icon: Building,  label: 'Custom Packages Per Tier',   desc: 'Define plans for your resellers to offer clients' },
+                { icon: BarChart2, label: 'Resource Allocation Control',desc: 'Set disk, bandwidth & email per reseller' },
+                { icon: Network,   label: 'Nested Account Hierarchy',   desc: 'Master → Reseller → End Client, fully managed' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-purple-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Apps & Dev */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center text-teal-600">
+                <Package className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Apps & Dev</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: Package, label: 'Softaculous Auto Installer',   desc: '400+ apps including WordPress' },
+                { icon: Globe,   label: 'WordPress & WP Toolkit',       desc: 'One-click WP for every account at every tier' },
+                { icon: Code,    label: 'PHP Version Selector',         desc: 'PHP 7.x – 8.x configurable per account' },
+                { icon: Database,label: 'MySQL / MariaDB Databases',    desc: 'phpMyAdmin included per cPanel' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Backups */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center text-indigo-600">
+                <HardDrive className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Backups</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: HardDrive, label: 'Daily Automated Backups',    desc: 'All reseller & client accounts backed up daily' },
+                { icon: RotateCcw, label: 'One-Click Restore',          desc: 'Roll back any account instantly' },
+                { icon: Cloud,     label: 'Offsite Backup Storage',     desc: 'Data kept safely off the primary server' },
+                { icon: Filter,    label: 'Spam & Virus Filtering',     desc: 'Clean inboxes across every tier' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-indigo-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="mt-12 text-center">
+          <a
+            href="#plans"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-yellow-600 hover:bg-yellow-500 text-white font-bold rounded-full shadow-lg shadow-yellow-500/25 transition-all text-base"
+          >
+            Choose a Master Plan <ArrowRight className="w-5 h-5" />
+          </a>
         </div>
       </Section>
 
