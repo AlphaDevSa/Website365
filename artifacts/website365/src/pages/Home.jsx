@@ -96,7 +96,7 @@ const Home = () => {
               </div>
               <div className="flex gap-4">
                 <Button to="/hosting" variant="primary" className="text-lg px-8 py-4 rounded-full shadow-lg shadow-blue-500/20">Get Hosting</Button>
-                <Button onClick={scrollToContact} variant="ghost" className="text-lg px-8 py-4 rounded-full hover:border-blue-500/50 hover:text-blue-400 transition-all backdrop-blur-sm group">
+                <Button to="/domains" variant="ghost" className="text-lg px-8 py-4 rounded-full hover:border-blue-500/50 hover:text-blue-400 transition-all backdrop-blur-sm group">
                   Check Domain <Search className="w-4 h-4 ml-2 group-hover:scale-110 transition-transform" />
                 </Button>
               </div>
