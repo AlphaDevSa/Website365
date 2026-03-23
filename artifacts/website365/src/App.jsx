@@ -28,6 +28,7 @@ import Ecommerce from './pages/Ecommerce';
 import ThankYou from './pages/ThankYou';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
+import LocationPage from './pages/LocationPage';
 
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
@@ -75,6 +76,7 @@ const PublicSite = () => (
       <Route path="/web-design/maintenance" element={<WebsiteMaintenance />} />
       <Route path="/web-design/development" element={<Development />} />
       <Route path="/web-design/ecommerce" element={<Ecommerce />} />
+      <Route path="/location/:slug" element={<LocationPage />} />
       <Route path="/thank-you" element={<ThankYou />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />
