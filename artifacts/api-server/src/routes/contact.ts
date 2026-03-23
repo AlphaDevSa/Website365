@@ -1,7 +1,10 @@
 import { Router, type IRouter, type Request, type Response } from "express";
 import { pool } from "@workspace/db";
+import { createTransport, buildEmailHtml } from "../mailer";
 
 const router: IRouter = Router();
+
+const NOTIFY_TO = "info@website365.co.za";
 
 router.post("/contact", async (req: Request, res: Response) => {
   const body = req.body as Record<string, unknown>;
@@ -21,21 +24,43 @@ router.post("/contact", async (req: Request, res: Response) => {
 
   const data = { ...body };
 
+  // 1. Save to database
   try {
     await pool.query(
       "INSERT INTO form_submissions (form_type, data) VALUES ($1, $2)",
       [formType, JSON.stringify(data)]
     );
-
-    res.json({
-      success: true,
-      message: "Thank you! Your submission has been received. We will be in touch shortly.",
-    });
   } catch (err: unknown) {
     const msg = err instanceof Error ? err.message : "Database error";
     console.error("[contact] DB insert failed:", msg);
     res.status(500).json({ error: "Failed to save your submission. Please try again." });
+    return;
   }
+
+  // 2. Send email notification (non-blocking — don't fail the request if email fails)
+  try {
+    const transport = createTransport();
+    const senderName = String(body.name || "Website365 Form").trim();
+    const subject = `[Website365] New ${formType} from ${senderName}`;
+
+    await transport.sendMail({
+      from: `"Website365 Forms" <${process.env.SMTP_USER}>`,
+      to: NOTIFY_TO,
+      replyTo: email,
+      subject,
+      html: buildEmailHtml(data),
+    });
+
+    console.info(`[contact] Email sent for "${formType}" from ${email}`);
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : "Email error";
+    console.error("[contact] Email send failed (non-fatal):", msg);
+  }
+
+  res.json({
+    success: true,
+    message: "Thank you! Your submission has been received. We will be in touch shortly.",
+  });
 });
 
 export default router;
