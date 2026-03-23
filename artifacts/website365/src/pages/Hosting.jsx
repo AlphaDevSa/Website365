@@ -4,7 +4,7 @@ import TrustBar from '../components/TrustBar';
 import {
   Server, LayoutGrid, Users, Mail, ArrowRight, Zap, Shield, Globe,
   Cpu, Cloud, CheckCircle, Star, Lock, HardDrive, RotateCcw,
-  Headphones, Clock, Check, X
+  Headphones, Clock, Check, X, Crown
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
@@ -100,6 +100,29 @@ const Hosting = () => {
         'White-label branding',
         'Free private nameservers',
         'CloudLinux OS',
+      ],
+    },
+    {
+      slug: '/hosting/reseller/master',
+      label: 'Master Reseller Hosting',
+      tagline: 'Build a multi-tier hosting empire',
+      icon: Crown,
+      accentFrom: 'from-yellow-500',
+      accentTo: 'to-amber-400',
+      iconBg: 'bg-yellow-50',
+      iconColor: 'text-yellow-600',
+      badgeBg: 'bg-yellow-50',
+      badgeText: 'text-yellow-700',
+      border: 'border-yellow-100',
+      ctaColor: 'text-yellow-600',
+      startingPrice: 'R325',
+      period: '/mo',
+      popular: false,
+      features: [
+        'Master WHM — sell reseller accounts',
+        'Up to 500 WHM sub-accounts',
+        'White-label at every tier',
+        'CloudLinux OS + LiteSpeed Elite',
       ],
     },
     {
