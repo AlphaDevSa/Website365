@@ -1,115 +1,122 @@
 import React, { useState } from 'react';
 import Section from '../components/Section';
 import Card from '../components/Card';
-import { Monitor, Brush, Sparkles, ArrowRight, Layout, MousePointer, Smartphone, Rocket, Briefcase, Gem } from 'lucide-react';
-import Button from '../components/Button';
+import {
+  Monitor, Brush, Sparkles, ArrowRight, Layout, MousePointer, Smartphone,
+  Rocket, Briefcase, Gem, Search, Zap, Clock, HeartHandshake, Globe,
+  PenTool, CheckCircle, MessageSquare
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
 import WebDesignModal from '../components/WebDesignModal';
 
 const WebsiteDesign = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const features = [
+    { icon: Layout,       bg: 'bg-cyan-50',    color: 'text-cyan-600',   label: 'Custom Layouts',         desc: 'Unique page structures tailored to your brand — no stock templates.' },
+    { icon: Smartphone,   bg: 'bg-blue-50',    color: 'text-blue-600',   label: 'Mobile-First Design',    desc: 'Designed for phones first so every visitor gets a perfect experience.' },
+    { icon: Search,       bg: 'bg-indigo-50',  color: 'text-indigo-600', label: 'SEO Optimised',          desc: 'Clean markup, proper heading structure and fast load times from day one.' },
+    { icon: Brush,        bg: 'bg-purple-50',  color: 'text-purple-600', label: 'Brand Alignment',        desc: 'Colours, typography and imagery chosen to reflect your brand identity.' },
+    { icon: Zap,          bg: 'bg-orange-50',  color: 'text-orange-600', label: 'Fast Load Times',        desc: 'Optimised images and lightweight code to keep your Lighthouse score high.' },
+    { icon: MousePointer, bg: 'bg-teal-50',    color: 'text-teal-600',   label: 'Clear Calls-to-Action',  desc: 'Every page guides visitors toward the action you want them to take.' },
+  ];
+
   return (
     <>
       <WebDesignModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-      {/* Magnificent Hero */}
-      <div className="relative bg-slate-900 overflow-hidden py-16 lg:py-20">
-        {/* Animated Background */}
-        <div className="absolute inset-0 overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-slate-900 via-slate-900 to-cyan-900/20" />
-          <div className="absolute -top-20 -left-20 w-[40rem] h-[40rem] rounded-full bg-cyan-600/10 blur-3xl animate-pulse" />
+
+      {/* ── Hero ─────────────────────────────────────────────── */}
+      <div className="relative bg-slate-900 overflow-hidden py-20 lg:py-28">
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-slate-900 via-slate-900 to-cyan-900/25" />
+          <div className="absolute -top-20 -left-20 w-[50rem] h-[50rem] rounded-full bg-cyan-600/10 blur-3xl animate-pulse" />
           <div className="absolute bottom-0 right-0 w-[50rem] h-[50rem] rounded-full bg-blue-600/10 blur-3xl animate-pulse delay-700" />
-          
-          {/* Wireframe Pattern */}
-          <div className="absolute inset-0 opacity-[0.05]" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
+          <div className="absolute inset-0 opacity-[0.04]" style={{ backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)', backgroundSize: '30px 30px' }} />
         </div>
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-900/30 border border-cyan-500/30 text-cyan-300 text-sm font-medium mb-8 backdrop-blur-sm">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-900/30 border border-cyan-500/30 text-cyan-300 text-sm font-semibold mb-8 backdrop-blur-sm">
             <Monitor className="w-4 h-4" />
-            <span>Responsive Business Websites</span>
+            Responsive Business Websites
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-8">
-            Stunning Design. <br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">Flawless Function.</span>
+          <h1 className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-6 leading-none">
+            Stunning Design.<br className="hidden md:block" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-400">
+              Flawless Function.
+            </span>
           </h1>
 
           <p className="text-xl text-slate-300 max-w-2xl mx-auto mb-12 leading-relaxed">
-            Your website is your 24/7 salesperson. We craft professional, high-converting websites that look amazing on every device and drive real business results.
+            Your website is your 24/7 salesperson. We craft professional, high-converting websites
+            that look amazing on every device and drive real business results.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Button 
+            <button
               onClick={() => setIsModalOpen(true)}
-              className="rounded-full px-8 py-4 text-lg font-semibold bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg hover:shadow-cyan-500/25 transition-all"
+              className="inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-lg font-semibold bg-cyan-600 hover:bg-cyan-500 text-white shadow-lg hover:shadow-cyan-500/25 transition-all"
             >
-              Get a Quote <ArrowRight className="w-5 h-5 ml-2" />
-            </Button>
+              Get a Free Quote <ArrowRight className="w-5 h-5" />
+            </button>
+            <Link
+              to="/contact"
+              className="inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-lg font-semibold border border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white transition-all"
+            >
+              Talk to a Designer
+            </Link>
           </div>
 
-          {/* Feature Highlights */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto text-left">
-            <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 hover:border-cyan-500/30 transition-all group">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:scale-110 transition-transform">
-                  <Layout className="w-5 h-5" />
-                </div>
-                <h3 className="text-lg font-bold text-white">Modern Layouts</h3>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+            {[
+              { value: '500+',   label: 'Sites Delivered' },
+              { value: '2–4 wks', label: 'Avg Turnaround' },
+              { value: '3',      label: 'Revision Rounds' },
+              { value: '100%',   label: 'Mobile Responsive' },
+            ].map(({ value, label }) => (
+              <div key={label} className="bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl px-6 py-5">
+                <p className="text-3xl font-extrabold text-white mb-1">{value}</p>
+                <p className="text-slate-400 text-sm">{label}</p>
               </div>
-              <p className="text-slate-400 text-sm">Clean, contemporary designs that build trust and authority with your visitors.</p>
-            </div>
-            
-            <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 hover:border-blue-500/30 transition-all group">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
-                  <MousePointer className="w-5 h-5" />
-                </div>
-                <h3 className="text-lg font-bold text-white">User Centric</h3>
-              </div>
-              <p className="text-slate-400 text-sm">Intuitive navigation and clear calls-to-action to guide visitors to convert.</p>
-            </div>
-
-            <div className="bg-slate-800/50 backdrop-blur-sm p-6 rounded-xl border border-slate-700/50 hover:border-indigo-500/30 transition-all group">
-              <div className="flex items-center gap-4 mb-4">
-                <div className="w-10 h-10 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
-                  <Smartphone className="w-5 h-5" />
-                </div>
-                <h3 className="text-lg font-bold text-white">Fully Responsive</h3>
-              </div>
-              <p className="text-slate-400 text-sm">Looks perfectly polished on phones, tablets, and desktops automatically.</p>
-            </div>
+            ))}
           </div>
         </div>
       </div>
 
-      <Section>
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Design That Drives Results</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">We combine clean aesthetics with thoughtful user experience to convert visitors into customers.</p>
+      {/* ── What's Included ───────────────────────────────────── */}
+      <Section background="gray">
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-50 border border-cyan-100 text-cyan-700 text-sm font-semibold mb-4">
+            <Sparkles className="w-4 h-4" />
+            Every Website Includes
+          </div>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
+            Design That Drives Results
+          </h2>
+          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+            We combine clean aesthetics with thoughtful user experience to convert visitors into customers.
+          </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <div className="p-8 bg-white rounded-2xl shadow border border-gray-100 text-center">
-            <Monitor className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-            <h3 className="text-xl font-bold mb-2">Responsive Layouts</h3>
-            <p className="text-gray-600">Looks great on phones, tablets and desktops with mobile-first design.</p>
-          </div>
-          <div className="p-8 bg-white rounded-2xl shadow border border-gray-100 text-center">
-            <Brush className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-            <h3 className="text-xl font-bold mb-2">Custom Branding</h3>
-            <p className="text-gray-600">Color, typography and layout aligned to your brand identity.</p>
-          </div>
-          <div className="p-8 bg-white rounded-2xl shadow border border-gray-100 text-center">
-            <Sparkles className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-            <h3 className="text-xl font-bold mb-2">Performance & SEO</h3>
-            <p className="text-gray-600">Fast-loading pages with clean structure for better rankings.</p>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {features.map(({ icon: Icon, bg, color, label, desc }) => (
+            <div key={label} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow flex gap-4 items-start">
+              <div className={`w-11 h-11 rounded-xl ${bg} flex items-center justify-center ${color} shrink-0`}>
+                <Icon className="w-5 h-5" />
+              </div>
+              <div>
+                <h3 className="text-base font-extrabold text-gray-900 mb-1">{label}</h3>
+                <p className="text-sm text-gray-500 leading-relaxed">{desc}</p>
+              </div>
+            </div>
+          ))}
         </div>
       </Section>
 
-      <Section background="gray">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">Web Design Packages</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">Transparent pricing for every stage of your business growth.</p>
+      {/* ── Pricing ───────────────────────────────────────────── */}
+      <Section id="plans">
+        <div className="text-center mb-14">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Web Design Packages</h2>
+          <p className="text-lg text-gray-500 max-w-2xl mx-auto">Transparent pricing for every stage of your business growth.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <Card
@@ -126,8 +133,8 @@ const WebsiteDesign = () => {
               "Mobile-responsive design",
               "Basic contact form or WhatsApp CTA",
               "1 round of revisions",
-              "Setup on your HostExceed hosting",
-              "Basic on-page SEO"
+              "Setup on your hosting",
+              "Basic on-page SEO",
             ]}
           />
           <Card
@@ -146,8 +153,8 @@ const WebsiteDesign = () => {
               "Contact form and lead capture",
               "2 rounds of revisions",
               "Basic on-page SEO for key pages",
-              "Setup on HostExceed hosting",
-              "Basic analytics integration"
+              "Setup on hosting",
+              "Basic analytics integration",
             ]}
           />
           <Card
@@ -167,13 +174,45 @@ const WebsiteDesign = () => {
               "On-page SEO across core pages",
               "Analytics and conversion tracking",
               "Strategy call to align design with goals",
-              "Option for extra pages as add-ons"
+              "Option for extra pages as add-ons",
             ]}
           />
         </div>
       </Section>
 
-{/* Old Typical Deliverables removed */}
+      {/* ── Bottom CTA ─────────────────────────────────────────── */}
+      <div className="relative bg-slate-900 overflow-hidden py-20">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-slate-900 via-cyan-900/20 to-slate-900" />
+          <div className="absolute -top-20 left-1/2 -translate-x-1/2 w-[60rem] h-[20rem] rounded-full bg-cyan-600/10 blur-3xl" />
+        </div>
+        <div className="relative max-w-3xl mx-auto text-center px-4">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-900/30 border border-cyan-500/30 text-cyan-300 text-sm font-semibold mb-6">
+            <MessageSquare className="w-4 h-4" />
+            Free Consultation
+          </div>
+          <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6">
+            Ready to launch your new site?
+          </h2>
+          <p className="text-xl text-slate-300 mb-10 leading-relaxed">
+            Tell us about your project and we will send you a free quote within one business day.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded-full shadow-lg shadow-cyan-500/25 transition-all text-base"
+            >
+              Get a Free Quote <ArrowRight className="w-5 h-5" />
+            </button>
+            <Link
+              to="/contact"
+              className="inline-flex items-center justify-center gap-2 px-8 py-4 border border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white font-semibold rounded-full transition-all text-base"
+            >
+              Contact Us
+            </Link>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
