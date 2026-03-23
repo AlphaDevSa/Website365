@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import Section from '../components/Section';
 import Card from '../components/Card';
-import { CheckCircle, ArrowRight, LayoutGrid, Settings, ShieldCheck, Zap, Globe, Database, Rocket } from 'lucide-react';
+import {
+  CheckCircle, ArrowRight, LayoutGrid, Settings, ShieldCheck, Zap, Globe, Database, Rocket,
+  FolderOpen, Mail, Lock, Upload, Clock, Code, Package, RotateCcw, HardDrive,
+  Filter, AtSign, Key, Server, BarChart2, Layers, RefreshCw, Cloud
+} from 'lucide-react';
 import Button from '../components/Button';
 import PlanOrderModal from '../components/PlanOrderModal';
 
@@ -62,7 +66,7 @@ const CPanel = () => {
                 <Button to="#plans" className="rounded-full px-8 py-4 text-lg font-semibold bg-orange-600 hover:bg-orange-500 text-white shadow-lg hover:shadow-orange-500/25 transition-all">
                   Choose Your Plan <ArrowRight className="w-5 h-5 ml-2" />
                 </Button>
-                <Button to="/contact" variant="ghost" className="rounded-full px-8 py-4 text-lg font-semibold transition-all backdrop-blur-sm">
+                <Button to="#features" variant="ghost" className="rounded-full px-8 py-4 text-lg font-semibold transition-all backdrop-blur-sm">
                   View Features
                 </Button>
               </div>
@@ -195,6 +199,193 @@ const CPanel = () => {
               "Free Basic Website bonus"
             ]}
           />
+        </div>
+      </Section>
+
+      {/* ── cPanel Features ──────────────────────────────────── */}
+      <Section id="features" background="gray">
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-100 border border-orange-200 text-orange-700 text-sm font-semibold mb-4">
+            <LayoutGrid className="w-4 h-4" />
+            Everything Included
+          </div>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
+            Full-Featured cPanel Hosting
+          </h2>
+          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+            Every plan comes loaded with the tools you need to build, manage, and grow your web presence — no hidden extras.
+          </p>
+        </div>
+
+        {/* Feature category grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          {/* Performance */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600">
+                <Zap className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Performance</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: Server,    label: 'LiteSpeed Elite Web Server',   desc: 'Up to 40× faster than Apache' },
+                { icon: Layers,    label: 'CloudLinux OS',                desc: 'Isolated hosting environment' },
+                { icon: Cloud,     label: 'SSD NVMe Storage',             desc: 'Ultra-fast read/write speeds' },
+                { icon: BarChart2, label: 'HTTP/3 & QUIC Support',        desc: 'Next-gen protocol ready' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Security */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Security</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: ShieldCheck, label: 'Imunify360 Firewall',       desc: 'AI-powered malware protection' },
+                { icon: Lock,        label: 'Free SSL Certificates',      desc: "Let's Encrypt auto-renew" },
+                { icon: Key,         label: 'Two-Factor Authentication',  desc: 'Secure your cPanel login' },
+                { icon: Filter,      label: 'Spam & Virus Filtering',     desc: 'Powered by SpamAssassin' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Management */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600">
+                <Settings className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Management</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: FolderOpen, label: 'Visual File Manager',         desc: 'Drag-and-drop file editing' },
+                { icon: Upload,     label: 'FTP / SFTP Access',           desc: 'Unlimited FTP accounts' },
+                { icon: Clock,      label: 'Cron Job Scheduler',          desc: 'Automate recurring tasks' },
+                { icon: Globe,      label: 'Addon & Subdomains',          desc: 'Unlimited subdomains supported' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Apps & Development */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600">
+                <Package className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Apps & Dev</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: Package, label: 'Softaculous Auto Installer',   desc: '400+ apps in one click' },
+                { icon: Rocket,  label: 'WordPress & WP Toolkit',       desc: 'Manage multiple WP sites' },
+                { icon: Code,    label: 'PHP Version Selector',         desc: 'PHP 7.x – 8.x switchable' },
+                { icon: Database,label: 'MySQL / MariaDB Databases',    desc: 'phpMyAdmin included' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-purple-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Email */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center text-teal-600">
+                <Mail className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Email</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: AtSign,    label: 'Professional Email Accounts', desc: 'you@yourdomain.co.za' },
+                { icon: Mail,      label: 'Webmail Access',              desc: 'Roundcube & Horde included' },
+                { icon: RefreshCw, label: 'Email Autoresponders',        desc: 'Auto-reply when you\'re away' },
+                { icon: Filter,    label: 'Email Forwarders & Lists',    desc: 'Route email with ease' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Backups */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center text-indigo-600">
+                <HardDrive className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Backups</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: HardDrive,  label: 'Daily Automated Backups',   desc: 'Multiple restore points kept' },
+                { icon: RotateCcw,  label: 'One-Click Restore',         desc: 'Roll back in seconds' },
+                { icon: Cloud,      label: 'Offsite Backup Storage',     desc: 'Data stored separately' },
+                { icon: BarChart2,  label: 'Resource Usage Stats',       desc: 'Track bandwidth & disk live' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-indigo-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="mt-12 text-center">
+          <a
+            href="#plans"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-orange-600 hover:bg-orange-500 text-white font-bold rounded-full shadow-lg shadow-orange-500/25 transition-all text-base"
+          >
+            Choose Your Plan <ArrowRight className="w-5 h-5" />
+          </a>
         </div>
       </Section>
 
