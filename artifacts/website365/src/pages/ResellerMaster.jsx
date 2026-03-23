@@ -4,7 +4,8 @@ import Card from '../components/Card';
 import {
   Crown, Layers, Server, Globe, ArrowRight, ShieldCheck, Zap, CheckCircle,
   Users, Tag, Lock, Key, Filter, HardDrive, RotateCcw, Cloud,
-  Database, Code, Package, BarChart2, Building, Network
+  Database, Code, Package, BarChart2, Building, Network,
+  ChevronDown, DollarSign, TrendingUp, User, Star
 } from 'lucide-react';
 import Button from '../components/Button';
 import FAQ from '../components/FAQ';
@@ -366,20 +367,211 @@ const ResellerMaster = () => {
         </div>
       </Section>
 
-      <Section background="gray">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="bg-white p-10 rounded-2xl shadow-sm border border-gray-100">
-            <Crown className="w-14 h-14 text-blue-600 mx-auto mb-4" />
-            <h3 className="text-2xl font-bold mb-2">Grow With Tiers</h3>
-            <p className="text-gray-600 mb-6">Offer both shared and reseller hosting under your brand, with full control of resource allocation.</p>
-            <div className="flex justify-center items-center gap-6 text-gray-600">
-              <div className="flex items-center gap-2"><Layers className="w-5 h-5 text-blue-600" /> Multi-level WHM</div>
-              <div className="flex items-center gap-2"><Layers className="w-5 h-5 text-blue-600" /> Easy Packaging</div>
-              <div className="flex items-center gap-2"><Layers className="w-5 h-5 text-blue-600" /> White-Label</div>
+      {/* ── Grow With Tiers ──────────────────────────────────── */}
+      <div className="relative bg-slate-900 overflow-hidden py-20 lg:py-24">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-slate-900 via-yellow-900/10 to-purple-900/15" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60rem] h-[30rem] rounded-full bg-yellow-600/5 blur-3xl" />
+          <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.03]" />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Header */}
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-yellow-900/30 border border-yellow-500/30 text-yellow-300 text-sm font-semibold mb-6 backdrop-blur-sm">
+              <TrendingUp className="w-4 h-4" />
+              Multi-Tier Revenue Model
+            </div>
+            <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-5 leading-tight">
+              Grow With Tiers.<br />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-300">
+                Earn From Every Level.
+              </span>
+            </h2>
+            <p className="text-xl text-slate-400 max-w-2xl mx-auto leading-relaxed">
+              As a Master Reseller you sit at the top of a three-tier ecosystem. Every tier below you is a new revenue stream — all under your brand.
+            </p>
+          </div>
+
+          {/* Tier Diagram + Stats */}
+          <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 items-start">
+
+            {/* Tier Flow — 3 cols */}
+            <div className="lg:col-span-3 flex flex-col items-center gap-0">
+
+              {/* Tier 1 — You */}
+              <div className="w-full relative">
+                <div className="relative bg-gradient-to-br from-yellow-500/20 to-amber-600/10 border border-yellow-500/40 rounded-2xl p-6 shadow-xl shadow-yellow-500/5 hover:border-yellow-400/60 transition-all">
+                  <div className="absolute -top-3 left-6">
+                    <span className="inline-flex items-center gap-1.5 bg-yellow-500 text-slate-900 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">
+                      <Star className="w-3 h-3" /> Tier 1 — You
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-5 mt-2">
+                    <div className="w-14 h-14 rounded-2xl bg-yellow-500/20 border border-yellow-500/30 flex items-center justify-center text-yellow-400 shrink-0">
+                      <Crown className="w-7 h-7" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-extrabold text-white mb-1">Master Reseller (You)</h3>
+                      <p className="text-slate-400 text-sm leading-relaxed mb-4">You purchase one Master Reseller plan and gain root-level WHM access. From here you build and manage your entire hosting empire.</p>
+                      <div className="grid grid-cols-3 gap-3">
+                        {[
+                          { val: '1',     lab: 'Master WHM' },
+                          { val: '500+',  lab: 'WHM Slots' },
+                          { val: '100%',  lab: 'White-Label' },
+                        ].map(({ val, lab }) => (
+                          <div key={lab} className="bg-slate-800/60 rounded-xl px-3 py-2.5 text-center border border-slate-700/50">
+                            <p className="text-lg font-extrabold text-yellow-400">{val}</p>
+                            <p className="text-[10px] text-slate-400 mt-0.5">{lab}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Connector */}
+              <div className="flex flex-col items-center py-2 gap-1 my-1">
+                <div className="w-px h-6 bg-gradient-to-b from-yellow-500/60 to-purple-500/60" />
+                <ChevronDown className="w-5 h-5 text-purple-400 animate-bounce" />
+                <p className="text-xs text-slate-500 font-semibold uppercase tracking-widest">You sell reseller accounts to</p>
+                <ChevronDown className="w-5 h-5 text-purple-400 animate-bounce" />
+                <div className="w-px h-6 bg-gradient-to-b from-purple-500/60 to-blue-500/60" />
+              </div>
+
+              {/* Tier 2 — Your Resellers */}
+              <div className="w-full relative">
+                <div className="relative bg-gradient-to-br from-purple-500/15 to-violet-600/10 border border-purple-500/30 rounded-2xl p-6 shadow-xl shadow-purple-500/5 hover:border-purple-400/50 transition-all">
+                  <div className="absolute -top-3 left-6">
+                    <span className="inline-flex items-center gap-1.5 bg-purple-600 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">
+                      <Users className="w-3 h-3" /> Tier 2 — Your Resellers
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-5 mt-2">
+                    <div className="w-14 h-14 rounded-2xl bg-purple-500/20 border border-purple-500/30 flex items-center justify-center text-purple-400 shrink-0">
+                      <Users className="w-7 h-7" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-extrabold text-white mb-1">Your Reseller Partners</h3>
+                      <p className="text-slate-400 text-sm leading-relaxed mb-4">Each partner you create gets their own WHM account where they can create packages and sell hosting under their own brand — while you profit from their subscription.</p>
+                      <div className="grid grid-cols-3 gap-3">
+                        {[
+                          { val: 'Up to 500', lab: 'Resellers' },
+                          { val: 'Own WHM',   lab: 'Per Reseller' },
+                          { val: 'Your Price', lab: 'You Set It' },
+                        ].map(({ val, lab }) => (
+                          <div key={lab} className="bg-slate-800/60 rounded-xl px-3 py-2.5 text-center border border-slate-700/50">
+                            <p className="text-sm font-extrabold text-purple-400 leading-tight">{val}</p>
+                            <p className="text-[10px] text-slate-400 mt-0.5">{lab}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Connector */}
+              <div className="flex flex-col items-center py-2 gap-1 my-1">
+                <div className="w-px h-6 bg-gradient-to-b from-purple-500/60 to-blue-500/60" />
+                <ChevronDown className="w-5 h-5 text-blue-400 animate-bounce delay-150" />
+                <p className="text-xs text-slate-500 font-semibold uppercase tracking-widest">Your resellers sell to</p>
+                <ChevronDown className="w-5 h-5 text-blue-400 animate-bounce delay-150" />
+                <div className="w-px h-6 bg-gradient-to-b from-blue-500/60 to-cyan-500/30" />
+              </div>
+
+              {/* Tier 3 — End Clients */}
+              <div className="w-full relative">
+                <div className="relative bg-gradient-to-br from-blue-500/15 to-cyan-600/10 border border-blue-500/30 rounded-2xl p-6 shadow-xl shadow-blue-500/5 hover:border-blue-400/50 transition-all">
+                  <div className="absolute -top-3 left-6">
+                    <span className="inline-flex items-center gap-1.5 bg-blue-600 text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider">
+                      <User className="w-3 h-3" /> Tier 3 — End Clients
+                    </span>
+                  </div>
+                  <div className="flex items-start gap-5 mt-2">
+                    <div className="w-14 h-14 rounded-2xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center text-blue-400 shrink-0">
+                      <User className="w-7 h-7" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-extrabold text-white mb-1">Their Hosting Clients</h3>
+                      <p className="text-slate-400 text-sm leading-relaxed mb-4">Each of your resellers can create and manage thousands of cPanel accounts for their own end clients. You never deal with them — your resellers do. You just collect.</p>
+                      <div className="grid grid-cols-3 gap-3">
+                        {[
+                          { val: '5,000+', lab: 'cPanel Accounts' },
+                          { val: 'Isolated', lab: 'Per Client' },
+                          { val: 'Passive',  lab: 'Income for You' },
+                        ].map(({ val, lab }) => (
+                          <div key={lab} className="bg-slate-800/60 rounded-xl px-3 py-2.5 text-center border border-slate-700/50">
+                            <p className="text-sm font-extrabold text-blue-400 leading-tight">{val}</p>
+                            <p className="text-[10px] text-slate-400 mt-0.5">{lab}</p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right: Callouts — 2 cols */}
+            <div className="lg:col-span-2 flex flex-col gap-6 lg:sticky lg:top-8">
+              <div className="bg-slate-800/60 border border-slate-700/50 rounded-2xl p-6">
+                <h4 className="text-white font-extrabold text-lg mb-5 flex items-center gap-2">
+                  <DollarSign className="w-5 h-5 text-yellow-400" /> Why 3 Tiers Win
+                </h4>
+                <ul className="space-y-4">
+                  {[
+                    { icon: TrendingUp, color: 'text-yellow-400', label: 'Multiple Revenue Streams',    desc: 'Earn from your resellers every month regardless of how many clients they sign up.' },
+                    { icon: Users,      color: 'text-purple-400', label: 'Exponential Scale',            desc: 'One reseller can bring in 50 clients. 20 resellers means 1,000 potential clients.' },
+                    { icon: Tag,        color: 'text-blue-400',   label: 'Zero Overhead per Client',     desc: 'Resellers handle their own client support. You manage resellers, not end users.' },
+                    { icon: Crown,      color: 'text-amber-400',  label: 'Full White-Label at All Tiers', desc: 'Your brand appears at every level. Clients never know who built the infrastructure.' },
+                  ].map(({ icon: Icon, color, label, desc }) => (
+                    <li key={label} className="flex gap-3 items-start">
+                      <div className={`w-8 h-8 rounded-lg bg-slate-700/50 flex items-center justify-center ${color} shrink-0 mt-0.5`}>
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-white">{label}</p>
+                        <p className="text-xs text-slate-400 mt-0.5 leading-relaxed">{desc}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="bg-gradient-to-br from-yellow-600/20 to-amber-700/10 border border-yellow-500/30 rounded-2xl p-6">
+                <p className="text-yellow-300 text-xs font-bold uppercase tracking-widest mb-3">Quick Comparison</p>
+                <div className="space-y-3">
+                  {[
+                    { label: 'Standard Reseller', tiers: 1, desc: 'You → End Clients',               dot: 'bg-slate-500' },
+                    { label: 'Master Reseller',   tiers: 3, desc: 'You → Resellers → End Clients',   dot: 'bg-yellow-500' },
+                  ].map(({ label, tiers, desc, dot }) => (
+                    <div key={label} className="bg-slate-800/50 rounded-xl p-4 border border-slate-700/40">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-white text-sm font-bold">{label}</span>
+                        <div className="flex gap-1">
+                          {Array.from({ length: tiers }).map((_, i) => (
+                            <div key={i} className={`w-2.5 h-2.5 rounded-full ${dot}`} />
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-xs text-slate-400">{desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <a
+                href="#plans"
+                className="flex items-center justify-center gap-2 w-full py-4 px-6 bg-yellow-600 hover:bg-yellow-500 text-slate-900 font-extrabold rounded-xl shadow-lg shadow-yellow-600/20 transition-all text-base"
+              >
+                Start Building Your Empire <ArrowRight className="w-5 h-5" />
+              </a>
             </div>
           </div>
         </div>
-      </Section>
+      </div>
 
       <Section>
         <div className="max-w-4xl mx-auto">
