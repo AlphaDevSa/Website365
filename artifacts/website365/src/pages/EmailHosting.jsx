@@ -4,7 +4,11 @@ import Card from '../components/Card';
 import Button from '../components/Button';
 import FAQ from '../components/FAQ';
 import EmailHostingOrderModal from '../components/EmailHostingOrderModal';
-import { Mail, Shield, Smartphone, ArrowRight, Check, AtSign, Globe, Lock, CheckCircle, User, Users, Building } from 'lucide-react';
+import {
+  Mail, Shield, Smartphone, ArrowRight, Check, AtSign, Globe, Lock, CheckCircle,
+  User, Users, Building, LayoutGrid, RefreshCw, Filter, Key, HardDrive, RotateCcw,
+  Cloud, BarChart2, Inbox, Layers, Server, Zap
+} from 'lucide-react';
 
 const EmailHosting = () => {
   const [activePlan, setActivePlan] = useState(null);
@@ -46,6 +50,9 @@ const EmailHosting = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Button to="#plans" className="rounded-full px-8 py-4 text-lg font-semibold bg-teal-600 hover:bg-teal-500 text-white shadow-lg hover:shadow-teal-500/25 transition-all">
               See Email Plans <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+            <Button to="#features" variant="ghost" className="rounded-full px-8 py-4 text-lg font-semibold transition-all backdrop-blur-sm">
+              View Features
             </Button>
           </div>
 
@@ -142,6 +149,192 @@ const EmailHosting = () => {
               "Webmail"
             ]}
           />
+        </div>
+      </Section>
+
+      {/* ── Email Features ───────────────────────────────────── */}
+      <Section id="features" background="white">
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-100 border border-teal-200 text-teal-700 text-sm font-semibold mb-4">
+            <LayoutGrid className="w-4 h-4" />
+            Everything Included
+          </div>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
+            Professional Email, Fully Equipped
+          </h2>
+          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+            Every Business Email plan comes packed with the tools your team needs to communicate professionally and securely — no extras to buy.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          {/* Email Access */}
+          <div className="bg-gray-50 rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center text-teal-600">
+                <Mail className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Email Access</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: Inbox,      label: 'IMAP & POP3 Support',         desc: 'Connect any email client you prefer' },
+                { icon: Globe,      label: 'Webmail (Roundcube)',          desc: 'Access from any browser, anywhere' },
+                { icon: Smartphone, label: 'Mobile Sync',                 desc: 'Works with iOS, Android & tablets' },
+                { icon: RefreshCw,  label: 'Outlook & Apple Mail Ready',  desc: 'Full compatibility with major clients' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Security */}
+          <div className="bg-gray-50 rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600">
+                <Shield className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Security</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: Lock,    label: 'Free SSL / TLS Encryption',    desc: 'All email traffic encrypted in transit' },
+                { icon: Filter,  label: 'SpamAssassin Filtering',       desc: 'Intelligent junk mail blocking' },
+                { icon: Shield,  label: 'Virus & Malware Scanning',     desc: 'Attachments scanned before delivery' },
+                { icon: Key,     label: 'Phishing Protection',          desc: 'Suspicious links flagged automatically' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Management */}
+          <div className="bg-gray-50 rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600">
+                <Users className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Management</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: Users,    label: 'Multiple Mailboxes',          desc: 'Create accounts for each team member' },
+                { icon: AtSign,   label: 'Custom Domain Addresses',     desc: 'you@yourbusiness.co.za for everyone' },
+                { icon: RefreshCw,label: 'Aliases & Forwarders',        desc: 'Route email to any inbox with ease' },
+                { icon: BarChart2,label: 'Per-Account Quotas',          desc: 'Control storage allocation per user' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-blue-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Productivity */}
+          <div className="bg-gray-50 rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600">
+                <Zap className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Productivity</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: RefreshCw, label: 'Autoresponders',            desc: 'Auto-reply when you\'re out of office' },
+                { icon: Filter,    label: 'Server-Side Email Rules',   desc: 'Automatically sort incoming mail' },
+                { icon: Layers,    label: 'Shared Address Books',      desc: 'Company contacts available to all' },
+                { icon: Globe,     label: 'Calendar & Contacts Sync',  desc: 'Sync across all your devices' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-purple-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Reliability */}
+          <div className="bg-gray-50 rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center text-indigo-600">
+                <Server className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Reliability</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: Server,    label: '99.9% Uptime SLA',           desc: 'Your email is always reachable' },
+                { icon: Zap,       label: 'Fast Email Delivery',        desc: 'Low-latency SMTP infrastructure' },
+                { icon: Cloud,     label: 'Unlimited Bandwidth',        desc: 'Send and receive without data caps' },
+                { icon: Layers,    label: 'Redundant Infrastructure',   desc: 'Multiple server layers for resilience' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-indigo-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Backups */}
+          <div className="bg-gray-50 rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600">
+                <HardDrive className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Backups</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: HardDrive,  label: 'Daily Email Backups',        desc: 'Automated snapshots of your mailboxes' },
+                { icon: RotateCcw,  label: 'Message Restore',            desc: 'Recover accidentally deleted emails' },
+                { icon: Cloud,      label: 'Offsite Backup Storage',     desc: 'Copies kept safe off primary server' },
+                { icon: Lock,       label: 'Data Privacy Compliant',     desc: 'Your data stays in our secure infrastructure' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="mt-12 text-center">
+          <a
+            href="#plans"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-teal-600 hover:bg-teal-500 text-white font-bold rounded-full shadow-lg shadow-teal-500/25 transition-all text-base"
+          >
+            Choose an Email Plan <ArrowRight className="w-5 h-5" />
+          </a>
         </div>
       </Section>
 
