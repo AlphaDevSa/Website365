@@ -1,12 +1,21 @@
+import { useState } from 'react';
 import Section from '../components/Section';
 import Card from '../components/Card';
 import Button from '../components/Button';
 import FAQ from '../components/FAQ';
+import EmailHostingOrderModal from '../components/EmailHostingOrderModal';
 import { Mail, Shield, Smartphone, ArrowRight, Check, AtSign, Globe, Lock, CheckCircle, User, Users, Building } from 'lucide-react';
 
 const EmailHosting = () => {
+  const [activePlan, setActivePlan] = useState(null);
+
   return (
     <>
+      <EmailHostingOrderModal
+        isOpen={!!activePlan}
+        onClose={() => setActivePlan(null)}
+        planId={activePlan}
+      />
       {/* Magnificent Hero */}
       <div className="relative bg-slate-900 overflow-hidden py-16 lg:py-20">
         {/* Animated Background */}
@@ -84,10 +93,10 @@ const EmailHosting = () => {
           <Card
             title="Starter – Business Email"
             price="R29"
-            yearlyPrice="R348 / year (0% discount)"
+            yearlyPrice="R348 / year"
             description="Essential email for your business."
-            ctaText="Get Starter – Business Email"
-            ctaLink="/contact"
+            ctaText="Get Starter Plan"
+            ctaOnClick={() => setActivePlan('email-starter')}
             features={[
               "10 email accounts",
               "10 GB disk space",
@@ -101,10 +110,10 @@ const EmailHosting = () => {
           <Card
             title="Growth – Business Email"
             price="R59"
-            yearlyPrice="R708 / year (0% discount)"
+            yearlyPrice="R708 / year"
             description="Perfect for growing teams."
-            ctaText="Get Growth – Business Email"
-            ctaLink="/contact"
+            ctaText="Get Growth Plan"
+            ctaOnClick={() => setActivePlan('email-growth')}
             popular={true}
             features={[
               "50 email accounts",
@@ -119,10 +128,10 @@ const EmailHosting = () => {
           <Card
             title="Enterprise – Business Email"
             price="R129"
-            yearlyPrice="R1548 / year (0% discount)"
+            yearlyPrice="R1548 / year"
             description="Maximum power for large organizations."
-            ctaText="Get Enterprise – Business Email"
-            ctaLink="/contact"
+            ctaText="Get Enterprise Plan"
+            ctaOnClick={() => setActivePlan('email-enterprise')}
             features={[
               "200 email accounts",
               "200 GB disk space",
