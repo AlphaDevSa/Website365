@@ -4,7 +4,12 @@ import Card from '../components/Card';
 import FAQ from '../components/FAQ';
 import CTASection from '../components/CTASection';
 import Button from '../components/Button';
-import { CheckCircle, Zap, Shield, Database, Layout, Smartphone, Globe, ArrowRight, Star } from 'lucide-react';
+import {
+  CheckCircle, Zap, Shield, Database, Layout, Smartphone, Globe, ArrowRight, Star,
+  Server, FolderOpen, Upload, Clock, Mail, Lock, Filter, AtSign, RefreshCw,
+  HardDrive, RotateCcw, Cloud, BarChart2, Code, Package, Key, ShieldCheck,
+  Layers, Settings
+} from 'lucide-react';
 import PlanOrderModal from '../components/PlanOrderModal';
 
 const WordPressHosting = () => {
@@ -57,6 +62,9 @@ const WordPressHosting = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Button to="#plans" className="rounded-full px-8 py-4 text-lg font-semibold bg-blue-600 hover:bg-blue-500 text-white shadow-lg hover:shadow-blue-500/25 transition-all">
               See WordPress Plans <ArrowRight className="w-5 h-5 ml-2" />
+            </Button>
+            <Button to="#features" variant="ghost" className="rounded-full px-8 py-4 text-lg font-semibold transition-all backdrop-blur-sm">
+              View Features
             </Button>
           </div>
 
@@ -168,6 +176,192 @@ const WordPressHosting = () => {
               "SiteJet builder"
             ]}
           />
+        </div>
+      </Section>
+
+      {/* ── WordPress Features ───────────────────────────────── */}
+      <Section id="features" background="gray">
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 border border-blue-200 text-blue-700 text-sm font-semibold mb-4">
+            <Package className="w-4 h-4" />
+            Everything Included
+          </div>
+          <h2 className="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">
+            Built for WordPress. Built to Perform.
+          </h2>
+          <p className="text-lg text-gray-500 max-w-2xl mx-auto">
+            Every plan is pre-configured with the tools and technology your WordPress site needs to load fast, stay secure, and scale effortlessly.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          {/* Performance */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600">
+                <Zap className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Performance</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: Zap,      label: 'LiteSpeed Elite Web Server', desc: 'Up to 20× faster than standard hosting' },
+                { icon: Layers,   label: 'CloudLinux OS',              desc: 'Isolated, stable hosting environment' },
+                { icon: Cloud,    label: 'SSD NVMe Storage',           desc: 'Ultra-fast read/write for every plan' },
+                { icon: BarChart2,label: 'HTTP/3 & QUIC Support',      desc: 'Next-gen protocol for faster loads' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* WordPress Tools */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-indigo-100 flex items-center justify-center text-indigo-600">
+                <Layout className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">WordPress Tools</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: Layout,   label: 'WP Toolkit',              desc: 'Manage, clone & stage WP sites' },
+                { icon: Package,  label: 'One-Click Installer',     desc: 'WordPress up in minutes via Softaculous' },
+                { icon: RefreshCw,label: 'Automatic WP Updates',    desc: 'Core, plugin & theme updates managed' },
+                { icon: Globe,    label: 'SiteJet Website Builder', desc: 'Drag-and-drop builder included free' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-indigo-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Security */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-green-100 flex items-center justify-center text-green-600">
+                <ShieldCheck className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Security</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: ShieldCheck, label: 'Imunify360 Protection',    desc: 'AI malware & intrusion prevention' },
+                { icon: Lock,        label: 'Free SSL Certificates',     desc: "Let's Encrypt auto-renew for all domains" },
+                { icon: Shield,      label: 'WP-Specific Firewall Rules',desc: 'Hardened against WP attack vectors' },
+                { icon: Key,         label: 'Two-Factor Authentication', desc: 'Protect your cPanel login' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Management */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-cyan-100 flex items-center justify-center text-cyan-600">
+                <Settings className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Management</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: Server,     label: 'cPanel Control Panel',   desc: 'Industry-standard hosting management' },
+                { icon: FolderOpen, label: 'Visual File Manager',    desc: 'Browse, edit & upload with ease' },
+                { icon: Upload,     label: 'FTP / SFTP Access',      desc: 'Unlimited FTP accounts' },
+                { icon: Clock,      label: 'Cron Job Scheduler',     desc: 'Automate recurring WP tasks' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-cyan-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Email */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-teal-100 flex items-center justify-center text-teal-600">
+                <Mail className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Email</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: AtSign,    label: 'Professional Email Accounts', desc: 'you@yourdomain.co.za' },
+                { icon: Mail,      label: 'Webmail Access',              desc: 'Roundcube & Horde included' },
+                { icon: Filter,    label: 'SpamAssassin Filtering',      desc: 'Block junk before it arrives' },
+                { icon: RefreshCw, label: 'Forwarders & Autoresponders', desc: 'Auto-route and reply to email' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-teal-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Backups */}
+          <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600">
+                <HardDrive className="w-5 h-5" />
+              </div>
+              <h3 className="text-base font-extrabold text-gray-900 uppercase tracking-wide">Backups</h3>
+            </div>
+            <ul className="space-y-3">
+              {[
+                { icon: HardDrive,  label: 'Daily Automated Backups',  desc: 'Multiple restore points kept' },
+                { icon: RotateCcw,  label: 'One-Click Restore',         desc: 'Roll back your site in seconds' },
+                { icon: Cloud,      label: 'Offsite Backup Storage',    desc: 'Data stored safely off-server' },
+                { icon: Database,   label: 'MySQL Database Backups',    desc: 'Database snapshots included' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <li key={label} className="flex items-start gap-3">
+                  <Icon className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
+                  <div>
+                    <p className="text-sm font-semibold text-gray-800">{label}</p>
+                    <p className="text-xs text-gray-400">{desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+        </div>
+
+        {/* Bottom CTA */}
+        <div className="mt-12 text-center">
+          <a
+            href="#plans"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-500 text-white font-bold rounded-full shadow-lg shadow-blue-500/25 transition-all text-base"
+          >
+            Choose a WordPress Plan <ArrowRight className="w-5 h-5" />
+          </a>
         </div>
       </Section>
 
