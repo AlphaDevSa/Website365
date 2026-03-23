@@ -353,16 +353,56 @@ const Home = () => {
 
       <Section background="gray">
         <div className="max-w-5xl mx-auto">
-          <div className="bg-slate-900 rounded-2xl shadow-2xl overflow-hidden border border-slate-800">
-            <div className="px-6 py-8 md:px-12 md:py-10 text-center md:text-left md:flex md:items-center md:justify-between gap-10">
-              <div className="md:w-2/3">
-                <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl mb-4">IPT One Telecoms</h2>
-                <p className="text-lg text-slate-300">Do you need Landline Number or Hosted PBX solution</p>
-              </div>
-              <div className="mt-8 md:mt-0 md:w-1/3 flex justify-center md:justify-end">
-                <Button to="https://www.iptone.co.za" target="_blank" rel="noreferrer" className="px-8 py-4 text-lg">
-                  Visit IPT One
-                </Button>
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-blue-700 via-blue-800 to-indigo-900 shadow-2xl">
+            {/* Decorative circles */}
+            <div className="absolute -top-16 -right-16 w-64 h-64 bg-white/5 rounded-full pointer-events-none" />
+            <div className="absolute -bottom-12 -left-12 w-48 h-48 bg-white/5 rounded-full pointer-events-none" />
+            <div className="absolute top-1/2 right-1/4 w-32 h-32 bg-blue-400/10 rounded-full pointer-events-none" />
+
+            <div className="relative px-8 py-10 md:px-12 md:py-12">
+              <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-12">
+
+                {/* Icon badge */}
+                <div className="shrink-0 flex justify-center md:justify-start">
+                  <div className="w-20 h-20 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg">
+                    <Phone className="w-10 h-10 text-white" />
+                  </div>
+                </div>
+
+                {/* Text content */}
+                <div className="flex-1 text-center md:text-left">
+                  <p className="text-blue-300 text-xs font-bold uppercase tracking-[0.15em] mb-2">Our Sister Company</p>
+                  <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-3 leading-tight">
+                    IPT One Telecoms
+                  </h2>
+                  <p className="text-blue-100 text-base mb-5 max-w-lg">
+                    Need a virtual landline or a fully hosted PBX system for your business? IPT One delivers professional VoIP &amp; telephony solutions across South Africa.
+                  </p>
+                  {/* Feature pills */}
+                  <div className="flex flex-wrap gap-2 justify-center md:justify-start">
+                    {['Hosted PBX', 'Virtual Numbers', 'VoIP Solutions', 'Call Recording'].map((f) => (
+                      <span key={f} className="inline-flex items-center gap-1.5 bg-white/10 border border-white/20 text-white text-xs font-semibold px-3 py-1.5 rounded-full">
+                        <CheckCircle className="w-3.5 h-3.5 text-blue-300 shrink-0" />
+                        {f}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* CTA */}
+                <div className="shrink-0 flex flex-col items-center md:items-end gap-3">
+                  <a
+                    href="https://www.iptone.co.za"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-2 bg-white text-blue-800 font-bold px-7 py-4 rounded-xl shadow-lg hover:bg-blue-50 transition-all group text-base whitespace-nowrap"
+                  >
+                    Visit IPT One
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                  <span className="text-blue-300 text-xs">www.iptone.co.za</span>
+                </div>
+
               </div>
             </div>
           </div>
