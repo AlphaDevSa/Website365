@@ -1,13 +1,14 @@
 import { Router, type IRouter, type Request, type Response } from "express";
 import dns from "dns";
 import { promisify } from "util";
+import { pool } from "@workspace/db";
 
 const router: IRouter = Router();
 
 const resolve4 = promisify(dns.resolve4);
 const resolveNs = promisify(dns.resolveNs);
 
-// --- Static Pricing ---
+// Fallback static pricing (used if DB is unavailable)
 const STATIC_PRICING: Record<string, { register: number; transfer: number; renew: number }> = {
   "co.za":    { register: 99,  transfer: 0,   renew: 99  },
   "org.za":   { register: 99,  transfer: 0,   renew: 99  },
@@ -27,6 +28,29 @@ const STATIC_PRICING: Record<string, { register: number; transfer: number; renew
   "tech":     { register: 249, transfer: 249, renew: 249 },
 };
 
+type PricingRow = { tld: string; register: string; renew: string; transfer: string };
+
+// Load all enabled pricing rows from DB, fall back to static
+async function loadPricing(): Promise<Record<string, { register: number; renew: number; transfer: number }>> {
+  try {
+    const result = await pool.query<PricingRow>(
+      "SELECT tld, register, renew, transfer FROM domain_pricing WHERE enabled = true ORDER BY sort_order ASC"
+    );
+    if (result.rows.length === 0) return STATIC_PRICING;
+    const map: Record<string, { register: number; renew: number; transfer: number }> = {};
+    for (const row of result.rows) {
+      map[row.tld] = {
+        register: Number(row.register),
+        renew: Number(row.renew),
+        transfer: Number(row.transfer),
+      };
+    }
+    return map;
+  } catch {
+    return STATIC_PRICING;
+  }
+}
+
 const extractTld = (domain: string): string => {
   const d = String(domain || "").trim().toLowerCase();
   if (!d.includes(".")) return "";
@@ -42,20 +66,17 @@ const extractTld = (domain: string): string => {
 // --- Domain Pricing Endpoint ---
 router.get("/domain/pricing", async (req: Request, res: Response) => {
   const raw = String(req.query.tlds || "").trim();
-  if (!raw) {
-    res.status(400).json({ error: "Missing tlds parameter" });
-    return;
-  }
 
+  const pricing = await loadPricing();
+
+  // If specific TLDs requested, return just those; else return all
   const tlds = raw
-    .split(",")
-    .map((t) => t.trim().toLowerCase().replace(/^\./, ""))
-    .filter(Boolean)
-    .slice(0, 20);
+    ? raw.split(",").map((t) => t.trim().toLowerCase().replace(/^\./, "")).filter(Boolean).slice(0, 50)
+    : Object.keys(pricing);
 
   const result: Record<string, { register: number | null; renew: number | null; transfer: number | null }> = {};
   for (const tld of tlds) {
-    const p = STATIC_PRICING[tld] || null;
+    const p = pricing[tld] || null;
     result[tld] = {
       register: p?.register ?? null,
       renew: p?.renew ?? null,
@@ -64,6 +85,19 @@ router.get("/domain/pricing", async (req: Request, res: Response) => {
   }
 
   res.json({ currencyCode: "ZAR", tlds: result });
+});
+
+// --- All enabled TLDs (for dropdown population) ---
+router.get("/domain/tlds", async (_req: Request, res: Response) => {
+  try {
+    const result = await pool.query<{ tld: string }>(
+      "SELECT tld FROM domain_pricing WHERE enabled = true ORDER BY sort_order ASC"
+    );
+    const tlds = result.rows.length > 0 ? result.rows.map((r) => r.tld) : Object.keys(STATIC_PRICING);
+    res.json({ tlds });
+  } catch {
+    res.json({ tlds: Object.keys(STATIC_PRICING) });
+  }
 });
 
 // --- Domain Check Endpoint ---
@@ -96,14 +130,17 @@ router.get("/domain/check", async (req: Request, res: Response) => {
   }
 
   try {
-    const hasDns = await withTimeout(hasDnsRecords(domain), 8000);
+    const [hasDns, pricing] = await Promise.all([
+      withTimeout(hasDnsRecords(domain), 8000),
+      loadPricing(),
+    ]);
     const available = !hasDns;
 
     const tld = extractTld(domain);
-    const pricing = STATIC_PRICING[tld] || null;
+    const domainPricing = pricing[tld] || null;
     const domainPriceAmount =
-      action === "register" ? pricing?.register ?? null :
-      action === "transfer" ? pricing?.transfer ?? null :
+      action === "register" ? domainPricing?.register ?? null :
+      action === "transfer" ? domainPricing?.transfer ?? null :
       null;
 
     res.json({

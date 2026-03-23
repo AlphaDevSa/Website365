@@ -2,7 +2,8 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Section from '../components/Section';
 import Button from '../components/Button';
-import { Check, Globe, Loader2, Search, Shield, Star, Zap, MousePointer2, CreditCard, Sparkles } from 'lucide-react';
+import { Check, Globe, Search, Shield, Star, Zap, MousePointer2, CreditCard, Sparkles } from 'lucide-react';
+import DomainSearchBar from '../components/DomainSearchBar';
 import DomainRegistrationOrderModal from '../components/DomainRegistrationOrderModal';
 import { useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -185,38 +186,18 @@ const DomainRegistration = () => {
             className="max-w-3xl mx-auto relative group z-20"
           >
             <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200 pointer-events-none" />
-            <form
-              className="relative flex flex-col md:flex-row items-center bg-slate-800/90 backdrop-blur-xl rounded-xl p-2 border border-slate-700 shadow-2xl"
-              onSubmit={(e) => {
-                e.preventDefault();
-                runDomainCheck();
-              }}
-            >
-              <div className="pl-4 pr-2 hidden md:block">
-                <Globe className="w-6 h-6 text-slate-400" />
-              </div>
-              <input 
-                type="text" 
+            <div className="relative bg-slate-800/90 backdrop-blur-xl rounded-xl p-3 border border-slate-700 shadow-2xl">
+              <DomainSearchBar
                 value={query}
-                onChange={(e) => {
-                  setQuery(e.target.value);
-                  setDomainCheck({ status: 'idle', result: null, error: '' });
-                }}
-                placeholder="Find your Domain..." 
-                className="w-full md:flex-1 bg-transparent border-none text-white placeholder-slate-500 focus:ring-0 text-lg py-3 px-4 md:px-0"
-                size="20"
+                onChange={(v) => { setQuery(v); setDomainCheck({ status: 'idle', result: null, error: '' }); }}
+                onSubmit={runDomainCheck}
+                status={domainCheck.status}
+                placeholder="yourbusiness"
+                buttonLabel="Check"
+                buttonClass="bg-blue-600 hover:bg-blue-700"
+                inputClass="border-none bg-transparent"
               />
-              <Button type="submit" className="w-full md:w-auto rounded-lg px-8 py-3 text-lg font-semibold bg-blue-600 hover:bg-blue-700 text-white transition-all shadow-lg hover:shadow-blue-500/25 mt-2 md:mt-0">
-                {domainCheck.status === 'checking' ? (
-                  <>
-                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                    Checking
-                  </>
-                ) : (
-                  'Check'
-                )}
-              </Button>
-            </form>
+            </div>
 
             {checkMessage ? (
               <div className={`mt-3 text-sm font-medium ${checkMessage.tone === 'success' ? 'text-green-300' : checkMessage.tone === 'error' ? 'text-red-300' : 'text-slate-300'}`}>

@@ -1,12 +1,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Section from '../components/Section';
-import Card from '../components/Card';
 import FAQ from '../components/FAQ';
 import SEO from '../components/SEO';
-import Button from '../components/Button';
 import DomainRegistrationOrderModal from '../components/DomainRegistrationOrderModal';
-import { CheckCircle, Globe, Loader2, RefreshCw, Search, Shield, Zap, XCircle, AlertCircle } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
+import DomainSearchBar from '../components/DomainSearchBar';
+import {
+  CheckCircle, Globe, RefreshCw, Search, Shield, Zap, XCircle,
+  AlertCircle, Star, ArrowRight, Lock, Headphones
+} from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 const formatZar = (amount) => {
   if (amount == null || Number.isNaN(Number(amount))) return null;
@@ -57,10 +59,10 @@ const Domains = () => {
     run();
   }, [tlds]);
 
-  const runDomainCheck = async (overriddenQuery) => {
-    const domain = (overriddenQuery ?? query).trim().toLowerCase();
+  const runDomainCheck = async () => {
+    const domain = query.trim().toLowerCase();
     if (!domain || !domain.includes('.') || /\s/.test(domain)) {
-      setDomainCheck({ status: 'error', result: null, error: 'Please enter a full domain name like example.co.za' });
+      setDomainCheck({ status: 'error', result: null, error: 'Please enter a domain name and select an extension' });
       return;
     }
     setDomainCheck({ status: 'checking', result: null, error: '' });
@@ -79,14 +81,20 @@ const Domains = () => {
     const domainFromQuery = new URLSearchParams(location.search).get('domain');
     if (domainFromQuery && !query) {
       setQuery(domainFromQuery);
-      runDomainCheck(domainFromQuery);
+      const domain = domainFromQuery.trim().toLowerCase();
+      if (domain && domain.includes('.')) {
+        setDomainCheck({ status: 'checking', result: null, error: '' });
+        const qs = new URLSearchParams({ domain, action: 'register' });
+        fetch(`/api/domain/check?${qs}`, { headers: { Accept: 'application/json' } })
+          .then(r => r.json())
+          .then(json => setDomainCheck({ status: 'done', result: json, error: '' }))
+          .catch(() => setDomainCheck({ status: 'error', result: null, error: 'Domain check failed' }));
+      }
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.search]);
 
-  const getPricingForTld = (tld) => {
-    return pricing.result?.tlds?.[tld] ?? null;
-  };
+  const getPricingForTld = (tld) => pricing.result?.tlds?.[tld] ?? null;
 
   const domainPricingForOrder = useMemo(() => {
     const domain = query.trim().toLowerCase();
@@ -125,53 +133,47 @@ const Domains = () => {
         lookup={domainCheck.result?.lookup}
       />
 
-      {/* Hero + Search */}
-      <div className="relative bg-slate-900 overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-900 to-blue-900 opacity-90" />
-          <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse" />
+      {/* ── Hero + Search ──────────────────────────────────────── */}
+      <div className="relative bg-slate-900 overflow-hidden py-20 lg:py-28">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-slate-900 via-blue-950/30 to-slate-900" />
+          <div className="absolute top-1/4 left-1/4 w-[40rem] h-[40rem] rounded-full bg-blue-500/10 blur-3xl animate-pulse" />
+          <div className="absolute bottom-0 right-1/4 w-[40rem] h-[40rem] rounded-full bg-purple-500/8 blur-3xl animate-pulse delay-700" />
+          <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.04]" />
         </div>
 
-        <div className="relative max-w-5xl mx-auto py-16 px-4 lg:py-24 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white to-blue-200 mb-4">
-            Find Your Perfect Domain
+        <div className="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/40 border border-blue-500/30 text-blue-300 text-sm font-semibold mb-8 backdrop-blur-sm">
+            <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+            Official Accredited Registrar
+          </div>
+
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white mb-5 leading-none">
+            Find Your Perfect<br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">Domain Name</span>
           </h1>
-          <p className="text-xl text-slate-300 max-w-2xl mx-auto mb-10">
-            Search, register and manage domains with instant activation, free DNS management, and local support.
+
+          <p className="text-xl text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed">
+            Search, register and manage domains with instant activation, free DNS management, and South African support.
           </p>
 
-          {/* Search Box */}
-          <div className="max-w-3xl mx-auto bg-white/10 backdrop-blur-md p-5 rounded-2xl shadow-2xl border border-white/20">
-            <form
-              className="flex flex-col sm:flex-row gap-3"
-              onSubmit={(e) => { e.preventDefault(); runDomainCheck(); }}
-            >
-              <div className="relative flex-grow">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-slate-400 pointer-events-none" />
-                <input
-                  type="text"
+          {/* Search Bar */}
+          <div className="max-w-3xl mx-auto">
+            <div className="relative">
+              <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl blur opacity-20 pointer-events-none" />
+              <div className="relative bg-slate-800/80 backdrop-blur-xl rounded-xl border border-slate-700 p-3 shadow-2xl">
+                <DomainSearchBar
                   value={query}
-                  onChange={(e) => {
-                    setQuery(e.target.value);
-                    setDomainCheck({ status: 'idle', result: null, error: '' });
-                  }}
-                  placeholder="e.g. mybusiness.co.za"
-                  className="w-full pl-11 pr-4 py-4 bg-slate-800/60 border border-slate-600 rounded-xl text-white placeholder-slate-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none text-base transition-all"
+                  onChange={(v) => { setQuery(v); setDomainCheck({ status: 'idle', result: null, error: '' }); }}
+                  onSubmit={runDomainCheck}
+                  status={domainCheck.status}
+                  placeholder="yourbusiness"
+                  buttonLabel="Search"
+                  buttonClass="bg-blue-600 hover:bg-blue-500"
+                  inputClass="border-none bg-transparent"
                 />
               </div>
-              <button
-                type="submit"
-                disabled={domainCheck.status === 'checking'}
-                className="flex items-center justify-center gap-2 px-8 py-4 bg-blue-600 hover:bg-blue-700 disabled:opacity-70 text-white font-semibold rounded-xl shadow-lg transition-all duration-200 whitespace-nowrap"
-              >
-                {domainCheck.status === 'checking' ? (
-                  <><Loader2 className="w-5 h-5 animate-spin" /> Checking…</>
-                ) : (
-                  <><Search className="w-5 h-5" /> Search</>
-                )}
-              </button>
-            </form>
+            </div>
 
             {/* Result banner */}
             {domainCheck.status === 'done' && domainCheck.result && (
@@ -191,18 +193,12 @@ const Domains = () => {
                 </div>
                 <div className="flex gap-2 shrink-0">
                   {domainCheck.result.available && (
-                    <button
-                      onClick={() => setIsOrderOpen(true)}
-                      className="px-5 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors"
-                    >
+                    <button onClick={() => setIsOrderOpen(true)} className="px-5 py-2 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg transition-colors">
                       Register Now
                     </button>
                   )}
                   {!domainCheck.result.available && transferPageUrl && (
-                    <a
-                      href={transferPageUrl}
-                      className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors"
-                    >
+                    <a href={transferPageUrl} className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors">
                       Transfer Domain
                     </a>
                   )}
@@ -212,8 +208,7 @@ const Domains = () => {
 
             {domainCheck.status === 'error' && (
               <div className="mt-4 flex items-center gap-2 px-4 py-3 bg-yellow-900/30 border border-yellow-500/30 rounded-xl text-yellow-200 text-sm">
-                <AlertCircle className="w-4 h-4 shrink-0" />
-                {domainCheck.error}
+                <AlertCircle className="w-4 h-4 shrink-0" />{domainCheck.error}
               </div>
             )}
 
@@ -222,15 +217,11 @@ const Domains = () => {
               {FEATURED_TLDS.filter(t => ['co.za', 'com', 'africa', 'org.za', 'net.za', 'capetown'].includes(t.tld)).map(({ tld, label, popular }) => {
                 const p = getPricingForTld(tld);
                 return (
-                  <span
-                    key={tld}
-                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border backdrop-blur-sm ${popular ? 'bg-blue-500/20 border-blue-400/40 text-blue-200' : 'bg-white/10 border-white/10 text-slate-300'}`}
-                  >
+                  <span key={tld} className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border backdrop-blur-sm cursor-pointer hover:opacity-80 transition-opacity ${popular ? 'bg-blue-500/20 border-blue-400/40 text-blue-200' : 'bg-white/10 border-white/10 text-slate-300'}`}
+                    onClick={() => { setQuery(`yourdomain.${tld}`); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
                     {label}
-                    <span className="font-bold text-white">
-                      {pricing.status === 'loading' ? '…' : (formatZar(p?.register) ?? '—')}
-                    </span>
-                    {popular && <span className="text-xs bg-blue-600 text-white px-1 rounded">Popular</span>}
+                    <span className="font-bold text-white">{pricing.status === 'loading' ? '…' : (formatZar(p?.register) ?? '—')}</span>
+                    {popular && <span className="text-[10px] bg-blue-600 text-white px-1 rounded">Popular</span>}
                   </span>
                 );
               })}
@@ -238,19 +229,39 @@ const Domains = () => {
           </div>
 
           {/* Trust row */}
-          <div className="mt-10 flex flex-wrap justify-center gap-8 text-slate-400 text-sm">
-            <div className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-green-400" /> Instant Activation</div>
-            <div className="flex items-center gap-2"><Shield className="w-4 h-4 text-blue-400" /> Whois Privacy Available</div>
-            <div className="flex items-center gap-2"><Zap className="w-4 h-4 text-yellow-400" /> Free DNS Management</div>
+          <div className="mt-10 flex flex-wrap justify-center gap-6 text-slate-400 text-sm">
+            <span className="flex items-center gap-2"><CheckCircle className="w-4 h-4 text-green-400" /> Instant Activation</span>
+            <span className="flex items-center gap-2"><Shield className="w-4 h-4 text-blue-400" /> Whois Privacy Available</span>
+            <span className="flex items-center gap-2"><Zap className="w-4 h-4 text-yellow-400" /> Free DNS Management</span>
           </div>
         </div>
       </div>
 
-      {/* Full Pricing Table */}
-      <Section>
+      {/* ── Quick Services ─────────────────────────────────────── */}
+      <Section background="gray">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {[
+            { icon: Globe, color: 'bg-blue-100 text-blue-600', title: 'Register a Domain', desc: 'Secure your brand name with instant domain registration. SA and international TLDs from R99/yr.', to: '/domains/registration', cta: 'Register Now' },
+            { icon: RefreshCw, color: 'bg-green-100 text-green-600', title: 'Transfer Your Domain', desc: 'Move your existing domain to Website365. Free 1-year extension on most TLDs, zero downtime.', to: '/domains/transfer', cta: 'Start Transfer' },
+            { icon: Search, color: 'bg-purple-100 text-purple-600', title: 'Domain Reseller', desc: 'Sell domains under your brand. Wholesale pricing on 100+ TLDs with full API access.', to: '/domains/reseller', cta: 'Become a Reseller' },
+          ].map(({ icon: Icon, color, title, desc, to, cta }) => (
+            <div key={title} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 hover:shadow-md hover:-translate-y-0.5 transition-all">
+              <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-4 ${color}`}><Icon className="w-5 h-5" /></div>
+              <h3 className="text-base font-extrabold text-gray-900 mb-2">{title}</h3>
+              <p className="text-sm text-gray-500 leading-relaxed mb-4">{desc}</p>
+              <Link to={to} className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-800 text-sm font-semibold">
+                {cta} <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* ── Full Pricing Table ─────────────────────────────────── */}
+      <Section id="pricing">
         <div className="text-center mb-10">
-          <h2 className="text-3xl font-bold text-slate-900">Domain Pricing</h2>
-          <p className="mt-2 text-slate-500">All prices in South African Rand (ZAR), per year including VAT</p>
+          <h2 className="text-3xl font-extrabold text-slate-900 mb-2">Domain Pricing</h2>
+          <p className="text-slate-500">All prices in South African Rand (ZAR), per year including VAT</p>
         </div>
 
         <div className="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
@@ -272,34 +283,21 @@ const Domains = () => {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <span className="font-semibold text-slate-800">{label}</span>
-                        {popular && (
-                          <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">Popular</span>
-                        )}
+                        {popular && <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">Popular</span>}
                       </div>
                     </td>
                     <td className="px-6 py-4 text-right font-semibold text-slate-900">
-                      {pricing.status === 'loading'
-                        ? <span className="inline-block w-16 h-4 bg-slate-200 rounded animate-pulse" />
-                        : (formatZar(p?.register) ?? <span className="text-slate-400">—</span>)}
+                      {pricing.status === 'loading' ? <span className="inline-block w-16 h-4 bg-slate-200 rounded animate-pulse" /> : (formatZar(p?.register) ?? <span className="text-slate-400">—</span>)}
                     </td>
                     <td className="px-6 py-4 text-right text-slate-600">
-                      {pricing.status === 'loading'
-                        ? <span className="inline-block w-16 h-4 bg-slate-200 rounded animate-pulse" />
-                        : (formatZar(p?.renew) ?? <span className="text-slate-400">—</span>)}
+                      {pricing.status === 'loading' ? <span className="inline-block w-16 h-4 bg-slate-200 rounded animate-pulse" /> : (formatZar(p?.renew) ?? <span className="text-slate-400">—</span>)}
                     </td>
                     <td className="px-6 py-4 text-right text-slate-600">
-                      {pricing.status === 'loading'
-                        ? <span className="inline-block w-16 h-4 bg-slate-200 rounded animate-pulse" />
-                        : (p?.transfer === 0 ? <span className="text-green-600 font-medium">Free</span> : (formatZar(p?.transfer) ?? <span className="text-slate-400">—</span>))}
+                      {pricing.status === 'loading' ? <span className="inline-block w-16 h-4 bg-slate-200 rounded animate-pulse" /> : (p?.transfer === 0 ? <span className="text-green-600 font-medium">Free</span> : (formatZar(p?.transfer) ?? <span className="text-slate-400">—</span>))}
                     </td>
                     <td className="px-6 py-4 text-center">
-                      <button
-                        onClick={() => {
-                          setQuery(`yourdomain.${tld}`);
-                          window.scrollTo({ top: 0, behavior: 'smooth' });
-                        }}
-                        className="text-blue-600 hover:text-blue-800 font-medium text-xs underline-offset-2 hover:underline transition-colors"
-                      >
+                      <button onClick={() => { setQuery(`yourdomain.${tld}`); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                        className="text-blue-600 hover:text-blue-800 font-medium text-xs underline-offset-2 hover:underline transition-colors">
                         Search
                       </button>
                     </td>
@@ -309,33 +307,34 @@ const Domains = () => {
             </tbody>
           </table>
         </div>
-
-        {pricing.status === 'error' && (
-          <p className="mt-4 text-center text-red-500 text-sm">{pricing.error}</p>
-        )}
+        {pricing.status === 'error' && <p className="mt-4 text-center text-red-500 text-sm">{pricing.error}</p>}
       </Section>
 
-      {/* Services */}
+      {/* ── Why Website365 ─────────────────────────────────────── */}
       <Section background="gray">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <Card
-            title="Register a New Domain"
-            description="Get your new website address today. Instant registration and full DNS control."
-            icon={Globe}
-            ctaText="Register Domain"
-            ctaLink="/domains/registration"
-          />
-          <Card
-            title="Transfer Your Domain"
-            description="Already have a domain? Move it to Website365 for better support and pricing."
-            icon={RefreshCw}
-            ctaText="Transfer Domain"
-            ctaLink="/domains/transfer"
-          />
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-extrabold text-gray-900 mb-4">Why Register with Website365?</h2>
+          <p className="text-gray-500 text-lg max-w-xl mx-auto">More than just a domain — everything you need to get online and stay there.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            { icon: Zap, color: 'bg-yellow-100 text-yellow-600', title: 'Instant Activation', desc: 'Domains go live within minutes of payment confirmation. No waiting.' },
+            { icon: Shield, color: 'bg-blue-100 text-blue-600', title: 'WHOIS Privacy', desc: 'Keep your personal details private in the public domain registry.' },
+            { icon: Lock, color: 'bg-green-100 text-green-600', title: 'Domain Lock', desc: 'Registrar lock protects against accidental or malicious transfers.' },
+            { icon: Globe, color: 'bg-purple-100 text-purple-600', title: 'Free DNS Management', desc: 'Full DNS control — point your domain to any host, anywhere in the world.' },
+            { icon: RefreshCw, color: 'bg-teal-100 text-teal-600', title: 'Auto-Renewal', desc: 'Never lose your domain. Enable auto-renewal and relax.' },
+            { icon: Headphones, color: 'bg-orange-100 text-orange-600', title: 'SA-Based Support', desc: 'Local experts available 24/7 to help with any domain question.' },
+          ].map(({ icon: Icon, color, title, desc }) => (
+            <div key={title} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md hover:-translate-y-0.5 transition-all">
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 ${color}`}><Icon className="w-5 h-5" /></div>
+              <h3 className="text-sm font-extrabold text-gray-900 mb-1">{title}</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
+            </div>
+          ))}
         </div>
       </Section>
 
-      {/* FAQ */}
+      {/* ── FAQ ────────────────────────────────────────────────── */}
       <Section>
         <FAQ items={[
           { question: 'How long does domain registration take?', answer: 'Domain registration is usually instant. Once payment is confirmed, your domain will be active immediately.' },

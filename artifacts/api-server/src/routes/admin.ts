@@ -133,4 +133,95 @@ router.get("/admin/stats", requireAdmin, async (_req: Request, res: Response) =>
   }
 });
 
+// ── Domain Pricing Management ─────────────────────────────────────────────────
+
+// GET /api/admin/domain-pricing — list all rows
+router.get("/admin/domain-pricing", requireAdmin, async (_req: Request, res: Response) => {
+  try {
+    const result = await pool.query(
+      "SELECT id, tld, register, renew, transfer, sort_order, enabled, updated_at FROM domain_pricing ORDER BY sort_order ASC, tld ASC"
+    );
+    res.json({ rows: result.rows });
+  } catch (err) {
+    console.error("[admin] domain-pricing list error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// PUT /api/admin/domain-pricing/:tld — update a row
+router.put("/admin/domain-pricing/:tld", requireAdmin, async (req: Request, res: Response) => {
+  const tld = req.params["tld"]?.trim().toLowerCase();
+  const { register, renew, transfer, enabled, sort_order } = req.body as {
+    register?: number; renew?: number; transfer?: number; enabled?: boolean; sort_order?: number;
+  };
+
+  if (!tld) { res.status(400).json({ error: "TLD required" }); return; }
+
+  try {
+    const sets: string[] = [];
+    const values: unknown[] = [];
+    let idx = 1;
+
+    if (register !== undefined) { sets.push(`register = $${idx++}`); values.push(Number(register)); }
+    if (renew !== undefined)    { sets.push(`renew = $${idx++}`);    values.push(Number(renew));    }
+    if (transfer !== undefined) { sets.push(`transfer = $${idx++}`); values.push(Number(transfer)); }
+    if (enabled !== undefined)  { sets.push(`enabled = $${idx++}`);  values.push(Boolean(enabled)); }
+    if (sort_order !== undefined) { sets.push(`sort_order = $${idx++}`); values.push(Number(sort_order)); }
+
+    if (sets.length === 0) { res.status(400).json({ error: "Nothing to update" }); return; }
+
+    sets.push(`updated_at = NOW()`);
+    values.push(tld);
+
+    const result = await pool.query(
+      `UPDATE domain_pricing SET ${sets.join(", ")} WHERE tld = $${idx} RETURNING *`,
+      values
+    );
+
+    if (result.rowCount === 0) { res.status(404).json({ error: "TLD not found" }); return; }
+    res.json({ row: result.rows[0] });
+  } catch (err) {
+    console.error("[admin] domain-pricing update error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// POST /api/admin/domain-pricing — add a new TLD
+router.post("/admin/domain-pricing", requireAdmin, async (req: Request, res: Response) => {
+  const { tld, register, renew, transfer, sort_order } = req.body as {
+    tld?: string; register?: number; renew?: number; transfer?: number; sort_order?: number;
+  };
+
+  const cleanTld = tld?.trim().toLowerCase().replace(/^\./, "");
+  if (!cleanTld) { res.status(400).json({ error: "TLD required" }); return; }
+
+  try {
+    const result = await pool.query(
+      `INSERT INTO domain_pricing (tld, register, renew, transfer, sort_order, enabled)
+       VALUES ($1, $2, $3, $4, $5, true)
+       ON CONFLICT (tld) DO UPDATE SET register=$2, renew=$3, transfer=$4, sort_order=$5, enabled=true, updated_at=NOW()
+       RETURNING *`,
+      [cleanTld, Number(register ?? 0), Number(renew ?? 0), Number(transfer ?? 0), Number(sort_order ?? 99)]
+    );
+    res.json({ row: result.rows[0] });
+  } catch (err) {
+    console.error("[admin] domain-pricing create error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// DELETE /api/admin/domain-pricing/:tld — remove a TLD
+router.delete("/admin/domain-pricing/:tld", requireAdmin, async (req: Request, res: Response) => {
+  const tld = req.params["tld"]?.trim().toLowerCase();
+  if (!tld) { res.status(400).json({ error: "TLD required" }); return; }
+
+  try {
+    await pool.query("DELETE FROM domain_pricing WHERE tld = $1", [tld]);
+    res.json({ success: true });
+  } catch (err) {
+    console.error("[admin] domain-pricing delete error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 export default router;
