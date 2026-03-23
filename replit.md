@@ -100,6 +100,16 @@ South African web hosting company website (Website365.co.za). React + Vite + Tai
 - Domain search: `GET /api/domain/check?domain=example.co.za` — DNS-based availability
 - Domain pricing: `GET /api/domain/pricing?tlds=co.za,com,...` — static ZAR pricing table
 - Form submissions stored in `form_submissions` table (PostgreSQL)
+- Email notifications sent via nodemailer on every form submission to info@website365.co.za
+
+#### Admin Panel
+
+- Login: `/admin` — dark-themed login page (no public navbar/footer)
+- Dashboard: `/admin/dashboard` — protected; redirects to `/admin` if unauthenticated
+- Auth: JWT stored in httpOnly cookie (`admin_token`), signed with `JWT_SECRET` env var, 8-hour expiry
+- Admin users stored in `admin_users` table; default user: `admin` / `Admin@365!`
+- Backend routes: `POST /api/admin/login`, `POST /api/admin/logout`, `GET /api/admin/me`, `GET /api/admin/submissions`, `GET /api/admin/stats`
+- Dashboard features: stats cards, submissions by form type, search/filter, pagination, click-to-view modal with Reply button
 
 ### `scripts` (`@workspace/scripts`)
 

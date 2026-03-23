@@ -2,6 +2,8 @@ import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-route
 import { useEffect } from 'react';
 import Layout from './components/Layout';
 import Home from './pages/Home';
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
 import Domains from './pages/Domains';
 import DomainRegistration from './pages/DomainRegistration';
 import DomainTransfer from './pages/DomainTransfer';
@@ -27,13 +29,11 @@ import ThankYou from './pages/ThankYou';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 
-// Scroll to top on route change
 const ScrollToTop = () => {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
     if (hash) {
-      // Small timeout to ensure content is rendered
       setTimeout(() => {
         const id = hash.replace('#', '');
         const element = document.getElementById(id);
@@ -49,41 +49,48 @@ const ScrollToTop = () => {
   return null;
 };
 
+const PublicSite = () => (
+  <Layout>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/domains" element={<Domains />} />
+      <Route path="/domains/registration" element={<DomainRegistration />} />
+      <Route path="/domains/transfer" element={<DomainTransfer />} />
+      <Route path="/domains/reseller" element={<DomainReseller />} />
+      <Route path="/hosting" element={<Hosting />} />
+      <Route path="/hosting/directadmin" element={<DirectAdmin />} />
+      <Route path="/hosting/cpanel" element={<CPanel />} />
+      <Route path="/hosting/reseller" element={<Reseller />} />
+      <Route path="/hosting/reseller/cpanel" element={<ResellerCPanel />} />
+      <Route path="/hosting/reseller/master" element={<ResellerMaster />} />
+      <Route path="/hosting/wordpress" element={<WordPressHosting />} />
+      <Route path="/servers" element={<Servers />} />
+      <Route path="/servers/vps" element={<VPSHosting />} />
+      <Route path="/hosting/email" element={<EmailHosting />} />
+      <Route path="/partners" element={<Partners />} />
+      <Route path="/contact" element={<Contact />} />
+      <Route path="/client-area" element={<div className="p-20 text-center text-2xl">Client Area Portal Placeholder</div>} />
+      <Route path="/web-design" element={<WebDesign />} />
+      <Route path="/web-design/website" element={<WebsiteDesign />} />
+      <Route path="/web-design/maintenance" element={<WebsiteMaintenance />} />
+      <Route path="/web-design/development" element={<Development />} />
+      <Route path="/web-design/ecommerce" element={<Ecommerce />} />
+      <Route path="/thank-you" element={<ThankYou />} />
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
+    </Routes>
+  </Layout>
+);
+
 function App() {
   return (
     <Router>
       <ScrollToTop />
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/domains" element={<Domains />} />
-          <Route path="/domains/registration" element={<DomainRegistration />} />
-          <Route path="/domains/transfer" element={<DomainTransfer />} />
-          <Route path="/domains/reseller" element={<DomainReseller />} />
-          <Route path="/hosting" element={<Hosting />} />
-          <Route path="/hosting/directadmin" element={<DirectAdmin />} />
-          <Route path="/hosting/cpanel" element={<CPanel />} />
-          <Route path="/hosting/reseller" element={<Reseller />} />
-          <Route path="/hosting/reseller/cpanel" element={<ResellerCPanel />} />
-          <Route path="/hosting/reseller/master" element={<ResellerMaster />} />
-          <Route path="/hosting/wordpress" element={<WordPressHosting />} />
-          <Route path="/servers" element={<Servers />} />
-          <Route path="/servers/vps" element={<VPSHosting />} />
-          <Route path="/hosting/email" element={<EmailHosting />} />
-          <Route path="/partners" element={<Partners />} />
-          <Route path="/contact" element={<Contact />} />
-          {/* Placeholders for links that might not have pages yet */}
-          <Route path="/client-area" element={<div className="p-20 text-center text-2xl">Client Area Portal Placeholder</div>} />
-          <Route path="/web-design" element={<WebDesign />} />
-          <Route path="/web-design/website" element={<WebsiteDesign />} />
-          <Route path="/web-design/maintenance" element={<WebsiteMaintenance />} />
-          <Route path="/web-design/development" element={<Development />} />
-          <Route path="/web-design/ecommerce" element={<Ecommerce />} />
-          <Route path="/thank-you" element={<ThankYou />} />
-          <Route path="/privacy" element={<Privacy />} />
-          <Route path="/terms" element={<Terms />} />
-        </Routes>
-      </Layout>
+      <Routes>
+        <Route path="/admin" element={<AdminLogin />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/*" element={<PublicSite />} />
+      </Routes>
     </Router>
   );
 }
