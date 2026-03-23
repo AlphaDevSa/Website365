@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Section from '../components/Section';
 import Button from '../components/Button';
-import { Mail, Phone, MapPin, Clock, MessageCircle, HelpCircle, ArrowRight, User, Settings, MessageSquare, ChevronRight } from 'lucide-react';
+import { Mail, Phone, MapPin, Clock, MessageCircle, HelpCircle, ArrowRight, User, Settings, MessageSquare, ChevronRight, AlertCircle } from 'lucide-react';
 import { submitForm } from '../utils/formSubmit';
 
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const Contact = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -25,6 +26,7 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError('');
     
     const submissionData = { 
       ...formData, 
@@ -38,7 +40,7 @@ const Contact = () => {
     if (result.success) {
       navigate('/thank-you');
     } else {
-      alert('Sorry, there was an error sending your message. Please try again later.');
+      setSubmitError('Sorry, there was an error sending your message. Please try again later.');
     }
   };
   return (
@@ -298,6 +300,12 @@ const Contact = () => {
                   ></textarea>
                 </div>
               </div>
+              {submitError && (
+                <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+                  <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                  <span>{submitError}</span>
+                </div>
+              )}
               <Button type="submit" disabled={isSubmitting} className="w-full py-4 font-bold text-lg rounded-xl shadow-lg shadow-blue-600/20">
                 {isSubmitting ? 'Sending...' : 'Send Message'}
               </Button>

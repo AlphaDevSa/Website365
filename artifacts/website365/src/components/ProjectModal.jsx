@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
+import { X, AlertCircle } from 'lucide-react';
 import { submitForm } from '../utils/formSubmit';
+import { useNavigate } from 'react-router-dom';
 
 const ProjectModal = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -22,6 +25,7 @@ const ProjectModal = ({ isOpen, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError('');
     
     const submissionData = { 
       ...formData, 
@@ -33,10 +37,10 @@ const ProjectModal = ({ isOpen, onClose }) => {
     setIsSubmitting(false);
     
     if (result.success) {
-      alert('Thank you! Your project request has been submitted successfully.');
       onClose();
+      navigate('/thank-you');
     } else {
-      alert('Sorry, there was an error submitting your request. Please try again later.');
+      setSubmitError('Sorry, there was an error submitting your request. Please try again later.');
     }
   };
 
@@ -153,6 +157,13 @@ const ProjectModal = ({ isOpen, onClose }) => {
                 className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all resize-none"
               ></textarea>
             </div>
+
+            {submitError && (
+              <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                <span>{submitError}</span>
+              </div>
+            )}
 
             <button
               type="submit"

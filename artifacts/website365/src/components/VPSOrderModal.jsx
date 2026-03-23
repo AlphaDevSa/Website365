@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Server, Terminal, CheckCircle2, ArrowRight } from 'lucide-react';
+import { X, Server, Terminal, CheckCircle2, ArrowRight, AlertCircle } from 'lucide-react';
 import { submitForm } from '../utils/formSubmit';
+import { useNavigate } from 'react-router-dom';
 
 const VPSOrderModal = ({ isOpen, onClose, plan }) => {
+  const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     surname: '',
@@ -23,6 +26,7 @@ const VPSOrderModal = ({ isOpen, onClose, plan }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError('');
     
     const submissionData = { 
       ...formData, 
@@ -36,10 +40,10 @@ const VPSOrderModal = ({ isOpen, onClose, plan }) => {
     setIsSubmitting(false);
     
     if (result.success) {
-      alert(`Thank you! Your order for ${plan.title} has been submitted successfully.`);
       onClose();
+      navigate('/thank-you');
     } else {
-      alert('Sorry, there was an error submitting your order. Please try again later.');
+      setSubmitError('Sorry, there was an error submitting your order. Please try again later.');
     }
   };
 
@@ -201,6 +205,13 @@ const VPSOrderModal = ({ isOpen, onClose, plan }) => {
                 <CheckCircle2 className="w-3 h-3" /> Pro-rata billing may apply depending on activation date.
               </p>
             </div>
+
+            {submitError && (
+              <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                <span>{submitError}</span>
+              </div>
+            )}
 
             <button
               type="submit"

@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2, Globe, Receipt, X, ChevronDown, ChevronUp, Server, LayoutGrid, Mail, Shield, Crown } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Globe, Receipt, X, ChevronDown, ChevronUp, Server, LayoutGrid, Mail, Shield, Crown, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { submitForm } from '../utils/formSubmit';
 
@@ -99,6 +99,7 @@ const DomainRegistrationOrderModal = ({
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [addHosting, setAddHosting] = useState(false);
   const [expandedCategory, setExpandedCategory] = useState('cpanel');
   const [hostingPlanId, setHostingPlanId] = useState('cpanel-starter');
@@ -165,6 +166,7 @@ const DomainRegistrationOrderModal = ({
     if (!domain) return;
 
     setIsSubmitting(true);
+    setSubmitError('');
 
     const payload = {
       ...formData,
@@ -194,7 +196,7 @@ const DomainRegistrationOrderModal = ({
       onClose();
       navigate('/thank-you');
     } else {
-      alert('Sorry, there was an error submitting your order. Please try again later.');
+      setSubmitError('Sorry, there was an error submitting your order. Please try again later.');
     }
   };
 
@@ -417,6 +419,12 @@ const DomainRegistrationOrderModal = ({
                 )}
               </div>
 
+              {submitError && (
+                <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+                  <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                  <span>{submitError}</span>
+                </div>
+              )}
               <button
                 type="submit"
                 disabled={isSubmitting}

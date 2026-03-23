@@ -6,7 +6,7 @@ import Testimonials from '../components/Testimonials';
 import CTASection from '../components/CTASection';
 import Button from '../components/Button';
 import SEO from '../components/SEO';
-import { Server, Globe, Monitor, Zap, Heart, Shield, CheckCircle, Search, User, Mail, Phone, MessageSquare, Settings, ArrowRight, Rocket, ChevronRight } from 'lucide-react';
+import { Server, Globe, Monitor, Zap, Heart, Shield, CheckCircle, Search, User, Mail, Phone, MessageSquare, Settings, ArrowRight, Rocket, ChevronRight, AlertCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import WebDesignModal from '../components/WebDesignModal';
 import LogoTicker from '../components/LogoTicker';
@@ -18,6 +18,7 @@ const Home = () => {
   const navigate = useNavigate();
   const [isWebDesignModalOpen, setIsWebDesignModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -34,6 +35,7 @@ const Home = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError('');
     
     const submissionData = { 
       ...formData, 
@@ -47,7 +49,7 @@ const Home = () => {
     if (result.success) {
       navigate('/thank-you');
     } else {
-      alert('Sorry, there was an error submitting your request. Please try again later.');
+      setSubmitError('Sorry, there was an error submitting your request. Please try again later.');
     }
   };
 
@@ -322,6 +324,12 @@ const Home = () => {
                   </div>
                 </div>
 
+                {submitError && (
+                  <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+                    <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                    <span>{submitError}</span>
+                  </div>
+                )}
                 <button 
                   type="submit" 
                   disabled={isSubmitting}

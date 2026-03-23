@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, ShoppingCart } from 'lucide-react';
+import { X, ShoppingCart, AlertCircle } from 'lucide-react';
 import { submitForm } from '../utils/formSubmit';
 
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 const EcommerceModal = ({ isOpen, onClose }) => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     surname: '',
@@ -30,6 +31,7 @@ const EcommerceModal = ({ isOpen, onClose }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError('');
     
     const submissionData = { 
       ...formData, 
@@ -44,7 +46,7 @@ const EcommerceModal = ({ isOpen, onClose }) => {
       onClose();
       navigate('/thank-you');
     } else {
-      alert('Sorry, there was an error submitting your request. Please try again later.');
+      setSubmitError('Sorry, there was an error submitting your request. Please try again later.');
     }
   };
 
@@ -226,6 +228,13 @@ const EcommerceModal = ({ isOpen, onClose }) => {
                 className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition-all resize-none"
               ></textarea>
             </div>
+
+            {submitError && (
+              <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+                <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                <span>{submitError}</span>
+              </div>
+            )}
 
             <button
               type="submit"

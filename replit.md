@@ -56,7 +56,7 @@ Express 5 API server. Routes live in `src/routes/` and use `@workspace/api-zod` 
 
 - Entry: `src/index.ts` — reads `PORT`, starts Express
 - App setup: `src/app.ts` — mounts CORS, JSON/urlencoded parsing, routes at `/api`
-- Routes: `src/routes/index.ts` mounts sub-routers; `src/routes/health.ts` exposes `GET /health` (full path: `/api/health`)
+- Routes: `src/routes/index.ts` mounts sub-routers; `src/routes/health.ts` exposes `GET /health`; `src/routes/domain.ts` exposes domain check/pricing; `src/routes/contact.ts` exposes `POST /contact` for all website forms
 - Depends on: `@workspace/db`, `@workspace/api-zod`
 - `pnpm --filter @workspace/api-server run dev` — run the dev server
 - `pnpm --filter @workspace/api-server run build` — production esbuild bundle (`dist/index.cjs`)
@@ -90,6 +90,16 @@ Generated Zod schemas from the OpenAPI spec (e.g. `HealthCheckResponse`). Used b
 ### `lib/api-client-react` (`@workspace/api-client-react`)
 
 Generated React Query hooks and fetch client from the OpenAPI spec (e.g. `useHealthCheck`, `healthCheck`).
+
+### `artifacts/website365` (`@workspace/website365`)
+
+South African web hosting company website (Website365.co.za). React + Vite + Tailwind CSS.
+
+- Pages: Home, Domains, Web Hosting (cPanel/DirectAdmin/Reseller), VPS Servers, Web Design, eCommerce, Partners, Contact, Thank-You
+- All forms POST to `POST /api/contact` on the Express API server; on success redirects to `/thank-you`
+- Domain search: `GET /api/domain/check?domain=example.co.za` — DNS-based availability
+- Domain pricing: `GET /api/domain/pricing?tlds=co.za,com,...` — static ZAR pricing table
+- Form submissions stored in `form_submissions` table (PostgreSQL)
 
 ### `scripts` (`@workspace/scripts`)
 

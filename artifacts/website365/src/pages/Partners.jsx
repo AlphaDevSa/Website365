@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Section from '../components/Section';
 import Button from '../components/Button';
-import { Users, Handshake, Globe, ArrowRight, Award, Zap, Shield, CheckCircle } from 'lucide-react';
+import { Users, Handshake, Globe, ArrowRight, Award, Zap, Shield, CheckCircle, AlertCircle } from 'lucide-react';
 import { submitForm } from '../utils/formSubmit';
 
 const partnerLogos = [
@@ -24,6 +24,7 @@ import { useNavigate } from 'react-router-dom';
 const Partners = () => {
   const navigate = useNavigate();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -43,6 +44,7 @@ const Partners = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setSubmitError('');
     
     const submissionData = { 
       ...formData, 
@@ -56,7 +58,7 @@ const Partners = () => {
     if (result.success) {
       navigate('/thank-you');
     } else {
-      alert('Sorry, there was an error submitting your application. Please try again later.');
+      setSubmitError('Sorry, there was an error submitting your application. Please try again later.');
     }
   };
   // Double the logos for seamless scrolling
@@ -370,6 +372,12 @@ const Partners = () => {
                 ></textarea>
                </div>
 
+               {submitError && (
+                 <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+                   <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                   <span>{submitError}</span>
+                 </div>
+               )}
                <Button 
                 type="submit" 
                 disabled={isSubmitting}

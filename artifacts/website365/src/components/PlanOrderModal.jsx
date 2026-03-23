@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2, Globe, Loader2, Receipt, X } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Globe, Loader2, Receipt, X, AlertCircle } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { submitForm } from '../utils/formSubmit';
 
@@ -38,6 +38,7 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const [billingCycle, setBillingCycle] = useState('monthly');
   const [domainAction, setDomainAction] = useState('register');
   const [domainCheck, setDomainCheck] = useState({ status: 'idle', result: null, error: '' });
@@ -168,6 +169,7 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
     if (!plan) return;
 
     setIsSubmitting(true);
+    setSubmitError('');
 
     const submissionData = {
       ...formData,
@@ -196,7 +198,7 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
       onClose();
       navigate('/thank-you');
     } else {
-      alert('Sorry, there was an error submitting your order. Please try again later.');
+      setSubmitError('Sorry, there was an error submitting your order. Please try again later.');
     }
   };
 
@@ -380,6 +382,12 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
                 </div>
               </div>
 
+              {submitError && (
+                <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
+                  <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />
+                  <span>{submitError}</span>
+                </div>
+              )}
               <button
                 type="submit"
                 disabled={isSubmitting}
