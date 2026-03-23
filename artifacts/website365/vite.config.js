@@ -32,7 +32,7 @@ export default defineConfig(({ mode }) => {
       allowedHosts: true,
     },
     build: {
-      outDir: 'dist',
+      outDir: 'dist/public',
     }
   };
 });
