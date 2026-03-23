@@ -416,15 +416,10 @@ const Layout = ({ children }) => {
 
               {/* Socials */}
               <div className="flex items-center gap-3">
-                <a href="https://www.facebook.com/website365" target="_blank" rel="noopener noreferrer"
+                <a href="https://www.facebook.com/website365.co.za" target="_blank" rel="noopener noreferrer"
                   className="w-9 h-9 rounded-lg bg-slate-800 hover:bg-blue-600 flex items-center justify-center text-slate-400 hover:text-white transition-all"
                   aria-label="Facebook">
                   <Facebook className="w-4 h-4" />
-                </a>
-                <a href="https://twitter.com/website365" target="_blank" rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-all"
-                  aria-label="X (Twitter)">
-                  <XIcon className="w-4 h-4" />
                 </a>
                 <a href="https://wa.me/27836000152" target="_blank" rel="noopener noreferrer"
                   className="w-9 h-9 rounded-lg bg-slate-800 hover:bg-green-600 flex items-center justify-center text-slate-400 hover:text-white transition-all"
