@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import {
   Menu, X, ChevronDown, Phone, Mail, Facebook, MapPin, MessageCircle,
   Server, Globe, Monitor, Zap, Shield, Users, Cpu, MailOpen, ShoppingCart,
-  RefreshCw, Package, ArrowRight, Clock, Heart, Lock, ExternalLink,
+  RefreshCw, Package, ArrowRight, Clock, Heart, ExternalLink,
 } from 'lucide-react';
 import SEO from './SEO';
 
@@ -145,10 +145,6 @@ const Layout = ({ children }) => {
             </a>
           </div>
           <div className="flex items-center gap-3">
-            <Link to="/client-area" className="text-slate-400 hover:text-white transition-colors text-xs font-medium">
-              Client Area
-            </Link>
-            <span className="text-slate-700">|</span>
             <a
               href="https://wa.me/27836000152"
               target="_blank"
@@ -499,7 +495,6 @@ const Layout = ({ children }) => {
                   { label: 'Home', to: '/' },
                   { label: 'Partner Program', to: '/partners' },
                   { label: 'Contact Us', to: '/contact' },
-                  { label: 'Client Area', to: '/client-area' },
                   { label: 'Privacy Policy', to: '/privacy' },
                   { label: 'Terms of Service', to: '/terms' },
                 ].map(({ label, to }) => (

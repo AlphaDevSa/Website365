@@ -70,7 +70,6 @@ const PublicSite = () => (
       <Route path="/hosting/email" element={<EmailHosting />} />
       <Route path="/partners" element={<Partners />} />
       <Route path="/contact" element={<Contact />} />
-      <Route path="/client-area" element={<div className="p-20 text-center text-2xl">Client Area Portal Placeholder</div>} />
       <Route path="/web-design" element={<WebDesign />} />
       <Route path="/web-design/website" element={<WebsiteDesign />} />
       <Route path="/web-design/maintenance" element={<WebsiteMaintenance />} />
