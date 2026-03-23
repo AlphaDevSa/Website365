@@ -1,23 +1,19 @@
 import { useState, useEffect, useRef } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Section from '../components/Section';
 import SEO from '../components/SEO';
-import { submitForm } from '../utils/formSubmit';
+import DomainTransferOrderModal from '../components/DomainTransferOrderModal';
 import {
-  CheckCircle, ArrowRight, RefreshCw, ShieldCheck, Zap, Lock,
-  Search, Loader2, XCircle, AlertCircle, Globe, X, User, Mail, Phone
+  CheckCircle, RefreshCw, ShieldCheck, Zap, Lock,
+  Search, Loader2, AlertCircle
 } from 'lucide-react';
 
 const DomainTransfer = () => {
   const location = useLocation();
-  const navigate = useNavigate();
 
   const [query, setQuery] = useState('');
   const [domainCheck, setDomainCheck] = useState({ status: 'idle', result: null, error: '' });
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState('');
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', authCode: '', notes: '' });
   const resultRef = useRef(null);
 
   // Pre-fill from ?domain= query param
@@ -49,36 +45,6 @@ const DomainTransfer = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitError('');
-    const payload = {
-      form_type: 'Domain Transfer Request',
-      domain: query.trim().toLowerCase(),
-      ...formData,
-    };
-    const result = await submitForm(payload, navigate);
-    if (result?.error) {
-      setSubmitError(result.error);
-      setIsSubmitting(false);
-    }
-  };
-
-  const field = (key, label, type = 'text', placeholder = '', required = true) => (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">{label}{required && <span className="text-red-500 ml-0.5">*</span>}</label>
-      <input
-        type={type}
-        value={formData[key]}
-        onChange={(e) => setFormData(f => ({ ...f, [key]: e.target.value }))}
-        placeholder={placeholder}
-        required={required}
-        className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-      />
-    </div>
-  );
-
   return (
     <>
       <SEO
@@ -86,62 +52,11 @@ const DomainTransfer = () => {
         description="Transfer your domain to Website365. Zero downtime, free 1-year extension on most TLDs, and local support."
       />
 
-      {/* Transfer Order Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setIsModalOpen(false)}>
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto" onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between p-6 border-b border-gray-100">
-              <div>
-                <h2 className="text-lg font-bold text-gray-900">Request Domain Transfer</h2>
-                <p className="text-sm text-blue-600 font-medium mt-0.5">{query.trim().toLowerCase()}</p>
-              </div>
-              <button onClick={() => setIsModalOpen(false)} className="text-gray-400 hover:text-gray-600 transition-colors">
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
-              <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 text-sm text-blue-700">
-                You'll need your Auth/EPP code from your current registrar to complete the transfer.
-              </div>
-
-              {field('name', 'Full Name', 'text', 'Jane Smith')}
-              {field('email', 'Email Address', 'email', 'jane@example.co.za')}
-              {field('phone', 'Phone / WhatsApp', 'tel', '+27 83 123 4567')}
-              {field('authCode', 'Auth / EPP Code', 'text', 'Provided by your current registrar', false)}
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Additional Notes</label>
-                <textarea
-                  value={formData.notes}
-                  onChange={(e) => setFormData(f => ({ ...f, notes: e.target.value }))}
-                  rows={3}
-                  placeholder="Any other details we should know…"
-                  className="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
-                />
-              </div>
-
-              {submitError && (
-                <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 rounded-lg px-3 py-2 text-sm">
-                  <AlertCircle className="w-4 h-4 shrink-0" /> {submitError}
-                </div>
-              )}
-
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold py-3 rounded-xl transition-colors flex items-center justify-center gap-2"
-              >
-                {isSubmitting ? <><Loader2 className="w-4 h-4 animate-spin" /> Submitting…</> : <>Submit Transfer Request <ArrowRight className="w-4 h-4" /></>}
-              </button>
-
-              <p className="text-xs text-gray-400 text-center">
-                Our team will contact you within 1 business day to complete the transfer.
-              </p>
-            </form>
-          </div>
-        </div>
-      )}
+      <DomainTransferOrderModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        domain={query.trim().toLowerCase()}
+      />
 
       {/* Hero */}
       <div className="relative bg-slate-900 overflow-hidden">
