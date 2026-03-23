@@ -1,0 +1,153 @@
+
+{
+  "/": {
+    "title": "Web Hosting, Domains & Web Design in South Africa | Website365",
+    "description": "Supercharge your online presence with Website365. We offer fast NVMe web hosting, affordable domain registration, and expert web design services in South Africa. Get started today!",
+    "keywords": "web hosting south africa, domain registration south africa, web design south africa, cpanel hosting za, wordpress hosting south africa, vps hosting south africa, business email hosting, website365",
+    "localSeoPrefixes": ["web hosting", "domain registration", "web design", "cpanel hosting", "wordpress hosting", "vps hosting", "reseller hosting", "business email hosting"]
+  },
+  "/domains": {
+    "title": "Domain Registration & Transfer | Website365",
+    "description": "Find and register your perfect domain name. We offer competitive pricing on .co.za, .com, .africa and more. Easy transfer process with zero downtime.",
+    "keywords": "domain registration, domain transfer, co.za domain registration, .com domain registration, .africa domain, south africa domains, register a domain name, cheap domains south africa, domain search za",
+    "localSeoPrefixes": ["domain registration", "domain transfer", "domain search"]
+  },
+  "/domains/registration": {
+    "title": "Instant Domain Registration | South Africa | Website365",
+    "description": "Secure your brand online with our fast and simple domain registration. Includes free DNS management and instant activation to get you online quicker.",
+    "keywords": "register domain south africa, instant domain registration, buy co.za domain, domain name search, za domain registration, affordable domain names, website365 domains",
+    "localSeoPrefixes": ["domain registration", "register domain"]
+  },
+  "/domains/transfer": {
+    "title": "Hassle-Free Domain Transfer | Website365",
+    "description": "Transfer your domain to Website365 effortlessly. We handle the process with zero downtime, and you get an extended renewal included with your transfer.",
+    "keywords": "domain transfer, transfer co.za domain, move domain to website365, hassle-free domain transfer, domain migration south africa, zero downtime domain transfer",
+    "localSeoPrefixes": ["domain transfer"]
+  },
+  "/domains/reseller": {
+    "title": "Domain Reseller Program | Start Your Own Domain Business | Website365",
+    "description": "Join our domain reseller program and start selling domains under your own brand. Get access to wholesale pricing and a powerful management portal.",
+    "keywords": "domain reseller, domain reseller program south africa, start domain business, wholesale domain pricing, white label domain reseller, co.za reseller",
+    "localSeoPrefixes": ["domain reseller", "domain reseller program"]
+  },
+  "/hosting": {
+    "title": "Fast & Secure Web Hosting in South Africa | Website365",
+    "description": "Experience superior performance with our South African web hosting. All plans include NVMe SSDs, a free SSL certificate, LiteSpeed, and 24/7 expert support.",
+    "keywords": "web hosting south africa, fast web hosting, secure hosting za, nvme web hosting, litespeed hosting south africa, shared hosting za, unlimited hosting south africa, reliable web hosting",
+    "localSeoPrefixes": ["web hosting"]
+  },
+  "/hosting/directadmin": {
+    "title": "Affordable DirectAdmin Hosting | Website365",
+    "description": "Get lightweight and powerful hosting with our DirectAdmin packages. An intuitive, fast control panel perfect for managing your websites efficiently.",
+    "keywords": "directadmin hosting, affordable directadmin hosting, directadmin control panel, fast directadmin za, lightweight hosting, directadmin vs cpanel",
+    "localSeoPrefixes": ["directadmin hosting"]
+  },
+  "/hosting/cpanel": {
+    "title": "Powerful cPanel Hosting in South Africa | Website365",
+    "description": "Choose the industry-leading cPanel for your web hosting. Manage your website, emails, databases, and more with a powerful and familiar interface.",
+    "keywords": "cpanel hosting south africa, cpanel web hosting, best cpanel hosting za, manage website with cpanel, whm cpanel hosting, affordable cpanel hosting",
+    "localSeoPrefixes": ["cpanel hosting"]
+  },
+  "/hosting/reseller": {
+    "title": "Start a Hosting Business | Reseller Hosting | Website365",
+    "description": "Launch your own web hosting company with our 100% white-label Reseller Hosting. Create custom packages and manage your clients with WHM.",
+    "keywords": "reseller hosting south africa, start web hosting business, white label reseller hosting, whm reseller hosting, hosting reseller plans za, best reseller hosting south africa",
+    "localSeoPrefixes": ["reseller hosting"]
+  },
+  "/hosting/reseller/cpanel": {
+    "title": "cPanel Reseller Hosting | WHM Access | Website365",
+    "description": "Our premium cPanel Reseller Hosting gives you the power to create and manage your own cPanel accounts. Perfect for designers and agencies.",
+    "keywords": "cpanel reseller hosting, whm access reseller, cpanel whm reseller za, manage multiple cpanel accounts, agency hosting south africa, white label cpanel reseller",
+    "localSeoPrefixes": ["cpanel reseller hosting", "whm reseller hosting"]
+  },
+  "/hosting/reseller/master": {
+    "title": "Master Reseller Hosting | Create Reseller Accounts | Website365",
+    "description": "Take your hosting business to the next level. Our Master Reseller Hosting lets you create and sell your own reseller hosting packages.",
+    "keywords": "master reseller hosting, whm master reseller, start a reseller hosting business, create reseller accounts, best master reseller hosting south africa, master reseller plans za",
+    "localSeoPrefixes": ["master reseller hosting"]
+  },
+  "/hosting/wordpress": {
+    "title": "Optimized WordPress Hosting in South Africa | Website365",
+    "description": "Get the best performance and security for your WordPress site. Our hosting is optimized with LiteSpeed caching, one-click installs, and automatic updates.",
+    "keywords": "wordpress hosting south africa, managed wordpress hosting, fast wordpress hosting za, wordpress litespeed, secure wordpress hosting, wordpress optimization south africa",
+    "localSeoPrefixes": ["wordpress hosting"]
+  },
+  "/servers": {
+    "title": "High-Performance VPS Hosting | KVM Servers | Website365",
+    "description": "Power your demanding applications with our high-performance KVM VPS solutions. Get guaranteed resources, root access, and scalable performance.",
+    "keywords": "vps hosting south africa, kvm vps za, high performance vps, virtual private server south africa, scalable vps hosting, root access vps za",
+    "localSeoPrefixes": ["vps hosting", "kvm vps"]
+  },
+  "/servers/vps": {
+    "title": "Scalable KVM VPS Hosting | SSD Storage | Website365",
+    "description": "Gain full control with our scalable KVM VPS Hosting. Featuring enterprise NVMe SSD storage, full root access, and guaranteed CPU & RAM resources.",
+    "keywords": "scalable vps south africa, kvm vps ssd, nvme vps hosting, linux vps south africa, windows vps za, cloud vps south africa",
+    "localSeoPrefixes": ["vps hosting", "kvm vps"]
+  },
+  "/hosting/email": {
+    "title": "Professional Business Email Hosting | Website365",
+    "description": "Enhance your brand with secure, reliable, and spam-free business email hosting. Get a professional email address on your own domain.",
+    "keywords": "business email hosting, professional email south africa, domain email hosting za, secure email hosting, spam free email, email for business south africa",
+    "localSeoPrefixes": ["business email hosting", "email hosting"]
+  },
+  "/partners": {
+    "title": "Website365 Partner & Affiliate Program | Earn Commission",
+    "description": "Join our Partner Program to earn recurring commissions. Ideal for web designers, developers, and agencies looking to add value for their clients.",
+    "keywords": "hosting affiliate program, web hosting partner south africa, earn commission hosting, referral program za, web designer partner program, affiliate marketing south africa",
+    "localSeoPrefixes": ["hosting affiliate program", "partner program"]
+  },
+  "/client-area": {
+    "title": "Client Area Login | Website365",
+    "description": "Securely access your Website365 client area to manage your domains, hosting services, billing, and support tickets.",
+    "keywords": "client area login, website365 login, manage hosting account, billing portal za, support tickets south africa",
+    "localSeoPrefixes": []
+  },
+  "/contact": {
+    "title": "Contact Us | 24/7 Support | Website365",
+    "description": "Get in touch with the Website365 team. We're here to help with sales, support, and any questions you may have. Reach out via phone, email, or live chat.",
+    "keywords": "contact website365, web hosting support south africa, sales inquiry za, customer service hosting, contact web design team",
+    "localSeoPrefixes": ["web hosting", "web design", "domain registration", "business email hosting", "vps hosting", "reseller hosting"]
+  },
+  "/web-design": {
+    "title": "Professional Web Design Services in South Africa | Website365",
+    "description": "We build beautiful, high-performance websites that drive growth. Our custom web design services focus on results, from lead generation to e-commerce sales.",
+    "keywords": "web design south africa, website design services za, professional web designer, custom website development, affordable web design south africa, modern web design za",
+    "localSeoPrefixes": ["web design", "website design"]
+  },
+  "/web-design/website": {
+    "title": "Custom Website Design | Responsive & Modern | Website365",
+    "description": "Get a custom website tailored to your brand. Our designs are responsive, modern, and optimized for user experience and conversions.",
+    "keywords": "custom website design, responsive web design south africa, modern website design za, ux design south africa, brand website design, business website development",
+    "localSeoPrefixes": ["website design", "web design"]
+  },
+  "/web-design/maintenance": {
+    "title": "Website Maintenance Packages | Security & Updates | Website365",
+    "description": "Keep your website performing at its best with our maintenance packages. We handle security, updates, backups, and performance optimization.",
+    "keywords": "website maintenance south africa, managed website services za, website security updates, monthly website maintenance, wordpress maintenance south africa",
+    "localSeoPrefixes": ["website maintenance", "website maintenance packages"]
+  },
+  "/web-design/development": {
+    "title": "Custom Web Development | React & Node.js | Website365",
+    "description": "Bring your ideas to life with our custom web development services. We specialize in modern technology stacks including React, Node.js, and more.",
+    "keywords": "custom web development south africa, react development za, node.js development, web application development, custom software solutions za, full stack developer south africa",
+    "localSeoPrefixes": ["web development", "custom web development", "react development"]
+  },
+  "/web-design/ecommerce": {
+    "title": "E-commerce Web Design | Build Your Online Store | Website365",
+    "description": "Launch a powerful online store with our expert e-commerce design services. We build on WooCommerce and custom platforms to meet your business needs.",
+    "keywords": "ecommerce web design south africa, online store builder za, woocommerce development south africa, sell online south africa, ecommerce website development za",
+    "localSeoPrefixes": ["ecommerce web design", "woocommerce development"]
+  },
+  "/privacy": {
+    "title": "Privacy Policy | Website365",
+    "description": "Read the official Website365 Privacy Policy to understand how we collect, handle, and protect your personal data and information.",
+    "keywords": "privacy policy, website365 privacy, data protection south africa, popia compliance za",
+    "localSeoPrefixes": []
+  },
+  "/terms": {
+    "title": "Terms of Service | Website365",
+    "description": "Review the Terms of Service for using Website365 products and services. This document outlines our mutual rights and responsibilities.",
+    "keywords": "terms of service, website365 terms, hosting agreement za, service terms south africa",
+    "localSeoPrefixes": []
+  }
+}
