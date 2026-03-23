@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Section from '../components/Section';
 import Card from '../components/Card';
+import MaintenanceOrderModal from '../components/MaintenanceOrderModal';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import {
@@ -9,6 +10,13 @@ import {
 } from 'lucide-react';
 
 const WebsiteMaintenance = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPlan, setSelectedPlan] = useState(null);
+
+  const openModal = (plan) => {
+    setSelectedPlan(plan);
+    setIsModalOpen(true);
+  };
   const features = [
     { icon: Shield,    bg: 'bg-red-50',     color: 'text-red-600',    label: 'Security Hardening',    desc: 'Outdated plugins are the #1 cause of hacks. We keep everything patched and locked.' },
     { icon: RefreshCw, bg: 'bg-blue-50',    color: 'text-blue-600',   label: 'Plugin & Theme Updates', desc: 'WordPress core, themes and plugins updated and tested every month.' },
@@ -20,6 +28,11 @@ const WebsiteMaintenance = () => {
 
   return (
     <>
+      <MaintenanceOrderModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        plan={selectedPlan}
+      />
       <SEO
         title="Website Maintenance Plans"
         description="Professional website maintenance packages to keep your site secure, updated, and running smoothly. Starting from R199/pm."
@@ -126,8 +139,8 @@ const WebsiteMaintenance = () => {
             price="R199"
             yearlyPrice="per month"
             description="Essential security and updates."
-            ctaText="Get Care Basic"
-            ctaLink="/contact?plan=care-basic"
+            ctaText="Order Care Basic"
+            ctaOnClick={() => openModal({ title: 'Care Basic', price: 'R199' })}
             features={[
               "Monthly WordPress core, theme and plugin updates",
               "Monthly backup verification",
@@ -141,8 +154,8 @@ const WebsiteMaintenance = () => {
             price="R399"
             yearlyPrice="per month"
             description="Perfect for growing businesses."
-            ctaText="Get Care Plus"
-            ctaLink="/contact?plan=care-plus"
+            ctaText="Order Care Plus"
+            ctaOnClick={() => openModal({ title: 'Care Plus', price: 'R399' })}
             popular={true}
             features={[
               "Everything in Care Basic",
@@ -156,8 +169,8 @@ const WebsiteMaintenance = () => {
             price="R699"
             yearlyPrice="per month"
             description="Comprehensive care for serious websites."
-            ctaText="Get Care Pro"
-            ctaLink="/contact?plan=care-pro"
+            ctaText="Order Care Pro"
+            ctaOnClick={() => openModal({ title: 'Care Pro', price: 'R699' })}
             features={[
               "Everything in Care Plus",
               "Up to 2.5 hours of content or small feature updates per month",
