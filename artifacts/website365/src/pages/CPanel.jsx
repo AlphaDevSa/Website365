@@ -179,11 +179,11 @@ const CPanel = () => {
           />
           <Card
             title="Enterprise"
-            price="R999"
+            price="R99"
             yearlyPrice="R10490 / year (12.5% discount)"
             description="Maximum resources for large sites."
             ctaText="Get Enterprise"
-            ctaOnClick={() => openOrderModal({ title: 'Enterprise', price: 'R999', yearlyPrice: 'R10490', billingPeriod: 'Monthly', category: 'cPanel Hosting' })}
+            ctaOnClick={() => openOrderModal({ title: 'Enterprise', price: 'R99', yearlyPrice: 'R10490', billingPeriod: 'Monthly', category: 'cPanel Hosting' })}
             features={[
               "Unlimited disk space",
               "Unlimited bandwidth",
