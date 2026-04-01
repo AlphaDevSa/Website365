@@ -156,11 +156,11 @@ const ResellerMaster = () => {
           />
           <Card
             title="Master Reseller 3"
-            price="R1295"
+            price="R99"
             yearlyPrice="R10400 / year (12.5% discount)"
             description="Maximum capacity for large enterprises."
             ctaText="Get Master Reseller 3"
-            ctaOnClick={() => openOrderModal({ title: 'Master Reseller 3', price: 'R1295', yearlyPrice: 'R10400', billingPeriod: 'Monthly', category: 'Master Reseller Hosting' })}
+            ctaOnClick={() => openOrderModal({ title: 'Master Reseller 3', price: 'R99', yearlyPrice: 'R10400', billingPeriod: 'Monthly', category: 'Master Reseller Hosting' })}
             features={[
               "500 WHM accounts",
               "5000 cPanel accounts",
