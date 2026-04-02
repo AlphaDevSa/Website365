@@ -4,7 +4,9 @@ import PlanOrderModal from '../components/PlanOrderModal';
 import { Link } from 'react-router-dom';
 import {
   Server, Cpu, Shield, ArrowRight, Zap, Database, Lock, Globe,
-  HardDrive, MapPin, Activity, Network, CheckCircle, Terminal
+  HardDrive, MapPin, Activity, Network, CheckCircle, Terminal,
+  Clock, RefreshCw, Wifi, LayoutDashboard, CloudCog, Headphones,
+  Building2, MonitorSmartphone
 } from 'lucide-react';
 
 const PLANS = [
@@ -276,6 +278,126 @@ const VDSHosting = () => {
                 <p className="font-bold text-gray-900 text-sm mb-1">{label}</p>
                 <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
               </div>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* ── Why Choose VDS ─────────────────────────────────────── */}
+      <Section>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">Why Choose Our VDS Servers?</h2>
+          <p className="text-gray-500 max-w-xl mx-auto">Monthly contract, monthly billing — cancel anytime. ZAR billing with regional payment options.</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            { icon: Cpu,           bg: 'bg-blue-50',   color: 'text-blue-600',   label: 'Dedicated Resources',              desc: 'CPU and RAM exclusively yours, just like with a physical server.' },
+            { icon: Zap,           bg: 'bg-yellow-50', color: 'text-yellow-600', label: 'Lightning-fast NVMe Enterprise Storage', desc: 'Already in RAID 10. All your storage is usable storage.' },
+            { icon: RefreshCw,     bg: 'bg-cyan-50',   color: 'text-cyan-600',   label: 'Simple Upgrade Flexibility',       desc: 'Scale between VDS tiers with a seamless upgrade path.' },
+            { icon: Wifi,          bg: 'bg-indigo-50', color: 'text-indigo-600', label: 'Superior VDS Bandwidth',           desc: '300 Mbps performance, built to handle heavy traffic.' },
+            { icon: Clock,         bg: 'bg-green-50',  color: 'text-green-600',  label: 'Instant Setup',                    desc: 'Get your server running in minutes with our automated provisioning.' },
+            { icon: LayoutDashboard,bg: 'bg-purple-50',color: 'text-purple-600', label: 'Modern Control Panel',            desc: 'Simple VNC console, SSH and full root access included.' },
+            { icon: CloudCog,      bg: 'bg-orange-50', color: 'text-orange-600', label: 'Backup Management',               desc: 'Optional backup add-on: simple, cost-effective, and self-managed. Handle full or incremental backups with restore on demand.' },
+          ].map(({ icon: Icon, bg, color, label, desc }) => (
+            <div key={label} className="rounded-2xl border border-gray-100 shadow-sm p-6 flex items-start gap-4 hover:shadow-md transition-shadow">
+              <div className={`w-10 h-10 rounded-xl ${bg} flex items-center justify-center ${color} shrink-0`}>
+                <Icon className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-bold text-gray-900 text-sm mb-1">{label}</p>
+                <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* ── The Website365 Difference ───────────────────────────── */}
+      <Section background="gray">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">The Website365 Difference</h2>
+          <p className="text-gray-500 max-w-xl mx-auto">Built for South African businesses, developers and domain resellers — with enterprise-grade infrastructure behind every server.</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 max-w-4xl mx-auto">
+          {[
+            {
+              icon: Shield,
+              bg: 'bg-red-50',
+              color: 'text-red-600',
+              label: 'Security',
+              desc: 'Your VDS is protected with DDoS mitigation, 24/7 monitoring, and housed in an ISO Accredited DataCenter.',
+            },
+            {
+              icon: Headphones,
+              bg: 'bg-blue-50',
+              color: 'text-blue-600',
+              label: 'Expert Support',
+              desc: 'Our specialists are available around-the-clock to assist with any technical issues or questions.',
+            },
+            {
+              icon: Building2,
+              bg: 'bg-green-50',
+              color: 'text-green-600',
+              label: 'Locally Hosted in a World-Class Data Center',
+              desc: 'Tier 3, ISO-accredited facility for enterprise-grade reliability — low-latency performance for South African users.',
+            },
+            {
+              icon: Globe,
+              bg: 'bg-indigo-50',
+              color: 'text-indigo-600',
+              label: 'Built for SA Businesses, Developers & Domain Resellers',
+              desc: 'Whether you\'re launching SaaS products, managing eCommerce platforms, or bundling hosting with .ZA domain sales — we\'ve got you covered.',
+            },
+          ].map(({ icon: Icon, bg, color, label, desc }) => (
+            <div key={label} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 flex items-start gap-4 hover:shadow-md transition-shadow">
+              <div className={`w-10 h-10 rounded-xl ${bg} flex items-center justify-center ${color} shrink-0`}>
+                <Icon className="w-5 h-5" />
+              </div>
+              <div>
+                <p className="font-bold text-gray-900 text-sm mb-1">{label}</p>
+                <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Section>
+
+      {/* ── OS Choice ───────────────────────────────────────────── */}
+      <Section>
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">Your Choice of Operating System</h2>
+          <p className="text-gray-500 max-w-xl mx-auto">Install the operating system of your choice. Many templates are available to suit your needs.</p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto">
+          {[
+            {
+              label: 'Ubuntu',
+              color: 'text-orange-600',
+              bg: 'bg-orange-50',
+              border: 'border-orange-100',
+              desc: 'A popular Linux distribution known for its user-friendliness and strong community support.',
+            },
+            {
+              label: 'Debian',
+              color: 'text-blue-600',
+              bg: 'bg-blue-50',
+              border: 'border-blue-100',
+              desc: 'A stable and reliable Linux distribution, well-known for its emphasis on free software and security.',
+            },
+            {
+              label: 'AlmaLinux',
+              color: 'text-indigo-600',
+              bg: 'bg-indigo-50',
+              border: 'border-indigo-100',
+              desc: 'A community-driven, open-source Linux distribution designed as a CentOS replacement, providing enterprise-grade stability.',
+            },
+          ].map(({ label, color, bg, border, desc }) => (
+            <div key={label} className={`rounded-2xl border ${border} shadow-sm p-6 text-center hover:shadow-md transition-shadow`}>
+              <div className={`w-12 h-12 rounded-2xl ${bg} flex items-center justify-center ${color} mx-auto mb-4`}>
+                <MonitorSmartphone className="w-6 h-6" />
+              </div>
+              <h3 className={`font-extrabold text-lg mb-2 ${color}`}>{label}</h3>
+              <p className="text-xs text-gray-500 leading-relaxed">{desc}</p>
             </div>
           ))}
         </div>

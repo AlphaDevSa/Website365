@@ -1,0 +1,61 @@
+Billing Options: Monthly Contract, Monthly Billing, Cancel Anytime. ZAR billing & regional payment options.
+
+Why Choose A Virtual Dedicated Server
+Why Choose Our VDS Servers?
+
+Dedicated Resources
+CPU and RAM exclusively yours, just like with a physical server.
+
+
+Lightning-fast NVMe Enterprise Grade Storage
+Already in RAID 10. All your storage is usable storage
+
+
+Simple Upgrade Flexibility
+Scale between VDS tiers with a seamless upgrade path.
+
+
+Superior VDS Bandwidth
+300 Mbps performance, built to handle heavy traffic
+
+
+Instant Setup
+Get your server running in minutes with our automated provisioning.
+
+
+Modern Control Panel
+Simple VNC console, SSH and full root access included.
+
+
+Backup Management
+Optional backup add‑on: simple, cost‑effective, and self‑managed. Handle full or incremental backups with restore on demand.
+
+The HOSTAFRICA Difference
+Security
+Your VDS is protected with DDoS mitigation, 24/7 monitoring, and housed in an ISO Accredited DataCenter.
+
+
+Built for South African Businesses, Developers & Domain Resellers
+Our locally hosted virtual servers are backed by enterprise-grade infrastructure designed to deliver low-latency performance and maximum uptime. Whether you’re launching Saas products, managing e Commerce platforms, or bundling hosting with .ZA domain sales.
+
+Expert Support
+Our specialists are available around-the-clock to assist with any technical issues or questions.
+
+
+Locally Hosted in a World-Class Data Center
+Tier 3, ISO-accredited facility for enterprise-grade reliability!
+
+website security
+website security
+Your Choice of Operating System
+OS Management
+Install the operating system of your choice. Many templates are available to suit your needs.
+
+Ubuntu
+A popular Linux distribution known for its user-friendliness and strong community support.
+
+Debian
+A stable and reliable Linux distribution, well-known for its emphasis on free software and security.
+
+AlmaLinux
+A community-driven, open-source Linux distribution designed as a CentOS replacement, providing enterprise-grade stability.
