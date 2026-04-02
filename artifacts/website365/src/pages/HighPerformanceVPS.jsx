@@ -84,58 +84,139 @@ const HighPerformanceVPS = () => {
       />
 
       {/* ── Hero ───────────────────────────────────────────────── */}
-      <div className="relative bg-slate-900 overflow-hidden py-16 lg:py-20">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-slate-900 via-slate-900 to-blue-900/25" />
-          <div className="absolute top-0 -left-4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse" />
-          <div className="absolute bottom-0 -right-4 w-72 h-72 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse delay-700" />
-          <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.04]" />
+      <div className="relative bg-[#050c1a] overflow-hidden">
+        {/* Background layers */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#050c1a] via-[#071428] to-[#0a1f3d]" />
+          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-cyan-500/8 rounded-full blur-[100px]" />
+          <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.03]" />
+          {/* Horizontal scan line */}
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/30 to-transparent" />
+          <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/30 border border-blue-500/30 text-blue-300 text-sm font-semibold mb-8 backdrop-blur-sm">
-            <Server className="w-4 h-4" />
-            High Performance VPS
-          </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
 
-          <h1 className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-6 leading-none">
-            Maximum Speed.<br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-              Unmatched Control.
-            </span>
-          </h1>
-
-          <p className="text-xl text-slate-300 max-w-2xl mx-auto mb-12 leading-relaxed">
-            High Performance VPS servers with ECC RAM, NVMe SSD storage, and unlimited traffic — scaled from entry-level to enterprise workloads.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <a
-              href="#plans"
-              className="inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-lg font-semibold bg-blue-600 hover:bg-blue-500 text-white shadow-lg hover:shadow-blue-500/25 transition-all"
-            >
-              View Plans <ArrowRight className="w-5 h-5" />
-            </a>
-            <Link
-              to="/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-lg font-semibold border border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white transition-all"
-            >
-              Talk to an Expert
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-            {[
-              { val: 'ECC RAM',    lab: 'Error-correcting Memory' },
-              { val: 'NVMe SSD',   lab: 'Ultra-fast Storage' },
-              { val: 'Unlimited',  lab: 'Traffic Included' },
-              { val: '9 Plans',    lab: 'One through Nine' },
-            ].map(({ val, lab }) => (
-              <div key={lab} className="bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3 text-center">
-                <p className="text-lg font-extrabold text-blue-400">{val}</p>
-                <p className="text-xs text-slate-400 mt-0.5">{lab}</p>
+            {/* ── Left: Copy ──────────────────────────────────────── */}
+            <div>
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-500/30 bg-blue-500/10 text-blue-300 text-xs font-bold tracking-widest uppercase mb-8 backdrop-blur-sm">
+                <span className="w-1.5 h-1.5 rounded-full bg-blue-400 animate-pulse" />
+                High Performance VPS · South Africa
               </div>
-            ))}
+
+              <h1 className="text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.05] tracking-tight mb-6">
+                Built for<br />
+                <span className="relative">
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500">
+                    Raw Speed.
+                  </span>
+                </span><br />
+                <span className="text-slate-300 text-4xl lg:text-5xl font-bold">Zero Compromise.</span>
+              </h1>
+
+              <p className="text-slate-400 text-lg leading-relaxed mb-10 max-w-lg">
+                ECC RAM that protects your data. NVMe SSD that never blinks. Unlimited traffic that never throttles.
+                Nine plans — from lean to dominant.
+              </p>
+
+              {/* Feature pills */}
+              <div className="flex flex-wrap gap-2 mb-10">
+                {['ECC RAM', 'NVMe SSD', 'KVM Isolated', 'Unlimited Traffic', 'Static IPv4', 'Full Root Access'].map((f) => (
+                  <span key={f} className="px-3 py-1 text-xs font-semibold rounded-full bg-slate-800/80 border border-slate-700/60 text-slate-300">
+                    {f}
+                  </span>
+                ))}
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a
+                  href="#plans"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl px-8 py-4 text-base font-bold bg-blue-600 hover:bg-blue-500 text-white shadow-xl shadow-blue-700/30 transition-all hover:shadow-blue-500/40 hover:-translate-y-0.5"
+                >
+                  See All Plans <ArrowRight className="w-5 h-5" />
+                </a>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl px-8 py-4 text-base font-semibold bg-slate-800/60 border border-slate-700/60 text-slate-300 hover:text-white hover:border-slate-500 transition-all"
+                >
+                  Talk to an Expert
+                </Link>
+              </div>
+            </div>
+
+            {/* ── Right: Server Metrics Panel ─────────────────────── */}
+            <div className="hidden lg:block">
+              <div className="relative">
+                {/* Glow behind panel */}
+                <div className="absolute inset-0 bg-blue-600/5 blur-2xl rounded-3xl scale-110" />
+
+                <div className="relative bg-slate-900/80 border border-slate-700/60 rounded-2xl p-6 backdrop-blur-md shadow-2xl">
+                  {/* Terminal header */}
+                  <div className="flex items-center gap-2 mb-5 pb-4 border-b border-slate-700/50">
+                    <div className="w-3 h-3 rounded-full bg-red-500/70" />
+                    <div className="w-3 h-3 rounded-full bg-yellow-500/70" />
+                    <div className="w-3 h-3 rounded-full bg-green-500/70" />
+                    <span className="ml-3 text-xs font-mono text-slate-500">server-metrics — bash</span>
+                    <span className="ml-auto flex items-center gap-1.5 text-xs text-green-400 font-mono">
+                      <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                      ONLINE
+                    </span>
+                  </div>
+
+                  {/* Metric rows */}
+                  <div className="space-y-4 font-mono text-sm mb-5">
+                    {[
+                      { label: 'CPU Usage',    val: '12%',   bar: 12,   color: 'bg-blue-500' },
+                      { label: 'RAM',          val: '3.1 / 8 GB', bar: 39, color: 'bg-cyan-500' },
+                      { label: 'Disk I/O',     val: '2.4 GB/s', bar: 80, color: 'bg-indigo-400' },
+                      { label: 'Network',      val: '450 Mbps', bar: 56,  color: 'bg-purple-500' },
+                      { label: 'Uptime',       val: '99.98%', bar: 100,  color: 'bg-green-500' },
+                    ].map(({ label, val, bar, color }) => (
+                      <div key={label}>
+                        <div className="flex justify-between text-xs mb-1">
+                          <span className="text-slate-400">{label}</span>
+                          <span className="text-slate-200 font-semibold">{val}</span>
+                        </div>
+                        <div className="h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                          <div className={`h-full ${color} rounded-full`} style={{ width: `${bar}%` }} />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Divider */}
+                  <div className="border-t border-slate-700/50 pt-4 mt-2">
+                    <div className="grid grid-cols-3 gap-3 text-center">
+                      {[
+                        { val: '< 1ms',   lab: 'Local Latency' },
+                        { val: 'NVMe',    lab: 'Storage Type' },
+                        { val: 'ECC',     lab: 'Memory Grade' },
+                      ].map(({ val, lab }) => (
+                        <div key={lab} className="bg-slate-800/80 rounded-xl p-3 border border-slate-700/40">
+                          <p className="text-blue-400 font-black text-base">{val}</p>
+                          <p className="text-slate-500 text-xs mt-0.5">{lab}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Plans count badge */}
+                  <div className="mt-4 flex items-center justify-between bg-blue-600/10 border border-blue-500/20 rounded-xl px-4 py-3">
+                    <div>
+                      <p className="text-white font-bold text-sm">9 Plans Available</p>
+                      <p className="text-blue-300 text-xs mt-0.5">VPS HP One → Nine · From R159/mo</p>
+                    </div>
+                    <a href="#plans" className="text-blue-400 hover:text-blue-300 transition-colors">
+                      <ArrowRight className="w-5 h-5" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
