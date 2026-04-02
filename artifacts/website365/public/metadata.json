@@ -84,6 +84,18 @@
     "keywords": "scalable vps south africa, kvm vps ssd, nvme vps hosting, linux vps south africa, windows vps za, cloud vps south africa",
     "localSeoPrefixes": ["vps hosting", "kvm vps"]
   },
+  "/servers/high-performance-vps": {
+    "title": "High Performance VPS Hosting South Africa | ECC RAM & NVMe | Website365",
+    "description": "Unlock blazing speed with our High Performance VPS plans. ECC RAM, NVMe SSD storage, unlimited traffic, and KVM isolation — 9 plans from R159/mo hosted in South Africa.",
+    "keywords": "high performance vps south africa, ecc ram vps, nvme vps hosting za, unlimited traffic vps, kvm vps south africa, fast vps hosting, hp vps plans za, vps hosting south africa",
+    "localSeoPrefixes": ["high performance vps", "vps hosting", "nvme vps", "kvm vps"]
+  },
+  "/servers/vds": {
+    "title": "Virtual Dedicated Servers (VDS) South Africa | Intel Xeon & RAID 10 NVMe | Website365",
+    "description": "Get dedicated Intel Xeon CPU cores, RAID 10 NVMe SSD storage, and fully isolated KVM virtualisation with our Premium Linux VDS plans — hosted in South Africa from R1,239/mo.",
+    "keywords": "vds hosting south africa, virtual dedicated server za, intel xeon vds, raid 10 nvme server, kvm vds south africa, dedicated server hosting za, linux vds plans, vds server south africa",
+    "localSeoPrefixes": ["virtual dedicated server", "vds hosting", "dedicated server"]
+  },
   "/hosting/email": {
     "title": "Professional Business Email Hosting | Website365",
     "description": "Enhance your brand with secure, reliable, and spam-free business email hosting. Get a professional email address on your own domain.",
