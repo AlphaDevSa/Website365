@@ -62,6 +62,7 @@ const NAV_ITEMS = [
     children: [
       { label: 'All Servers', to: '/servers', icon: Cpu, desc: 'Overview of server plans' },
       { label: 'VPS Hosting', to: '/servers/vps', icon: Cpu, desc: 'KVM VPS with full root access' },
+      { label: 'High Performance VPS', to: '/servers/high-performance-vps', icon: Zap, desc: 'ECC RAM, NVMe SSD, unlimited traffic' },
       { label: 'VDS Servers', to: '/servers/vds', icon: Server, desc: 'Dedicated resources, KVM virtualisation' },
     ],
   },
@@ -439,6 +440,7 @@ const Layout = ({ children }) => {
                   { label: 'cPanel Reseller', to: '/hosting/reseller/cpanel' },
                   { label: 'Master Reseller', to: '/hosting/reseller/master' },
                   { label: 'VPS Servers', to: '/servers/vps' },
+                  { label: 'High Performance VPS', to: '/servers/high-performance-vps' },
                   { label: 'VDS Servers', to: '/servers/vds' },
                 ].map(({ label, to }) => (
                   <li key={to}>

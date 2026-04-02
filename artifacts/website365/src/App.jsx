@@ -17,6 +17,7 @@ import ResellerMaster from './pages/ResellerMaster';
 import WordPressHosting from './pages/WordPressHosting';
 import VPSHosting from './pages/VPSHosting';
 import VDSHosting from './pages/VDSHosting';
+import HighPerformanceVPS from './pages/HighPerformanceVPS';
 import Servers from './pages/Servers';
 import EmailHosting from './pages/EmailHosting';
 import Partners from './pages/Partners';
@@ -68,6 +69,7 @@ const PublicSite = () => (
       <Route path="/hosting/wordpress" element={<WordPressHosting />} />
       <Route path="/servers" element={<Servers />} />
       <Route path="/servers/vps" element={<VPSHosting />} />
+      <Route path="/servers/high-performance-vps" element={<HighPerformanceVPS />} />
       <Route path="/servers/vds" element={<VDSHosting />} />
       <Route path="/hosting/email" element={<EmailHosting />} />
       <Route path="/partners" element={<Partners />} />
