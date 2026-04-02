@@ -49,8 +49,12 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
     email: '',
     tel: '',
     whatsapp: '',
-    domain: ''
+    domain: '',
+    hostname: '',
+    os: 'Ubuntu'
   });
+
+  const isVds = formType === 'VDS Server';
 
   const monthlyAmount = useMemo(() => parseZar(plan?.price), [plan?.price]);
   const yearlyAmount = useMemo(() => parseZar(plan?.yearlyPrice), [plan?.yearlyPrice]);
@@ -68,7 +72,9 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
       email: '',
       tel: '',
       whatsapp: '',
-      domain: ''
+      domain: '',
+      hostname: '',
+      os: 'Ubuntu'
     });
   }, [isOpen, plan?.title]);
 
@@ -174,7 +180,7 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
     const submissionData = {
       ...formData,
       billing_cycle: billingCycle,
-      domain_action: domainAction,
+      domain_action: isVds ? 'n/a' : domainAction,
       domain_check_status: domainCheck?.result?.status || '',
       domain_check_available: typeof domainCheck?.result?.available === 'boolean' ? String(domainCheck.result.available) : '',
       domain_check_transferable: typeof domainCheck?.result?.transferable === 'boolean' ? String(domainCheck.result.transferable) : '',
@@ -328,59 +334,92 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
                 </div>
               </div>
 
-              <div className="pt-2">
-                <div className="flex items-center gap-2 mb-2 text-gray-900 font-semibold">
-                  <Globe className="w-5 h-5 text-blue-600" />
-                  Domain
-                </div>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="sm:col-span-1 space-y-1">
-                    <label htmlFor="domainAction" className="text-sm font-medium text-gray-700">Action</label>
+              {isVds ? (
+                <div className="pt-2 space-y-4">
+                  <div className="flex items-center gap-2 mb-1 text-gray-900 font-semibold">
+                    <Globe className="w-5 h-5 text-blue-600" />
+                    Server Configuration
+                  </div>
+                  <div className="space-y-1">
+                    <label htmlFor="hostname" className="text-sm font-medium text-gray-700">Hostname <span className="text-gray-400 font-normal">(e.g. server.yourdomain.co.za)</span></label>
+                    <input
+                      type="text"
+                      id="hostname"
+                      value={formData.hostname}
+                      onChange={handleChange}
+                      placeholder="server.yourdomain.co.za"
+                      className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label htmlFor="os" className="text-sm font-medium text-gray-700">Operating System</label>
                     <select
-                      id="domainAction"
-                      value={domainAction}
-                      onChange={(e) => {
-                        setDomainAction(e.target.value);
-                        setDomainCheck({ status: 'idle', result: null, error: '' });
-                      }}
+                      id="os"
+                      value={formData.os}
+                      onChange={handleChange}
                       className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white"
                     >
-                      <option value="register">Register new</option>
-                      <option value="transfer">Transfer</option>
-                      <option value="existing">I already have one</option>
+                      <option value="Ubuntu">Ubuntu</option>
+                      <option value="Debian">Debian</option>
+                      <option value="AlmaLinux">AlmaLinux</option>
                     </select>
                   </div>
-                  <div className="sm:col-span-2 space-y-1">
-                    <label htmlFor="domain" className="text-sm font-medium text-gray-700">Domain Name</label>
-                    <div className="flex gap-3">
-                      <input
-                        type="text"
-                        id="domain"
-                        value={formData.domain}
-                        onChange={handleChange}
-                        placeholder="example.co.za"
-                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                      />
-                      {canCheckDomain ? (
-                        <button
-                          type="button"
-                          onClick={runDomainCheck}
-                          disabled={domainCheck.status === 'checking'}
-                          className={`px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors whitespace-nowrap flex items-center gap-2 ${domainCheck.status === 'checking' ? 'opacity-70 cursor-not-allowed' : ''}`}
-                        >
-                          {domainCheck.status === 'checking' ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
-                          Check
-                        </button>
+                </div>
+              ) : (
+                <div className="pt-2">
+                  <div className="flex items-center gap-2 mb-2 text-gray-900 font-semibold">
+                    <Globe className="w-5 h-5 text-blue-600" />
+                    Domain
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div className="sm:col-span-1 space-y-1">
+                      <label htmlFor="domainAction" className="text-sm font-medium text-gray-700">Action</label>
+                      <select
+                        id="domainAction"
+                        value={domainAction}
+                        onChange={(e) => {
+                          setDomainAction(e.target.value);
+                          setDomainCheck({ status: 'idle', result: null, error: '' });
+                        }}
+                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white"
+                      >
+                        <option value="register">Register new</option>
+                        <option value="transfer">Transfer</option>
+                        <option value="existing">I already have one</option>
+                      </select>
+                    </div>
+                    <div className="sm:col-span-2 space-y-1">
+                      <label htmlFor="domain" className="text-sm font-medium text-gray-700">Domain Name</label>
+                      <div className="flex gap-3">
+                        <input
+                          type="text"
+                          id="domain"
+                          value={formData.domain}
+                          onChange={handleChange}
+                          placeholder="example.co.za"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                        />
+                        {canCheckDomain ? (
+                          <button
+                            type="button"
+                            onClick={runDomainCheck}
+                            disabled={domainCheck.status === 'checking'}
+                            className={`px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold transition-colors whitespace-nowrap flex items-center gap-2 ${domainCheck.status === 'checking' ? 'opacity-70 cursor-not-allowed' : ''}`}
+                          >
+                            {domainCheck.status === 'checking' ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                            Check
+                          </button>
+                        ) : null}
+                      </div>
+                      {domainStatus.label ? (
+                        <div className={`mt-2 text-sm ${domainStatus.tone === 'success' ? 'text-green-600' : domainStatus.tone === 'error' ? 'text-red-600' : 'text-gray-500'}`}>
+                          {domainStatus.label}
+                        </div>
                       ) : null}
                     </div>
-                    {domainStatus.label ? (
-                      <div className={`mt-2 text-sm ${domainStatus.tone === 'success' ? 'text-green-600' : domainStatus.tone === 'error' ? 'text-red-600' : 'text-gray-500'}`}>
-                        {domainStatus.label}
-                      </div>
-                    ) : null}
                   </div>
                 </div>
-              </div>
+              )}
 
               {submitError && (
                 <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm">
@@ -413,27 +452,31 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
                     </span>
                   </div>
                   <div className="mt-4 pt-4 border-t border-gray-100">
-                    {domainAction !== 'existing' ? (
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-600">
-                          {domainAction === 'transfer' ? 'Domain transfer' : 'Domain registration'}
-                        </span>
-                        <span className="text-sm font-semibold text-gray-900">
-                          {domainCheck.status === 'done' && domainCheck.result?.pricing
-                            ? formatZar(domainCost)
-                            : 'Check domain'}
-                        </span>
-                      </div>
-                    ) : (
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-600">Domain</span>
-                        <span className="text-sm font-semibold text-gray-900">R0.00</span>
-                      </div>
+                    {!isVds && (
+                      domainAction !== 'existing' ? (
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-gray-600">
+                            {domainAction === 'transfer' ? 'Domain transfer' : 'Domain registration'}
+                          </span>
+                          <span className="text-sm font-semibold text-gray-900">
+                            {domainCheck.status === 'done' && domainCheck.result?.pricing
+                              ? formatZar(domainCost)
+                              : 'Check domain'}
+                          </span>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-gray-600">Domain</span>
+                          <span className="text-sm font-semibold text-gray-900">R0.00</span>
+                        </div>
+                      )
                     )}
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-semibold text-gray-700">Due now</span>
                       <span className="text-xl font-black text-blue-600">
-                        {formatZar(dueNowTotal)}
+                        {billingCycle === 'yearly'
+                          ? formatZar(yearlyAmount)
+                          : formatZar(isVds ? prorata?.dueNow ?? monthlyAmount : dueNowTotal)}
                       </span>
                     </div>
                     <div className="flex items-center justify-between mt-2">
