@@ -4,9 +4,12 @@ import { ArrowRight, CheckCircle2, Globe, Loader2, Receipt, X, AlertCircle } fro
 import { useNavigate } from 'react-router-dom';
 import { submitForm } from '../utils/formSubmit';
 
+const VDS_SETUP_FEE = 650;
+
 const parseZar = (value) => {
   if (!value) return null;
-  const match = String(value).match(/[\d.]+/);
+  const cleaned = String(value).replace(/,/g, '');
+  const match = cleaned.match(/[\d.]+/);
   if (!match) return null;
   const n = Number.parseFloat(match[0]);
   if (Number.isNaN(n)) return null;
@@ -29,8 +32,32 @@ const computeProRata = (monthlyAmount, now = new Date()) => {
   return {
     daysInMonth,
     remainingDays,
+    day,
     dueNow: Math.max(0, prorata),
     monthlyThereafter: monthlyAmount
+  };
+};
+
+const computeVdsDueNow = (monthlyAmount, now = new Date()) => {
+  if (monthlyAmount == null || Number.isNaN(monthlyAmount)) return null;
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const day = now.getDate();
+  const remainingDays = Math.max(0, daysInMonth - day + 1);
+  const prorataThisMonth = (monthlyAmount * remainingDays) / daysInMonth;
+  const includesNextMonth = day > 21;
+  const nextMonthCharge = includesNextMonth ? monthlyAmount : 0;
+  return {
+    day,
+    daysInMonth,
+    remainingDays,
+    prorataThisMonth,
+    includesNextMonth,
+    nextMonthCharge,
+    setupFee: VDS_SETUP_FEE,
+    dueNow: prorataThisMonth + nextMonthCharge + VDS_SETUP_FEE,
+    monthlyThereafter: monthlyAmount,
   };
 };
 
@@ -59,6 +86,7 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
   const monthlyAmount = useMemo(() => parseZar(plan?.price), [plan?.price]);
   const yearlyAmount = useMemo(() => parseZar(plan?.yearlyPrice), [plan?.yearlyPrice]);
   const prorata = useMemo(() => computeProRata(monthlyAmount), [monthlyAmount]);
+  const vdsBilling = useMemo(() => isVds ? computeVdsDueNow(monthlyAmount) : null, [isVds, monthlyAmount]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -194,7 +222,11 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
       form_type: formType,
       prorata_due_now: billingCycle === 'monthly' && prorata ? formatZar(prorata.dueNow) : '',
       monthly_thereafter: billingCycle === 'monthly' && prorata ? formatZar(prorata.monthlyThereafter) : '',
-      yearly_due_now: billingCycle === 'yearly' && yearlyAmount != null ? formatZar(yearlyAmount) : ''
+      yearly_due_now: billingCycle === 'yearly' && yearlyAmount != null ? formatZar(yearlyAmount) : '',
+      vds_prorata_this_month: vdsBilling ? formatZar(vdsBilling.prorataThisMonth) : '',
+      vds_next_month_advance: vdsBilling ? formatZar(vdsBilling.nextMonthCharge) : '',
+      vds_setup_fee: vdsBilling ? formatZar(vdsBilling.setupFee) : '',
+      vds_due_now_total: vdsBilling ? formatZar(vdsBilling.dueNow) : ''
     };
 
     const result = await submitForm(submissionData);
@@ -451,50 +483,85 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
                       {billingCycle === 'yearly' ? (plan.yearlyPrice || formatZar(planCost)) : plan.price}
                     </span>
                   </div>
-                  <div className="mt-4 pt-4 border-t border-gray-100">
-                    {!isVds && (
-                      domainAction !== 'existing' ? (
+                  <div className="mt-4 pt-4 border-t border-gray-100 space-y-2">
+                    {isVds && vdsBilling ? (
+                      <>
                         <div className="flex items-center justify-between">
+                          <span className="text-sm text-gray-600">
+                            Pro-rata ({vdsBilling.remainingDays} of {vdsBilling.daysInMonth} days)
+                          </span>
+                          <span className="text-sm font-semibold text-gray-900">{formatZar(vdsBilling.prorataThisMonth)}</span>
+                        </div>
+                        {vdsBilling.includesNextMonth && (
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm text-gray-600">Next month (in advance)</span>
+                            <span className="text-sm font-semibold text-gray-900">{formatZar(vdsBilling.nextMonthCharge)}</span>
+                          </div>
+                        )}
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-gray-600">Setup fee (once-off)</span>
+                          <span className="text-sm font-semibold text-gray-900">{formatZar(vdsBilling.setupFee)}</span>
+                        </div>
+                        <div className="flex items-center justify-between pt-2 border-t border-gray-100">
+                          <span className="text-sm font-semibold text-gray-700">Due now</span>
+                          <span className="text-xl font-black text-blue-600">{formatZar(vdsBilling.dueNow)}</span>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-gray-600">Monthly thereafter</span>
+                          <span className="text-sm font-semibold text-gray-900">{formatZar(vdsBilling.monthlyThereafter)}</span>
+                        </div>
+                        <div className="mt-2 text-xs text-gray-500 flex items-start gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
+                          {vdsBilling.includesNextMonth
+                            ? 'Orders placed after the 21st are billed pro-rata for the remainder of this month plus the following month in advance.'
+                            : 'Pro-rata is calculated based on days remaining this month.'}
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        {!isVds && (
+                          domainAction !== 'existing' ? (
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm font-medium text-gray-600">
+                                {domainAction === 'transfer' ? 'Domain transfer' : 'Domain registration'}
+                              </span>
+                              <span className="text-sm font-semibold text-gray-900">
+                                {domainCheck.status === 'done' && domainCheck.result?.pricing
+                                  ? formatZar(domainCost)
+                                  : 'Check domain'}
+                              </span>
+                            </div>
+                          ) : (
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm font-medium text-gray-600">Domain</span>
+                              <span className="text-sm font-semibold text-gray-900">R0.00</span>
+                            </div>
+                          )
+                        )}
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-semibold text-gray-700">Due now</span>
+                          <span className="text-xl font-black text-blue-600">
+                            {billingCycle === 'yearly' ? formatZar(yearlyAmount) : formatZar(dueNowTotal)}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between mt-2">
                           <span className="text-sm font-medium text-gray-600">
-                            {domainAction === 'transfer' ? 'Domain transfer' : 'Domain registration'}
+                            {billingCycle === 'yearly' ? 'Yearly thereafter' : 'Monthly thereafter'}
                           </span>
                           <span className="text-sm font-semibold text-gray-900">
-                            {domainCheck.status === 'done' && domainCheck.result?.pricing
-                              ? formatZar(domainCost)
-                              : 'Check domain'}
+                            {billingCycle === 'yearly'
+                              ? (yearlyAmount != null ? formatZar(yearlyAmount) : (plan.yearlyPrice || ''))
+                              : (prorata ? formatZar(prorata.monthlyThereafter) : plan.price)}
                           </span>
                         </div>
-                      ) : (
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium text-gray-600">Domain</span>
-                          <span className="text-sm font-semibold text-gray-900">R0.00</span>
-                        </div>
-                      )
+                        {billingCycle === 'monthly' && (
+                          <div className="mt-3 text-xs text-gray-500 flex items-center gap-2">
+                            <CheckCircle2 className="w-4 h-4 text-green-500" />
+                            Pro-rata is calculated based on days remaining this month.
+                          </div>
+                        )}
+                      </>
                     )}
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm font-semibold text-gray-700">Due now</span>
-                      <span className="text-xl font-black text-blue-600">
-                        {billingCycle === 'yearly'
-                          ? formatZar(yearlyAmount)
-                          : formatZar(isVds ? prorata?.dueNow ?? monthlyAmount : dueNowTotal)}
-                      </span>
-                    </div>
-                    <div className="flex items-center justify-between mt-2">
-                      <span className="text-sm font-medium text-gray-600">
-                        {billingCycle === 'yearly' ? 'Yearly thereafter' : 'Monthly thereafter'}
-                      </span>
-                      <span className="text-sm font-semibold text-gray-900">
-                        {billingCycle === 'yearly'
-                          ? (yearlyAmount != null ? formatZar(yearlyAmount) : (plan.yearlyPrice || ''))
-                          : (prorata ? formatZar(prorata.monthlyThereafter) : plan.price)}
-                      </span>
-                    </div>
-                    {billingCycle === 'monthly' ? (
-                      <div className="mt-3 text-xs text-gray-500 flex items-center gap-2">
-                        <CheckCircle2 className="w-4 h-4 text-green-500" />
-                        Pro-rata is calculated based on days remaining this month.
-                      </div>
-                    ) : null}
                   </div>
                 </div>
 
