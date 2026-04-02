@@ -10,48 +10,48 @@ import {
 const PLANS = [
   {
     name: 'C1 Server',
-    price: 'R156',
+    price: 'R159',
     features: ['1 CPU vCore', '1GB ECC RAM', '20GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
   {
     name: 'C2 Server',
-    price: 'R258',
+    price: 'R259',
     features: ['1 CPU vCore', '2GB ECC RAM', '50GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
   {
     name: 'C3 Server',
-    price: 'R360',
+    price: 'R359',
     features: ['2 CPU vCore', '2GB ECC RAM', '80GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
   {
     name: 'C4 Server',
-    price: 'R516',
+    price: 'R519',
     popular: true,
     features: ['2 CPU vCore', '4GB ECC RAM', '100GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
   {
     name: 'C5 Server',
-    price: 'R1,032',
+    price: 'R1,029',
     features: ['4 CPU vCore', '8GB ECC RAM', '200GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
   {
     name: 'C6 Server',
-    price: 'R1,548',
+    price: 'R1,549',
     features: ['6 CPU vCore', '12GB ECC RAM', '300GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
   {
     name: 'C7 Server',
-    price: 'R2,064',
+    price: 'R2,069',
     features: ['8 CPU vCore', '16GB ECC RAM', '400GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
   {
     name: 'C8 Server',
-    price: 'R3,504',
+    price: 'R3,509',
     features: ['12 CPU vCore', '32GB ECC RAM', '500GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
   {
     name: 'C9 Server',
-    price: 'R5,880',
+    price: 'R5,879',
     features: ['16 CPU vCore', '64GB ECC RAM', '500GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
 ];

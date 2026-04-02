@@ -12,7 +12,7 @@ import {
 const PLANS = [
   {
     name: 'Premium Linux VDS S',
-    price: 'R1,242',
+    price: 'R1,239',
     cpu: '3 Dedicated Intel Xeon CPU',
     ram: '24 GB RAM',
     storage: '450 GB NVMe SSD',
@@ -34,7 +34,7 @@ const PLANS = [
   },
   {
     name: 'Premium Linux VDS M',
-    price: 'R1,656',
+    price: 'R1,659',
     cpu: '4 Dedicated Intel Xeon CPU',
     ram: '32 GB RAM',
     storage: '600 GB NVMe SSD',
@@ -57,7 +57,7 @@ const PLANS = [
   },
   {
     name: 'Premium Linux VDS L',
-    price: 'R2,484',
+    price: 'R2,489',
     cpu: '6 Dedicated Intel Xeon CPU',
     ram: '48 GB RAM',
     storage: '900 GB NVMe SSD',
@@ -79,7 +79,7 @@ const PLANS = [
   },
   {
     name: 'Premium Linux VDS XL',
-    price: 'R3,312',
+    price: 'R3,309',
     cpu: '8 Dedicated Intel Xeon CPU',
     ram: '64 GB RAM',
     storage: '1200 GB NVMe SSD',
@@ -101,7 +101,7 @@ const PLANS = [
   },
   {
     name: 'Premium Linux VDS XXL',
-    price: 'R4,968',
+    price: 'R4,969',
     cpu: '12 Dedicated Intel Xeon CPU',
     ram: '96 GB RAM',
     storage: '1800 GB NVMe SSD',
