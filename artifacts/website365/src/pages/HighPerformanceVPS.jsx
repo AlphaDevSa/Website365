@@ -9,48 +9,48 @@ import {
 
 const PLANS = [
   {
-    name: 'C1 Server',
+    name: 'VPS HP One Server',
     price: 'R159',
     features: ['1 CPU vCore', '1GB ECC RAM', '20GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
   {
-    name: 'C2 Server',
+    name: 'VPS HP Two Server',
     price: 'R259',
     features: ['1 CPU vCore', '2GB ECC RAM', '50GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
   {
-    name: 'C3 Server',
+    name: 'VPS HP Three Server',
     price: 'R359',
     features: ['2 CPU vCore', '2GB ECC RAM', '80GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
   {
-    name: 'C4 Server',
+    name: 'VPS HP Four Server',
     price: 'R519',
     popular: true,
     features: ['2 CPU vCore', '4GB ECC RAM', '100GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
   {
-    name: 'C5 Server',
+    name: 'VPS HP Five Server',
     price: 'R1,029',
     features: ['4 CPU vCore', '8GB ECC RAM', '200GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
   {
-    name: 'C6 Server',
+    name: 'VPS HP Six Server',
     price: 'R1,549',
     features: ['6 CPU vCore', '12GB ECC RAM', '300GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
   {
-    name: 'C7 Server',
+    name: 'VPS HP Seven Server',
     price: 'R2,069',
     features: ['8 CPU vCore', '16GB ECC RAM', '400GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
   {
-    name: 'C8 Server',
+    name: 'VPS HP Eight Server',
     price: 'R3,509',
     features: ['12 CPU vCore', '32GB ECC RAM', '500GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
   {
-    name: 'C9 Server',
+    name: 'VPS HP Nine Server',
     price: 'R5,879',
     features: ['16 CPU vCore', '64GB ECC RAM', '500GB NVMe SSD Storage', 'Unlimited Traffic', '1 Static IPv4 address', 'Ubuntu, Debian, AlmaLinux'],
   },
@@ -129,7 +129,7 @@ const HighPerformanceVPS = () => {
               { val: 'ECC RAM',    lab: 'Error-correcting Memory' },
               { val: 'NVMe SSD',   lab: 'Ultra-fast Storage' },
               { val: 'Unlimited',  lab: 'Traffic Included' },
-              { val: '9 Plans',    lab: 'From C1 to C9' },
+              { val: '9 Plans',    lab: 'One through Nine' },
             ].map(({ val, lab }) => (
               <div key={lab} className="bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3 text-center">
                 <p className="text-lg font-extrabold text-blue-400">{val}</p>
@@ -144,7 +144,7 @@ const HighPerformanceVPS = () => {
       <Section id="plans">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-3">High Performance VPS Plans</h2>
-          <p className="text-gray-500 max-w-xl mx-auto">From C1 to C9 — choose the right power level for your application. All plans include ECC RAM, NVMe SSD storage, and unlimited traffic.</p>
+          <p className="text-gray-500 max-w-xl mx-auto">From VPS HP One to Nine — choose the right power level for your application. All plans include ECC RAM, NVMe SSD storage, and unlimited traffic.</p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
