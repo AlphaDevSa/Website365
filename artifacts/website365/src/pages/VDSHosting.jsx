@@ -151,59 +151,159 @@ const VDSHosting = () => {
       />
 
       {/* ── Hero ───────────────────────────────────────────────── */}
-      <div className="relative bg-slate-900 overflow-hidden py-16 lg:py-20">
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-slate-900 via-slate-900 to-blue-900/25" />
-          <div className="absolute top-0 -left-4 w-72 h-72 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse" />
-          <div className="absolute bottom-0 -right-4 w-72 h-72 bg-cyan-500 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-pulse delay-700" />
-          <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.04]" />
+      <div className="relative bg-[#030d14] overflow-hidden">
+        {/* Background */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#030d14] via-[#051520] to-[#071e2e]" />
+          <div className="absolute top-0 right-1/3 w-[700px] h-[500px] bg-cyan-600/8 rounded-full blur-[140px]" />
+          <div className="absolute bottom-0 left-1/4 w-[500px] h-[400px] bg-teal-500/6 rounded-full blur-[100px]" />
+          {/* Vertical light bars */}
+          <div className="absolute top-0 left-[18%] w-px h-full bg-gradient-to-b from-transparent via-cyan-500/15 to-transparent" />
+          <div className="absolute top-0 right-[18%] w-px h-full bg-gradient-to-b from-transparent via-cyan-500/10 to-transparent" />
+          <div className="absolute inset-0 bg-[url('/grid-pattern.svg')] opacity-[0.025]" />
+          <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/25 to-transparent" />
+          <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/15 to-transparent" />
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/30 border border-blue-500/30 text-blue-300 text-sm font-semibold mb-8 backdrop-blur-sm">
-            <Server className="w-4 h-4" />
-            Virtual Dedicated Servers
-          </div>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
 
-          <h1 className="text-5xl md:text-7xl font-extrabold text-white tracking-tight mb-6 leading-none">
-            Dedicated Power.<br className="hidden md:block" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-              Virtual Flexibility.
-            </span>
-          </h1>
-
-          <p className="text-xl text-slate-300 max-w-2xl mx-auto mb-12 leading-relaxed">
-            Premium Linux VDS servers with dedicated Intel Xeon CPUs, massive NVMe storage and isolated KVM virtualisation — all hosted in South Africa.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-            <a
-              href="#plans"
-              className="inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-lg font-semibold bg-blue-600 hover:bg-blue-500 text-white shadow-lg hover:shadow-blue-500/25 transition-all"
-            >
-              View VDS Plans <ArrowRight className="w-5 h-5" />
-            </a>
-            <Link
-              to="/contact"
-              className="inline-flex items-center justify-center gap-2 rounded-full px-8 py-4 text-lg font-semibold border border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white transition-all"
-            >
-              Talk to an Expert
-            </Link>
-          </div>
-
-          {/* Stats bar */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
-            {[
-              { val: 'Intel Xeon', lab: 'Dedicated CPUs' },
-              { val: 'NVMe SSD',   lab: 'Ultra-fast Storage' },
-              { val: 'KVM',        lab: 'Isolated Virtualisation' },
-              { val: '99.9%',      lab: 'Uptime Guarantee' },
-            ].map(({ val, lab }) => (
-              <div key={lab} className="bg-slate-800/60 border border-slate-700/50 rounded-xl px-4 py-3 text-center">
-                <p className="text-lg font-extrabold text-blue-400">{val}</p>
-                <p className="text-xs text-slate-400 mt-0.5">{lab}</p>
+            {/* ── Left: Copy ─────────────────────────────────────── */}
+            <div>
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/8 text-cyan-300 text-xs font-bold tracking-widest uppercase mb-8">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                Virtual Dedicated Servers · SA Hosted
               </div>
-            ))}
+
+              <h1 className="text-5xl lg:text-6xl xl:text-7xl font-black text-white leading-[1.05] tracking-tight mb-6">
+                Your Resources.<br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-teal-300 to-cyan-400">
+                  Only Yours.
+                </span><br />
+                <span className="text-slate-400 text-3xl lg:text-4xl font-semibold">Dedicated Intel Xeon · KVM</span>
+              </h1>
+
+              <p className="text-slate-400 text-lg leading-relaxed mb-10 max-w-lg">
+                Unlike shared VPS, every VDS gives you physically partitioned CPU cores, ECC-grade NVMe storage in RAID 10, and a fully isolated KVM environment — no noisy neighbours, ever.
+              </p>
+
+              {/* Differentiator pills */}
+              <div className="flex flex-wrap gap-2 mb-10">
+                {['Dedicated Xeon Cores', 'RAID 10 NVMe', 'KVM Isolated', 'Static IPv4', 'Full Root Access', 'rDNS Control'].map((f) => (
+                  <span key={f} className="px-3 py-1 text-xs font-semibold rounded-full bg-slate-800/70 border border-slate-700/50 text-slate-300">
+                    {f}
+                  </span>
+                ))}
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4">
+                <a
+                  href="#plans"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl px-8 py-4 text-base font-bold bg-cyan-600 hover:bg-cyan-500 text-white shadow-xl shadow-cyan-700/30 transition-all hover:shadow-cyan-500/40 hover:-translate-y-0.5"
+                >
+                  View VDS Plans <ArrowRight className="w-5 h-5" />
+                </a>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl px-8 py-4 text-base font-semibold bg-slate-800/60 border border-slate-700/60 text-slate-300 hover:text-white hover:border-slate-500 transition-all"
+                >
+                  Talk to an Expert
+                </Link>
+              </div>
+            </div>
+
+            {/* ── Right: Dedicated Resource Panel ────────────────── */}
+            <div className="hidden lg:block">
+              <div className="relative">
+                <div className="absolute inset-0 bg-cyan-600/5 blur-2xl rounded-3xl scale-110" />
+
+                <div className="relative bg-slate-900/80 border border-slate-700/50 rounded-2xl overflow-hidden shadow-2xl backdrop-blur-md">
+                  {/* Panel header */}
+                  <div className="flex items-center justify-between px-6 py-4 bg-slate-800/60 border-b border-slate-700/50">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-cyan-500/15 border border-cyan-500/30 flex items-center justify-center">
+                        <Cpu className="w-4 h-4 text-cyan-400" />
+                      </div>
+                      <div>
+                        <p className="text-white text-sm font-bold">Dedicated Resource Allocation</p>
+                        <p className="text-slate-500 text-xs">Premium Linux VDS · ISO Accredited DC</p>
+                      </div>
+                    </div>
+                    <span className="flex items-center gap-1.5 text-xs text-cyan-400 font-mono font-semibold">
+                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+                      DEDICATED
+                    </span>
+                  </div>
+
+                  {/* Resource blocks */}
+                  <div className="p-6 space-y-4">
+                    {/* CPU */}
+                    <div className="bg-slate-800/50 border border-slate-700/40 rounded-xl p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <Cpu className="w-4 h-4 text-cyan-400" />
+                          <span className="text-slate-300 text-sm font-semibold">Intel Xeon CPU</span>
+                        </div>
+                        <span className="text-xs bg-cyan-500/15 text-cyan-300 border border-cyan-500/25 px-2 py-0.5 rounded-full font-semibold">Dedicated</span>
+                      </div>
+                      <div className="grid grid-cols-5 gap-1.5">
+                        {Array.from({ length: 12 }).map((_, i) => (
+                          <div key={i} className={`h-6 rounded ${i < 8 ? 'bg-cyan-500/70' : 'bg-slate-700/60'} transition-all`} />
+                        ))}
+                      </div>
+                      <p className="text-slate-500 text-xs mt-2">3–12 dedicated cores · no sharing</p>
+                    </div>
+
+                    {/* RAM */}
+                    <div className="bg-slate-800/50 border border-slate-700/40 rounded-xl p-4">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-2">
+                          <HardDrive className="w-4 h-4 text-teal-400" />
+                          <span className="text-slate-300 text-sm font-semibold">NVMe SSD · RAID 10</span>
+                        </div>
+                        <span className="text-xs bg-teal-500/15 text-teal-300 border border-teal-500/25 px-2 py-0.5 rounded-full font-semibold">Usable</span>
+                      </div>
+                      <div className="flex gap-1.5 items-end h-8">
+                        {[40, 55, 70, 85, 100].map((h, i) => (
+                          <div key={i} className="flex-1 rounded-sm bg-teal-500/60" style={{ height: `${h}%` }} />
+                        ))}
+                        {[100, 85, 70, 55, 40].map((h, i) => (
+                          <div key={i + 5} className="flex-1 rounded-sm bg-teal-400/30" style={{ height: `${h}%` }} />
+                        ))}
+                      </div>
+                      <p className="text-slate-500 text-xs mt-2">450 GB → 1800 GB · all usable storage</p>
+                    </div>
+
+                    {/* KVM isolation badge */}
+                    <div className="grid grid-cols-3 gap-3">
+                      {[
+                        { icon: Shield,  color: 'text-green-400', bg: 'bg-green-500/10 border-green-500/20', label: 'KVM', sub: 'Isolated' },
+                        { icon: Globe,   color: 'text-blue-400',  bg: 'bg-blue-500/10 border-blue-500/20',   label: 'rDNS', sub: 'Full Control' },
+                        { icon: Network, color: 'text-purple-400',bg: 'bg-purple-500/10 border-purple-500/20',label: '300 Mbps', sub: 'Bandwidth' },
+                      ].map(({ icon: Icon, color, bg, label, sub }) => (
+                        <div key={label} className={`rounded-xl border ${bg} p-3 text-center`}>
+                          <Icon className={`w-4 h-4 ${color} mx-auto mb-1`} />
+                          <p className={`text-sm font-black ${color}`}>{label}</p>
+                          <p className="text-slate-500 text-xs">{sub}</p>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Footer */}
+                  <div className="flex items-center justify-between px-6 py-4 bg-slate-800/40 border-t border-slate-700/50">
+                    <div>
+                      <p className="text-white text-sm font-bold">5 Plans · S to XXL</p>
+                      <p className="text-slate-400 text-xs">From R1,239/mo · Monthly billing</p>
+                    </div>
+                    <a href="#plans" className="inline-flex items-center gap-1.5 text-xs font-bold text-cyan-400 hover:text-cyan-300 transition-colors">
+                      See Plans <ArrowRight className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
