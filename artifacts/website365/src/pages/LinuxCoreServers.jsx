@@ -6,7 +6,7 @@ import {
   Server, Cpu, Shield, ArrowRight, Zap, HardDrive,
   Network, CheckCircle, Globe, Lock, Activity, Database,
   MemoryStick, ChevronRight, ChevronDown, ChevronUp,
-  PackagePlus, MonitorDot, Layers
+  PackagePlus, MonitorDot, Layers, LayoutDashboard, MapPin
 } from 'lucide-react';
 
 const CPANEL_ACCOUNTS = [
@@ -354,6 +354,79 @@ const LinuxCoreServers = () => {
               <p className="text-gray-500 text-sm leading-relaxed">{desc}</p>
             </div>
           ))}
+        </div>
+      </Section>
+
+      {/* ── Managed Control Panel ─────────────────────────────── */}
+      <Section>
+        <div className="grid lg:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-100 text-blue-600 text-xs font-bold uppercase tracking-wider mb-5">
+              <LayoutDashboard className="w-3.5 h-3.5" />
+              Add-on Service
+            </div>
+            <h2 className="text-3xl font-extrabold text-gray-900 mb-4">Managed Control Panel</h2>
+            <p className="text-base text-blue-600 font-semibold mb-3">(cPanel / DirectAdmin)</p>
+            <p className="text-gray-500 leading-relaxed">
+              Let our expert team handle the heavy lifting while you focus on your business. With our managed server add-on, you get proactive OS and security updates, advanced backups, system monitoring, and priority support — all without the hassle. Root access is restricted to ensure stability and security, giving you peace of mind with every deployment.
+            </p>
+          </div>
+          <div className="bg-gray-50 rounded-2xl border border-gray-100 p-7">
+            <ul className="space-y-3">
+              {[
+                'OS updates',
+                'Security updates',
+                'Advanced backup',
+                'System monitoring',
+                'Priority support',
+                'No root access to managed servers',
+              ].map((item) => (
+                <li key={item} className="flex items-center gap-3">
+                  <div className="w-5 h-5 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+                    <CheckCircle className="w-3.5 h-3.5 text-green-600" />
+                  </div>
+                  <span className="text-gray-700 text-sm font-medium">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </Section>
+
+      {/* ── SA Local Servers ───────────────────────────────────── */}
+      <Section className="bg-gradient-to-br from-blue-900 via-blue-800 to-blue-900">
+        <div className="grid lg:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
+          <div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-blue-200 text-xs font-bold uppercase tracking-wider mb-5">
+              <MapPin className="w-3.5 h-3.5" />
+              South Africa
+            </div>
+            <h2 className="text-3xl font-extrabold text-white mb-4">Dedicated, Local Servers in South Africa</h2>
+            <p className="text-blue-100 leading-relaxed mb-4">
+              We're excited to expand our high-availability hosting infrastructure to better serve digital businesses across Africa. Whether you're hosting a startup platform, deploying a payment gateway, or building SaaS — you now get:
+            </p>
+            <p className="text-blue-200 text-sm italic">
+              Perfect for developers, eCommerce platforms, and registrars managing .ZA domain portfolios.
+            </p>
+          </div>
+          <div className="bg-white/8 rounded-2xl border border-white/15 p-7">
+            <ul className="space-y-3.5">
+              {[
+                'Ultra-low latency through data centers in South Africa',
+                'Local currency billing (ZAR)',
+                'Compliance with local data laws',
+                'Optimized connectivity for regional audiences',
+                'SA-based technical support team',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-3">
+                  <div className="w-5 h-5 rounded-full bg-green-400/20 flex items-center justify-center shrink-0 mt-0.5">
+                    <CheckCircle className="w-3.5 h-3.5 text-green-400" />
+                  </div>
+                  <span className="text-blue-100 text-sm font-medium leading-snug">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </Section>
 
