@@ -34,7 +34,7 @@ const CPANEL_ADDONS = [
 
 const PLANS = [
   {
-    name: 'Metal Core Linux 6',
+    name: 'Linux Core 1',
     price: 'R2,329',
     cores: '10 Core / 20 Threads',
     ram: '16 GB ECC RAM',
@@ -43,7 +43,7 @@ const PLANS = [
     popular: false,
   },
   {
-    name: 'Metal Core Linux 12',
+    name: 'Linux Core 2',
     price: 'R3,629',
     cores: '10 Core / 20 Threads',
     ram: '32 GB ECC RAM',
@@ -52,7 +52,7 @@ const PLANS = [
     popular: false,
   },
   {
-    name: 'Metal Core Linux 16',
+    name: 'Linux Core 3',
     price: 'R4,669',
     cores: '16 Core / 36 Threads',
     ram: '64 GB ECC RAM',
@@ -61,7 +61,7 @@ const PLANS = [
     popular: true,
   },
   {
-    name: 'Metal Core Linux 20',
+    name: 'Linux Core 4',
     price: 'R5,709',
     cores: '20 Core / 40 Threads',
     ram: '96 GB ECC RAM',
@@ -70,7 +70,7 @@ const PLANS = [
     popular: false,
   },
   {
-    name: 'Metal Core Linux 28',
+    name: 'Linux Core 5',
     price: 'R8,179',
     cores: '28 Core / 56 Threads',
     ram: '128 GB ECC RAM',
@@ -146,7 +146,7 @@ const LinuxCoreServers = () => {
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-blue-500">
                   Full Power.
                 </span><br />
-                <span className="text-slate-400 text-3xl lg:text-4xl font-semibold">Metal Core Linux Servers</span>
+                <span className="text-slate-400 text-3xl lg:text-4xl font-semibold">Linux Core Servers</span>
               </h1>
 
               <p className="text-slate-400 text-lg leading-relaxed mb-10 max-w-lg">
@@ -190,7 +190,7 @@ const LinuxCoreServers = () => {
                         <Server className="w-4 h-4 text-blue-400" />
                       </div>
                       <div>
-                        <p className="text-white text-sm font-bold">Metal Core Linux Server</p>
+                        <p className="text-white text-sm font-bold">Linux Core Server</p>
                         <p className="text-slate-500 text-xs">Dell Enterprise · ISO Accredited DC</p>
                       </div>
                     </div>
@@ -241,9 +241,9 @@ const LinuxCoreServers = () => {
       {/* ── Plans ──────────────────────────────────────────────── */}
       <Section id="plans">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-3">Metal Core Linux Plans</h2>
+          <h2 className="text-3xl font-bold text-gray-900 mb-3">Linux Core Plans</h2>
           <p className="text-gray-500 max-w-xl mx-auto">
-            Five dedicated server tiers — from an entry Linux 6 to the powerhouse Linux 28. All plans run on enterprise Dell hardware with ECC RAM and full root access.
+            Five dedicated server tiers — from the entry Linux Core 1 to the powerhouse Linux Core 5. All plans run on enterprise Dell hardware with ECC RAM and full root access.
           </p>
         </div>
 
@@ -313,7 +313,7 @@ const LinuxCoreServers = () => {
       <Section className="bg-gray-50">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-3">Why Choose a Dedicated Server?</h2>
-          <p className="text-gray-500 max-w-xl mx-auto">Every Metal Core Linux plan gives you the full server — no neighbours, no overcommitment, no limits.</p>
+          <p className="text-gray-500 max-w-xl mx-auto">Every Linux Core plan gives you the full server — no neighbours, no overcommitment, no limits.</p>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {FEATURES.map(({ icon: Icon, bg, color, label, desc }) => (
@@ -542,7 +542,7 @@ const LinuxCoreServers = () => {
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-950/40 to-slate-900" />
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
           <h2 className="text-3xl font-extrabold text-white mb-4">Ready for Bare Metal Performance?</h2>
-          <p className="text-slate-400 mb-8">Deploy your Metal Core Linux server today. Our team will have it online within one business day.</p>
+          <p className="text-slate-400 mb-8">Deploy your Linux Core server today. Our team will have it online within one business day.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="#plans"
