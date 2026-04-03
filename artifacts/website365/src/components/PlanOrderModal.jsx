@@ -229,10 +229,17 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
     return total;
   }, [isDedicated, addonRam, addonSsd, addonCpanel, addonSoftware, addonIp, addonVlan]);
 
+  const addonProRataDueNow = useMemo(() => {
+    if (!isDedicated || addonTotal === 0) return 0;
+    if (!prorata) return addonTotal;
+    return (addonTotal * prorata.remainingDays) / prorata.daysInMonth;
+  }, [isDedicated, addonTotal, prorata]);
+
   const dueNowTotal = useMemo(() => {
     const planPart = Number.isFinite(planDueNow) ? planDueNow : 0;
-    return planPart + domainCost + addonTotal;
-  }, [domainCost, planDueNow, addonTotal]);
+    if (isDedicated) return planPart + addonProRataDueNow;
+    return planPart + domainCost;
+  }, [domainCost, planDueNow, addonProRataDueNow, isDedicated]);
 
   const runDomainCheck = async () => {
     if (!canCheckDomain) return;
@@ -743,14 +750,61 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
                             : 'Pro-rata is calculated based on days remaining this month.'}
                         </div>
                       </>
-                    ) : (
+                    ) : isDedicated ? (
                       <>
-                        {isDedicated && addonTotal > 0 && (
+                        {/* Base plan row */}
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-gray-600">Base plan</span>
+                          <span className="text-sm font-semibold text-gray-900">{plan.price}/mo</span>
+                        </div>
+                        {prorata && (
                           <div className="flex items-center justify-between">
-                            <span className="text-sm font-medium text-gray-600">Add-ons</span>
-                            <span className="text-sm font-semibold text-gray-900">+{formatZar(addonTotal)}/mo</span>
+                            <span className="text-sm text-gray-500">
+                              Pro-rata ({prorata.remainingDays}/{prorata.daysInMonth} days)
+                            </span>
+                            <span className="text-sm font-semibold text-gray-700">{formatZar(prorata.dueNow)}</span>
                           </div>
                         )}
+
+                        {/* Add-ons rows */}
+                        {addonTotal > 0 && (
+                          <>
+                            <div className="flex items-center justify-between mt-1">
+                              <span className="text-sm text-gray-600">Add-ons</span>
+                              <span className="text-sm font-semibold text-gray-900">+{formatZar(addonTotal)}/mo</span>
+                            </div>
+                            {prorata && (
+                              <div className="flex items-center justify-between">
+                                <span className="text-sm text-gray-500">
+                                  Pro-rata ({prorata.remainingDays}/{prorata.daysInMonth} days)
+                                </span>
+                                <span className="text-sm font-semibold text-gray-700">{formatZar(addonProRataDueNow)}</span>
+                              </div>
+                            )}
+                          </>
+                        )}
+
+                        {/* Due now */}
+                        <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                          <span className="text-sm font-semibold text-gray-700">Due now</span>
+                          <span className="text-xl font-black text-blue-600">{formatZar(dueNowTotal)}</span>
+                        </div>
+
+                        {/* Monthly thereafter = base + add-ons */}
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm font-medium text-gray-600">Monthly thereafter</span>
+                          <span className="text-sm font-bold text-gray-900">
+                            {formatZar((monthlyAmount ?? 0) + addonTotal)}
+                          </span>
+                        </div>
+
+                        <div className="mt-3 text-xs text-gray-500 flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0" />
+                          Pro-rata based on remaining days this month. All add-ons billed monthly.
+                        </div>
+                      </>
+                    ) : (
+                      <>
                         {!isVds && !isDedicated && (
                           domainAction !== 'existing' ? (
                             <div className="flex items-center justify-between">
