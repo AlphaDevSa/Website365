@@ -5,8 +5,61 @@ import { Link } from 'react-router-dom';
 import {
   Server, Cpu, Shield, ArrowRight, Zap, HardDrive,
   Network, CheckCircle, Globe, Lock, Activity, Database,
-  MemoryStick, ChevronRight
+  MemoryStick, ChevronRight, ChevronDown, ChevronUp,
+  PackagePlus, MonitorDot, Layers
 } from 'lucide-react';
+
+const CPANEL_ACCOUNTS = [
+  { label: '1 cPanel Account',    price: 'R569/mo' },
+  { label: '100 cPanel Accounts', price: 'R1,399/mo' },
+  { label: '150 cPanel Accounts', price: 'R1,899/mo' },
+  { label: '200 cPanel Accounts', price: 'R2,399/mo' },
+  { label: '250 cPanel Accounts', price: 'R2,799/mo' },
+  { label: '300 cPanel Accounts', price: 'R3,299/mo' },
+  { label: '350 cPanel Accounts', price: 'R3,799/mo' },
+  { label: '400 cPanel Accounts', price: 'R4,299/mo' },
+  { label: '450 cPanel Accounts', price: 'R4,799/mo' },
+  { label: '500 cPanel Accounts', price: 'R5,199/mo' },
+];
+
+const CPANEL_ADDONS = [
+  { label: 'Softaculous',         price: 'R50/mo' },
+  { label: 'CloudLinux',          price: 'R299/mo' },
+  { label: 'LiteSpeed 8GB',       price: 'R499/mo' },
+  { label: 'LiteSpeed Unlimited', price: 'R899/mo' },
+  { label: 'Kernelcare',          price: 'R39/mo' },
+  { label: 'Imunify AV+',         price: 'R149/mo' },
+  { label: 'Imunify 360',         price: 'R469/mo' },
+];
+
+const AccordionPanel = ({ title, icon: Icon, children, defaultOpen = true }) => {
+  const [open, setOpen] = useState(defaultOpen);
+  return (
+    <div className="rounded-xl border border-slate-700/60 overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between px-5 py-3.5 bg-blue-600 hover:bg-blue-500 transition-colors"
+      >
+        <div className="flex items-center gap-2">
+          <Icon className="w-4 h-4 text-white/80" />
+          <span className="text-white font-bold text-sm">{title}</span>
+        </div>
+        {open ? <ChevronUp className="w-4 h-4 text-white/70" /> : <ChevronDown className="w-4 h-4 text-white/70" />}
+      </button>
+      {open && <div className="bg-[#0b1929] p-5">{children}</div>}
+    </div>
+  );
+};
+
+const PriceRow = ({ label, price, note }) => (
+  <div className="flex items-start justify-between py-2.5 border-b border-slate-700/40 last:border-0">
+    <div>
+      <p className="text-slate-200 text-sm">{label}</p>
+      {note && <p className="text-slate-500 text-xs mt-0.5">{note}</p>}
+    </div>
+    <span className="text-slate-300 text-sm font-semibold ml-4 shrink-0">{price}</span>
+  </div>
+);
 
 const PLANS = [
   {
@@ -317,6 +370,49 @@ const LinuxCoreServers = () => {
           </div>
         </div>
       </Section>
+
+      {/* ── Optional Extras ───────────────────────────────────── */}
+      <div className="bg-[#071626] py-16 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto">
+          <h2 className="text-2xl font-extrabold text-white mb-8">Optional extras</h2>
+
+          <div className="grid lg:grid-cols-2 gap-6">
+
+            {/* ── Hardware ─────────────────────────────── */}
+            <AccordionPanel title="Hardware" icon={Cpu}>
+              <PriceRow label="RAM" price="R250 / 16GB" />
+              <div className="pt-3 mt-1">
+                <p className="text-slate-300 text-sm font-semibold mb-1">Storage Configuration</p>
+                <p className="text-slate-500 text-xs mb-3">RAID configuration may influence usable storage and configuration options</p>
+                <PriceRow label="500 GB SSD" price="R385" />
+                <PriceRow label="1 TB SSD"   price="R660" />
+                <PriceRow label="2 TB SSD"   price="R1,100" />
+              </div>
+            </AccordionPanel>
+
+            {/* ── Software ─────────────────────────────── */}
+            <div className="space-y-4">
+              <AccordionPanel title="Software" icon={MonitorDot}>
+                <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">cPanel Accounts</p>
+                {CPANEL_ACCOUNTS.map((r) => <PriceRow key={r.label} label={r.label} price={r.price} />)}
+                <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mt-4 mb-2">cPanel Add-ons</p>
+                {CPANEL_ADDONS.map((r) => <PriceRow key={r.label} label={r.label} price={r.price} />)}
+              </AccordionPanel>
+
+              {/* ── Extras ─────────────────────────────── */}
+              <AccordionPanel title="Extras" icon={PackagePlus}>
+                <PriceRow
+                  label="IP address"
+                  note="Additional IP addresses require motivation"
+                  price="R60/mo per IP"
+                />
+                <PriceRow label="VLAN" price="R200/mo" />
+              </AccordionPanel>
+            </div>
+
+          </div>
+        </div>
+      </div>
 
       {/* ── CTA ────────────────────────────────────────────────── */}
       <div className="relative bg-slate-900 overflow-hidden">
