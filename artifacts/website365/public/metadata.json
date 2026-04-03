@@ -90,6 +90,12 @@
     "keywords": "high performance vps south africa, ecc ram vps, nvme vps hosting za, unlimited traffic vps, kvm vps south africa, fast vps hosting, hp vps plans za, vps hosting south africa",
     "localSeoPrefixes": ["high performance vps", "vps hosting", "nvme vps", "kvm vps"]
   },
+  "/servers/dedicated/linux-core": {
+    "title": "Linux Core Dedicated Servers South Africa | Dell Xeon Metal Core | Website365",
+    "description": "Deploy a bare-metal dedicated server with dedicated Intel Xeon cores, ECC RAM, and enterprise Dell hardware. Metal Core Linux plans from R2,329/mo — hosted in South Africa.",
+    "keywords": "dedicated server south africa, bare metal server za, linux dedicated server, intel xeon dedicated server, dell dedicated server south africa, metal core linux server, dedicated hosting za",
+    "localSeoPrefixes": ["dedicated server", "bare metal server", "linux dedicated server"]
+  },
   "/servers/vds": {
     "title": "Virtual Dedicated Servers (VDS) South Africa | Intel Xeon & RAID 10 NVMe | Website365",
     "description": "Get dedicated Intel Xeon CPU cores, RAID 10 NVMe SSD storage, and fully isolated KVM virtualisation with our Premium Linux VDS plans — hosted in South Africa from R1,239/mo.",

@@ -64,6 +64,8 @@ const NAV_ITEMS = [
       { label: 'VPS Hosting', to: '/servers/vps', icon: Cpu, desc: 'KVM VPS with full root access' },
       { label: 'High Performance VPS', to: '/servers/high-performance-vps', icon: Zap, desc: 'ECC RAM, NVMe SSD, unlimited traffic' },
       { label: 'VDS Servers', to: '/servers/vds', icon: Server, desc: 'Dedicated resources, KVM virtualisation' },
+      { type: 'divider', label: 'Dedicated Servers' },
+      { label: 'Linux Core Servers', to: '/servers/dedicated/linux-core', icon: Server, desc: 'Bare metal Dell Xeon — full server, yours alone' },
     ],
   },
 ];
@@ -76,21 +78,32 @@ const DropdownMenu = ({ items, isOpen }) => (
     style={{ zIndex: 9999 }}
   >
     <div className="p-2">
-      {items.map(({ label, to, icon: Icon, desc }) => (
-        <Link
-          key={to}
-          to={to}
-          className="flex items-start gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 group transition-colors"
-        >
-          <div className="w-8 h-8 rounded-lg bg-blue-50 group-hover:bg-blue-100 flex items-center justify-center shrink-0 mt-0.5 transition-colors">
-            <Icon className="w-4 h-4 text-blue-600" />
-          </div>
-          <div>
-            <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700 leading-tight">{label}</p>
-            <p className="text-xs text-gray-400 mt-0.5 leading-snug">{desc}</p>
-          </div>
-        </Link>
-      ))}
+      {items.map((item) => {
+        if (item.type === 'divider') {
+          return (
+            <div key={item.label} className="flex items-center gap-2 px-3 pt-3 pb-1">
+              <span className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">{item.label}</span>
+              <div className="flex-1 h-px bg-gray-100" />
+            </div>
+          );
+        }
+        const { label, to, icon: Icon, desc } = item;
+        return (
+          <Link
+            key={to}
+            to={to}
+            className="flex items-start gap-3 px-3 py-2.5 rounded-xl hover:bg-blue-50 group transition-colors"
+          >
+            <div className="w-8 h-8 rounded-lg bg-blue-50 group-hover:bg-blue-100 flex items-center justify-center shrink-0 mt-0.5 transition-colors">
+              <Icon className="w-4 h-4 text-blue-600" />
+            </div>
+            <div>
+              <p className="text-sm font-semibold text-gray-900 group-hover:text-blue-700 leading-tight">{label}</p>
+              <p className="text-xs text-gray-400 mt-0.5 leading-snug">{desc}</p>
+            </div>
+          </Link>
+        );
+      })}
     </div>
   </div>
 );
@@ -296,16 +309,25 @@ const Layout = ({ children }) => {
                     }`}
                   >
                     <div className="ml-3 pl-3 border-l-2 border-blue-100 space-y-0.5 py-1 mb-1">
-                      {children.map(({ label: cLabel, to, icon: Icon }) => (
-                        <Link
-                          key={to}
-                          to={to}
-                          className="flex items-center gap-2.5 py-2 px-2 rounded-lg text-sm text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition-colors"
-                        >
-                          <Icon className="w-4 h-4 text-blue-500 shrink-0" />
-                          {cLabel}
-                        </Link>
-                      ))}
+                      {children.map((child) => {
+                        if (child.type === 'divider') {
+                          return (
+                            <p key={child.label} className="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-2 pt-2 pb-0.5">
+                              {child.label}
+                            </p>
+                          );
+                        }
+                        return (
+                          <Link
+                            key={child.to}
+                            to={child.to}
+                            className="flex items-center gap-2.5 py-2 px-2 rounded-lg text-sm text-gray-600 hover:text-blue-700 hover:bg-blue-50 transition-colors"
+                          >
+                            <child.icon className="w-4 h-4 text-blue-500 shrink-0" />
+                            {child.label}
+                          </Link>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>

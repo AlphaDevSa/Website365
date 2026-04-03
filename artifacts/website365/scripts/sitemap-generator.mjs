@@ -30,6 +30,7 @@ const coreRoutes = [
   { path: '/servers/vps', priority: 0.8, changefreq: 'weekly' },
   { path: '/servers/high-performance-vps', priority: 0.8, changefreq: 'weekly' },
   { path: '/servers/vds', priority: 0.8, changefreq: 'weekly' },
+  { path: '/servers/dedicated/linux-core', priority: 0.8, changefreq: 'weekly' },
   { path: '/hosting/reseller', priority: 0.8, changefreq: 'weekly' },
   { path: '/hosting/reseller/cpanel', priority: 0.7, changefreq: 'weekly' },
   { path: '/hosting/reseller/master', priority: 0.7, changefreq: 'weekly' },
