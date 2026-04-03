@@ -276,7 +276,7 @@ const LinuxCoreServers = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6" id="plan-cards">
           {PLANS.map((plan) => (
             <div
               key={plan.name}
@@ -324,6 +324,17 @@ const LinuxCoreServers = () => {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* ── Platform blurb ──────────────────────────────────── */}
+        <div className="mt-10 rounded-2xl bg-blue-50 border border-blue-100 px-8 py-6 flex flex-col sm:flex-row items-start sm:items-center gap-5">
+          <div className="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shrink-0">
+            <Server className="w-6 h-6 text-white" />
+          </div>
+          <p className="text-gray-700 text-base leading-relaxed">
+            <span className="font-bold text-gray-900">Dual-socket platform with full upgrade flexibility.</span>{' '}
+            You're protected by hot-swap SSDs, redundant power supplies, and triple upstream providers to ensure uptime and reliability. Enjoy fast 1 Gbps networking and full control via IPMI/iDRAC access.
+          </p>
         </div>
       </Section>
 
