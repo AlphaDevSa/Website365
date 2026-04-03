@@ -1,10 +1,39 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowRight, CheckCircle2, Globe, Loader2, Receipt, X, AlertCircle } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Globe, Loader2, Receipt, X, AlertCircle, Server, Cpu, MonitorDot, Layers } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { submitForm } from '../utils/formSubmit';
 
 const VDS_SETUP_FEE = 650;
+
+const DED_SSD_OPTIONS = [
+  { label: 'No additional storage', price: 0 },
+  { label: '500 GB SSD', price: 439 },
+  { label: '1 TB SSD',   price: 759 },
+  { label: '2 TB SSD',   price: 1269 },
+];
+const DED_CPANEL_OPTIONS = [
+  { label: 'None', price: 0 },
+  { label: '1 cPanel Account',    price: 659 },
+  { label: '100 cPanel Accounts', price: 1609 },
+  { label: '150 cPanel Accounts', price: 2179 },
+  { label: '200 cPanel Accounts', price: 2759 },
+  { label: '250 cPanel Accounts', price: 3219 },
+  { label: '300 cPanel Accounts', price: 3789 },
+  { label: '350 cPanel Accounts', price: 4369 },
+  { label: '400 cPanel Accounts', price: 4939 },
+  { label: '450 cPanel Accounts', price: 5519 },
+  { label: '500 cPanel Accounts', price: 5979 },
+];
+const DED_SOFTWARE_OPTIONS = [
+  { label: 'Softaculous',         price: 59 },
+  { label: 'CloudLinux',          price: 339 },
+  { label: 'LiteSpeed 8GB',       price: 569 },
+  { label: 'LiteSpeed Unlimited', price: 1029 },
+  { label: 'Kernelcare',          price: 49 },
+  { label: 'Imunify AV+',         price: 169 },
+  { label: 'Imunify 360',         price: 539 },
+];
 
 const parseZar = (value) => {
   if (!value) return null;
@@ -69,6 +98,12 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
   const [billingCycle, setBillingCycle] = useState('monthly');
   const [domainAction, setDomainAction] = useState('register');
   const [domainCheck, setDomainCheck] = useState({ status: 'idle', result: null, error: '' });
+  const [addonRam, setAddonRam] = useState(false);
+  const [addonSsd, setAddonSsd] = useState('No additional storage');
+  const [addonCpanel, setAddonCpanel] = useState('None');
+  const [addonSoftware, setAddonSoftware] = useState([]);
+  const [addonIp, setAddonIp] = useState(false);
+  const [addonVlan, setAddonVlan] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     surname: '',
@@ -82,6 +117,7 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
   });
 
   const isVds = formType === 'VDS Server';
+  const isDedicated = formType === 'Dedicated Server';
 
   const monthlyAmount = useMemo(() => parseZar(plan?.price), [plan?.price]);
   const yearlyAmount = useMemo(() => parseZar(plan?.yearlyPrice), [plan?.yearlyPrice]);
@@ -93,6 +129,12 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
     setBillingCycle('monthly');
     setDomainAction('register');
     setDomainCheck({ status: 'idle', result: null, error: '' });
+    setAddonRam(false);
+    setAddonSsd('No additional storage');
+    setAddonCpanel('None');
+    setAddonSoftware([]);
+    setAddonIp(false);
+    setAddonVlan(false);
     setFormData({
       name: '',
       surname: '',
@@ -170,10 +212,27 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
     return prorata?.dueNow ?? monthlyAmount;
   }, [billingCycle, monthlyAmount, prorata, yearlyAmount]);
 
+  const addonTotal = useMemo(() => {
+    if (!isDedicated) return 0;
+    let total = 0;
+    if (addonRam) total += 289;
+    const ssd = DED_SSD_OPTIONS.find(s => s.label === addonSsd);
+    if (ssd) total += ssd.price;
+    const cpanel = DED_CPANEL_OPTIONS.find(c => c.label === addonCpanel);
+    if (cpanel) total += cpanel.price;
+    addonSoftware.forEach(label => {
+      const sw = DED_SOFTWARE_OPTIONS.find(s => s.label === label);
+      if (sw) total += sw.price;
+    });
+    if (addonIp) total += 69;
+    if (addonVlan) total += 229;
+    return total;
+  }, [isDedicated, addonRam, addonSsd, addonCpanel, addonSoftware, addonIp, addonVlan]);
+
   const dueNowTotal = useMemo(() => {
     const planPart = Number.isFinite(planDueNow) ? planDueNow : 0;
-    return planPart + domainCost;
-  }, [domainCost, planDueNow]);
+    return planPart + domainCost + addonTotal;
+  }, [domainCost, planDueNow, addonTotal]);
 
   const runDomainCheck = async () => {
     if (!canCheckDomain) return;
@@ -226,7 +285,16 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
       vds_prorata_this_month: vdsBilling ? formatZar(vdsBilling.prorataThisMonth) : '',
       vds_next_month_advance: vdsBilling ? formatZar(vdsBilling.nextMonthCharge) : '',
       vds_setup_fee: vdsBilling ? formatZar(vdsBilling.setupFee) : '',
-      vds_due_now_total: vdsBilling ? formatZar(vdsBilling.dueNow) : ''
+      vds_due_now_total: vdsBilling ? formatZar(vdsBilling.dueNow) : '',
+      ...(isDedicated && {
+        addon_ram: addonRam ? 'Yes — R289/16GB' : 'No',
+        addon_ssd: addonSsd !== 'No additional storage' ? addonSsd : 'None',
+        addon_cpanel: addonCpanel !== 'None' ? addonCpanel : 'None',
+        addon_software: addonSoftware.length > 0 ? addonSoftware.join(', ') : 'None',
+        addon_ip: addonIp ? 'Yes — R69/mo' : 'No',
+        addon_vlan: addonVlan ? 'Yes — R229/mo' : 'No',
+        addon_monthly_total: addonTotal > 0 ? formatZar(addonTotal) : 'R0.00',
+      }),
     };
 
     const result = await submitForm(submissionData);
@@ -397,6 +465,164 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
                     </select>
                   </div>
                 </div>
+              ) : isDedicated ? (
+                <div className="pt-2 space-y-5">
+                  {/* ── Hostname ── */}
+                  <div>
+                    <div className="flex items-center gap-2 mb-3 text-gray-900 font-semibold">
+                      <Server className="w-5 h-5 text-blue-600" />
+                      Hostname
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      <div className="space-y-1">
+                        <label htmlFor="hostname" className="text-sm font-medium text-gray-700">Hostname <span className="text-gray-400 font-normal">(e.g. server.yourdomain.co.za)</span></label>
+                        <input
+                          type="text"
+                          id="hostname"
+                          value={formData.hostname}
+                          onChange={handleChange}
+                          placeholder="server.yourdomain.co.za"
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label htmlFor="os" className="text-sm font-medium text-gray-700">Operating System</label>
+                        <select
+                          id="os"
+                          value={formData.os}
+                          onChange={handleChange}
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white"
+                        >
+                          <option value="Ubuntu">Ubuntu</option>
+                          <option value="Debian">Debian</option>
+                          <option value="AlmaLinux">AlmaLinux</option>
+                          <option value="CentOS">CentOS</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* ── Hardware Add-ons ── */}
+                  <div className="rounded-xl border border-gray-200 overflow-hidden">
+                    <div className="flex items-center gap-2 px-4 py-3 bg-blue-50 border-b border-blue-100">
+                      <Cpu className="w-4 h-4 text-blue-600" />
+                      <span className="text-sm font-bold text-blue-800">Hardware Add-ons</span>
+                      <span className="ml-auto text-xs text-blue-500 font-medium">Optional</span>
+                    </div>
+                    <div className="p-4 space-y-4">
+                      <label className="flex items-center justify-between gap-3 cursor-pointer group">
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="checkbox"
+                            checked={addonRam}
+                            onChange={e => setAddonRam(e.target.checked)}
+                            className="w-4 h-4 rounded text-blue-600 border-gray-300 focus:ring-blue-500"
+                          />
+                          <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">RAM upgrade (+16 GB ECC)</span>
+                        </div>
+                        <span className="text-sm font-bold text-gray-800 shrink-0">+R289/mo</span>
+                      </label>
+                      <div className="space-y-1">
+                        <label className="text-sm font-medium text-gray-700">Additional Storage</label>
+                        <select
+                          value={addonSsd}
+                          onChange={e => setAddonSsd(e.target.value)}
+                          className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white text-sm"
+                        >
+                          {DED_SSD_OPTIONS.map(o => (
+                            <option key={o.label} value={o.label}>{o.label}{o.price > 0 ? ` — +R${o.price}/mo` : ''}</option>
+                          ))}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* ── cPanel Accounts ── */}
+                  <div className="rounded-xl border border-gray-200 overflow-hidden">
+                    <div className="flex items-center gap-2 px-4 py-3 bg-indigo-50 border-b border-indigo-100">
+                      <MonitorDot className="w-4 h-4 text-indigo-600" />
+                      <span className="text-sm font-bold text-indigo-800">cPanel Accounts</span>
+                      <span className="ml-auto text-xs text-indigo-500 font-medium">Optional</span>
+                    </div>
+                    <div className="p-4 space-y-1">
+                      <label className="text-sm font-medium text-gray-700">Account Tier</label>
+                      <select
+                        value={addonCpanel}
+                        onChange={e => setAddonCpanel(e.target.value)}
+                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white text-sm"
+                      >
+                        {DED_CPANEL_OPTIONS.map(o => (
+                          <option key={o.label} value={o.label}>{o.label}{o.price > 0 ? ` — R${o.price}/mo` : ''}</option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* ── cPanel Add-ons ── */}
+                  <div className="rounded-xl border border-gray-200 overflow-hidden">
+                    <div className="flex items-center gap-2 px-4 py-3 bg-violet-50 border-b border-violet-100">
+                      <MonitorDot className="w-4 h-4 text-violet-600" />
+                      <span className="text-sm font-bold text-violet-800">cPanel Add-ons</span>
+                      <span className="ml-auto text-xs text-violet-500 font-medium">Optional</span>
+                    </div>
+                    <div className="p-4 space-y-2">
+                      {DED_SOFTWARE_OPTIONS.map(o => (
+                        <label key={o.label} className="flex items-center justify-between gap-3 cursor-pointer group">
+                          <div className="flex items-center gap-3">
+                            <input
+                              type="checkbox"
+                              checked={addonSoftware.includes(o.label)}
+                              onChange={e => setAddonSoftware(prev =>
+                                e.target.checked ? [...prev, o.label] : prev.filter(l => l !== o.label)
+                              )}
+                              className="w-4 h-4 rounded text-violet-600 border-gray-300 focus:ring-violet-500"
+                            />
+                            <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">{o.label}</span>
+                          </div>
+                          <span className="text-sm font-bold text-gray-800 shrink-0">+R{o.price}/mo</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* ── Extras ── */}
+                  <div className="rounded-xl border border-gray-200 overflow-hidden">
+                    <div className="flex items-center gap-2 px-4 py-3 bg-purple-50 border-b border-purple-100">
+                      <Layers className="w-4 h-4 text-purple-600" />
+                      <span className="text-sm font-bold text-purple-800">Extras</span>
+                      <span className="ml-auto text-xs text-purple-500 font-medium">Optional</span>
+                    </div>
+                    <div className="p-4 space-y-2">
+                      <label className="flex items-center justify-between gap-3 cursor-pointer group">
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="checkbox"
+                            checked={addonIp}
+                            onChange={e => setAddonIp(e.target.checked)}
+                            className="w-4 h-4 rounded text-purple-600 border-gray-300 focus:ring-purple-500"
+                          />
+                          <div>
+                            <p className="text-sm font-medium text-gray-700 group-hover:text-gray-900">IP Address</p>
+                            <p className="text-xs text-gray-400">Additional IPs require motivation</p>
+                          </div>
+                        </div>
+                        <span className="text-sm font-bold text-gray-800 shrink-0">+R69/mo</span>
+                      </label>
+                      <label className="flex items-center justify-between gap-3 cursor-pointer group">
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="checkbox"
+                            checked={addonVlan}
+                            onChange={e => setAddonVlan(e.target.checked)}
+                            className="w-4 h-4 rounded text-purple-600 border-gray-300 focus:ring-purple-500"
+                          />
+                          <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900">VLAN</span>
+                        </div>
+                        <span className="text-sm font-bold text-gray-800 shrink-0">+R229/mo</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
               ) : (
                 <div className="pt-2">
                   <div className="flex items-center gap-2 mb-2 text-gray-900 font-semibold">
@@ -519,7 +745,13 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
                       </>
                     ) : (
                       <>
-                        {!isVds && (
+                        {isDedicated && addonTotal > 0 && (
+                          <div className="flex items-center justify-between">
+                            <span className="text-sm font-medium text-gray-600">Add-ons</span>
+                            <span className="text-sm font-semibold text-gray-900">+{formatZar(addonTotal)}/mo</span>
+                          </div>
+                        )}
+                        {!isVds && !isDedicated && (
                           domainAction !== 'existing' ? (
                             <div className="flex items-center justify-between">
                               <span className="text-sm font-medium text-gray-600">
