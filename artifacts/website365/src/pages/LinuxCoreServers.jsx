@@ -5,61 +5,32 @@ import { Link } from 'react-router-dom';
 import {
   Server, Cpu, Shield, ArrowRight, Zap, HardDrive,
   Network, CheckCircle, Globe, Lock, Activity, Database,
-  MemoryStick, ChevronRight, ChevronDown, ChevronUp,
+  MemoryStick, ChevronRight,
   PackagePlus, MonitorDot, Layers, LayoutDashboard, MapPin
 } from 'lucide-react';
 
 const CPANEL_ACCOUNTS = [
-  { label: '1 cPanel Account',    price: 'R569/mo' },
-  { label: '100 cPanel Accounts', price: 'R1,399/mo' },
-  { label: '150 cPanel Accounts', price: 'R1,899/mo' },
-  { label: '200 cPanel Accounts', price: 'R2,399/mo' },
-  { label: '250 cPanel Accounts', price: 'R2,799/mo' },
-  { label: '300 cPanel Accounts', price: 'R3,299/mo' },
-  { label: '350 cPanel Accounts', price: 'R3,799/mo' },
-  { label: '400 cPanel Accounts', price: 'R4,299/mo' },
-  { label: '450 cPanel Accounts', price: 'R4,799/mo' },
-  { label: '500 cPanel Accounts', price: 'R5,199/mo' },
+  { label: '1 cPanel Account',    price: 'R659' },
+  { label: '100 cPanel Accounts', price: 'R1,609' },
+  { label: '150 cPanel Accounts', price: 'R2,179' },
+  { label: '200 cPanel Accounts', price: 'R2,759' },
+  { label: '250 cPanel Accounts', price: 'R3,219' },
+  { label: '300 cPanel Accounts', price: 'R3,789' },
+  { label: '350 cPanel Accounts', price: 'R4,369' },
+  { label: '400 cPanel Accounts', price: 'R4,939' },
+  { label: '450 cPanel Accounts', price: 'R5,519' },
+  { label: '500 cPanel Accounts', price: 'R5,979' },
 ];
 
 const CPANEL_ADDONS = [
-  { label: 'Softaculous',         price: 'R50/mo' },
-  { label: 'CloudLinux',          price: 'R299/mo' },
-  { label: 'LiteSpeed 8GB',       price: 'R499/mo' },
-  { label: 'LiteSpeed Unlimited', price: 'R899/mo' },
-  { label: 'Kernelcare',          price: 'R39/mo' },
-  { label: 'Imunify AV+',         price: 'R149/mo' },
-  { label: 'Imunify 360',         price: 'R469/mo' },
+  { label: 'Softaculous',         price: 'R59' },
+  { label: 'CloudLinux',          price: 'R339' },
+  { label: 'LiteSpeed 8GB',       price: 'R569' },
+  { label: 'LiteSpeed Unlimited', price: 'R1,029' },
+  { label: 'Kernelcare',          price: 'R49' },
+  { label: 'Imunify AV+',         price: 'R169' },
+  { label: 'Imunify 360',         price: 'R539' },
 ];
-
-const AccordionPanel = ({ title, icon: Icon, children, defaultOpen = true }) => {
-  const [open, setOpen] = useState(defaultOpen);
-  return (
-    <div className="rounded-xl border border-slate-700/60 overflow-hidden">
-      <button
-        onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-5 py-3.5 bg-blue-600 hover:bg-blue-500 transition-colors"
-      >
-        <div className="flex items-center gap-2">
-          <Icon className="w-4 h-4 text-white/80" />
-          <span className="text-white font-bold text-sm">{title}</span>
-        </div>
-        {open ? <ChevronUp className="w-4 h-4 text-white/70" /> : <ChevronDown className="w-4 h-4 text-white/70" />}
-      </button>
-      {open && <div className="bg-[#0b1929] p-5">{children}</div>}
-    </div>
-  );
-};
-
-const PriceRow = ({ label, price, note }) => (
-  <div className="flex items-start justify-between py-2.5 border-b border-slate-700/40 last:border-0">
-    <div>
-      <p className="text-slate-200 text-sm">{label}</p>
-      {note && <p className="text-slate-500 text-xs mt-0.5">{note}</p>}
-    </div>
-    <span className="text-slate-300 text-sm font-semibold ml-4 shrink-0">{price}</span>
-  </div>
-);
 
 const PLANS = [
   {
@@ -456,42 +427,110 @@ const LinuxCoreServers = () => {
       </Section>
 
       {/* ── Optional Extras ───────────────────────────────────── */}
-      <div className="bg-[#071626] py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
-          <h2 className="text-2xl font-extrabold text-white mb-8">Optional extras</h2>
+      <div className="bg-gray-50 py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-6xl mx-auto">
+          {/* Header */}
+          <div className="mb-12">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-100 text-blue-700 text-xs font-bold uppercase tracking-widest mb-4">
+              <PackagePlus className="w-3.5 h-3.5" />
+              Add-ons &amp; Extras
+            </div>
+            <h2 className="text-3xl font-extrabold text-gray-900">Optional extras</h2>
+            <p className="text-gray-500 mt-2">Extend and customise your dedicated server with hardware upgrades, software licences, and network add-ons.</p>
+          </div>
 
-          <div className="grid lg:grid-cols-2 gap-6">
+          <div className="grid lg:grid-cols-3 gap-6 items-start">
 
-            {/* ── Hardware ─────────────────────────────── */}
-            <AccordionPanel title="Hardware" icon={Cpu}>
-              <PriceRow label="RAM" price="R250 / 16GB" />
-              <div className="pt-3 mt-1">
-                <p className="text-slate-300 text-sm font-semibold mb-1">Storage Configuration</p>
-                <p className="text-slate-500 text-xs mb-3">RAID configuration may influence usable storage and configuration options</p>
-                <PriceRow label="500 GB SSD" price="R385" />
-                <PriceRow label="1 TB SSD"   price="R660" />
-                <PriceRow label="2 TB SSD"   price="R1,100" />
+            {/* ── Hardware Card ──────────────────────────── */}
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+              <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-blue-600 to-blue-500">
+                <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
+                  <Cpu className="w-4 h-4 text-white" />
+                </div>
+                <h3 className="text-white font-bold">Hardware</h3>
               </div>
-            </AccordionPanel>
+              <div className="p-6 space-y-1">
+                <div className="flex items-center justify-between py-3 border-b border-gray-50">
+                  <span className="text-gray-700 text-sm font-medium">RAM upgrade</span>
+                  <span className="text-sm font-bold text-blue-600 bg-blue-50 px-2.5 py-1 rounded-lg">R289 / 16 GB</span>
+                </div>
+                <div className="pt-3">
+                  <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Storage Configuration</p>
+                  <p className="text-gray-400 text-xs mb-3">RAID config may affect usable storage and options.</p>
+                  {[
+                    { label: '500 GB SSD', price: 'R439' },
+                    { label: '1 TB SSD',   price: 'R759' },
+                    { label: '2 TB SSD',   price: 'R1,269' },
+                  ].map(({ label, price }) => (
+                    <div key={label} className="flex items-center justify-between py-2.5 border-b border-gray-50 last:border-0">
+                      <span className="text-gray-600 text-sm">{label}</span>
+                      <span className="text-sm font-bold text-gray-800">{price}<span className="text-gray-400 font-normal">/mo</span></span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
 
-            {/* ── Software ─────────────────────────────── */}
-            <div className="space-y-4">
-              <AccordionPanel title="Software" icon={MonitorDot}>
-                <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mb-2">cPanel Accounts</p>
-                {CPANEL_ACCOUNTS.map((r) => <PriceRow key={r.label} label={r.label} price={r.price} />)}
-                <p className="text-slate-400 text-xs font-semibold uppercase tracking-wider mt-4 mb-2">cPanel Add-ons</p>
-                {CPANEL_ADDONS.map((r) => <PriceRow key={r.label} label={r.label} price={r.price} />)}
-              </AccordionPanel>
+            {/* ── Software Card ──────────────────────────── */}
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+              <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-indigo-600 to-indigo-500">
+                <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
+                  <MonitorDot className="w-4 h-4 text-white" />
+                </div>
+                <h3 className="text-white font-bold">Software</h3>
+              </div>
+              <div className="p-6">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">cPanel Accounts</p>
+                <div className="space-y-0">
+                  {CPANEL_ACCOUNTS.map(({ label, price }) => (
+                    <div key={label} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+                      <span className="text-gray-600 text-sm">{label}</span>
+                      <span className="text-sm font-bold text-gray-800">{price}<span className="text-gray-400 font-normal">/mo</span></span>
+                    </div>
+                  ))}
+                </div>
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-wider mt-5 mb-3">cPanel Add-ons</p>
+                <div className="space-y-0">
+                  {CPANEL_ADDONS.map(({ label, price }) => (
+                    <div key={label} className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0">
+                      <span className="text-gray-600 text-sm">{label}</span>
+                      <span className="text-sm font-bold text-gray-800">{price}<span className="text-gray-400 font-normal">/mo</span></span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
 
-              {/* ── Extras ─────────────────────────────── */}
-              <AccordionPanel title="Extras" icon={PackagePlus}>
-                <PriceRow
-                  label="IP address"
-                  note="Additional IP addresses require motivation"
-                  price="R60/mo per IP"
-                />
-                <PriceRow label="VLAN" price="R200/mo" />
-              </AccordionPanel>
+            {/* ── Extras Card ────────────────────────────── */}
+            <div className="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+              <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-purple-600 to-purple-500">
+                <div className="w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center">
+                  <Layers className="w-4 h-4 text-white" />
+                </div>
+                <h3 className="text-white font-bold">Extras</h3>
+              </div>
+              <div className="p-6 space-y-4">
+                <div className="rounded-xl bg-purple-50 border border-purple-100 p-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="text-gray-900 text-sm font-semibold">IP Address</p>
+                      <p className="text-gray-400 text-xs mt-0.5">Additional IPs require motivation</p>
+                    </div>
+                    <span className="text-sm font-bold text-purple-700 bg-white border border-purple-200 px-2.5 py-1 rounded-lg shrink-0">R69/mo</span>
+                  </div>
+                </div>
+                <div className="rounded-xl bg-purple-50 border border-purple-100 p-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <p className="text-gray-900 text-sm font-semibold">VLAN</p>
+                    <span className="text-sm font-bold text-purple-700 bg-white border border-purple-200 px-2.5 py-1 rounded-lg shrink-0">R229/mo</span>
+                  </div>
+                </div>
+
+                {/* Info note */}
+                <div className="mt-4 rounded-xl bg-gray-50 border border-gray-100 p-4">
+                  <p className="text-gray-500 text-xs leading-relaxed">All add-ons are billed monthly and can be adjusted at any time. Contact our team to add any extra to your existing server.</p>
+                </div>
+              </div>
             </div>
 
           </div>
