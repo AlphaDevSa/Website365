@@ -32,6 +32,7 @@ type PricingRow = { tld: string; register: string; renew: string; transfer: stri
 
 // Load all enabled pricing rows from DB, fall back to static
 async function loadPricing(): Promise<Record<string, { register: number; renew: number; transfer: number }>> {
+  if (!pool) return STATIC_PRICING;
   try {
     const result = await pool.query<PricingRow>(
       "SELECT tld, register, renew, transfer FROM domain_pricing WHERE enabled = true ORDER BY sort_order ASC"
@@ -89,6 +90,10 @@ router.get("/domain/pricing", async (req: Request, res: Response) => {
 
 // --- All enabled TLDs (for dropdown population) ---
 router.get("/domain/tlds", async (_req: Request, res: Response) => {
+  if (!pool) {
+    res.json({ tlds: Object.keys(STATIC_PRICING) });
+    return;
+  }
   try {
     const result = await pool.query<{ tld: string }>(
       "SELECT tld FROM domain_pricing WHERE enabled = true ORDER BY sort_order ASC"

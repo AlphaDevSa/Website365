@@ -4,13 +4,30 @@ import * as schema from "./schema";
 
 const { Pool } = pg;
 
-if (!process.env.DATABASE_URL) {
-  throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
-  );
-}
+const databaseUrl = process.env.DATABASE_URL ?? null;
 
-export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-export const db = drizzle(pool, { schema });
+const shouldUseSsl = (() => {
+  if (!databaseUrl) return false;
+  try {
+    const url = new URL(databaseUrl);
+    const sslMode = url.searchParams.get("sslmode");
+
+    if (sslMode?.toLowerCase() === "require") return true;
+    if (url.hostname.endsWith(".neon.tech")) return true;
+
+    return false;
+  } catch {
+    return false;
+  }
+})();
+
+export const pool = databaseUrl
+  ? new Pool({
+      connectionString: databaseUrl,
+      ssl: shouldUseSsl ? true : undefined,
+    })
+  : null;
+
+export const db = pool ? drizzle(pool, { schema }) : null;
 
 export * from "./schema";

@@ -7,6 +7,10 @@ const router: IRouter = Router();
 const NOTIFY_TO = "info@website365.co.za";
 
 router.post("/contact", async (req: Request, res: Response) => {
+  if (!pool) {
+    res.status(503).json({ error: "Service is unavailable" });
+    return;
+  }
   const body = req.body as Record<string, unknown>;
 
   if (!body || typeof body !== "object") {

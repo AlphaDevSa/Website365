@@ -10,7 +10,13 @@
   },
   "private": true,
   "devDependencies": {
+    "@types/node": "catalog:",
+    "@esbuild/win32-x64": "0.27.3",
+    "prettier": "^3.8.1",
     "typescript": "~5.9.2",
-    "prettier": "^3.8.1"
+    "vite": "catalog:"
+  },
+  "dependencies": {
+    "zod": "catalog:"
   }
 }

@@ -7,6 +7,10 @@ const router: IRouter = Router();
 
 // POST /api/admin/login
 router.post("/admin/login", async (req: Request, res: Response) => {
+  if (!pool) {
+    res.status(503).json({ error: "Service is unavailable" });
+    return;
+  }
   const { username, password } = req.body as { username?: string; password?: string };
 
   if (!username || !password) {
@@ -62,6 +66,10 @@ router.get("/admin/me", requireAdmin, (req: Request, res: Response) => {
 
 // GET /api/admin/submissions — list all submissions
 router.get("/admin/submissions", requireAdmin, async (req: Request, res: Response) => {
+  if (!pool) {
+    res.status(503).json({ error: "Service is unavailable" });
+    return;
+  }
   const page = Math.max(1, Number(req.query["page"]) || 1);
   const limit = Math.min(100, Math.max(1, Number(req.query["limit"]) || 25));
   const offset = (page - 1) * limit;
@@ -113,6 +121,10 @@ router.get("/admin/submissions", requireAdmin, async (req: Request, res: Respons
 
 // GET /api/admin/stats — summary counts
 router.get("/admin/stats", requireAdmin, async (_req: Request, res: Response) => {
+  if (!pool) {
+    res.status(503).json({ error: "Service is unavailable" });
+    return;
+  }
   try {
     const total = await pool.query("SELECT COUNT(*) as total FROM form_submissions");
     const byType = await pool.query(
@@ -137,6 +149,10 @@ router.get("/admin/stats", requireAdmin, async (_req: Request, res: Response) =>
 
 // GET /api/admin/domain-pricing — list all rows
 router.get("/admin/domain-pricing", requireAdmin, async (_req: Request, res: Response) => {
+  if (!pool) {
+    res.status(503).json({ error: "Service is unavailable" });
+    return;
+  }
   try {
     const result = await pool.query(
       "SELECT id, tld, register, renew, transfer, sort_order, enabled, updated_at FROM domain_pricing ORDER BY sort_order ASC, tld ASC"
@@ -150,7 +166,13 @@ router.get("/admin/domain-pricing", requireAdmin, async (_req: Request, res: Res
 
 // PUT /api/admin/domain-pricing/:tld — update a row
 router.put("/admin/domain-pricing/:tld", requireAdmin, async (req: Request, res: Response) => {
-  const tld = req.params["tld"]?.trim().toLowerCase();
+  if (!pool) {
+    res.status(503).json({ error: "Service is unavailable" });
+    return;
+  }
+  const tldParam = req.params["tld"];
+  const tldRaw = Array.isArray(tldParam) ? tldParam[0] : tldParam;
+  const tld = tldRaw?.trim().toLowerCase();
   const { register, renew, transfer, enabled, sort_order } = req.body as {
     register?: number; renew?: number; transfer?: number; enabled?: boolean; sort_order?: number;
   };
@@ -188,6 +210,10 @@ router.put("/admin/domain-pricing/:tld", requireAdmin, async (req: Request, res:
 
 // POST /api/admin/domain-pricing — add a new TLD
 router.post("/admin/domain-pricing", requireAdmin, async (req: Request, res: Response) => {
+  if (!pool) {
+    res.status(503).json({ error: "Service is unavailable" });
+    return;
+  }
   const { tld, register, renew, transfer, sort_order } = req.body as {
     tld?: string; register?: number; renew?: number; transfer?: number; sort_order?: number;
   };
@@ -212,7 +238,13 @@ router.post("/admin/domain-pricing", requireAdmin, async (req: Request, res: Res
 
 // DELETE /api/admin/domain-pricing/:tld — remove a TLD
 router.delete("/admin/domain-pricing/:tld", requireAdmin, async (req: Request, res: Response) => {
-  const tld = req.params["tld"]?.trim().toLowerCase();
+  if (!pool) {
+    res.status(503).json({ error: "Service is unavailable" });
+    return;
+  }
+  const tldParam = req.params["tld"];
+  const tldRaw = Array.isArray(tldParam) ? tldParam[0] : tldParam;
+  const tld = tldRaw?.trim().toLowerCase();
   if (!tld) { res.status(400).json({ error: "TLD required" }); return; }
 
   try {

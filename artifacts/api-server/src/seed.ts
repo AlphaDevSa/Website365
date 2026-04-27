@@ -26,6 +26,10 @@ const DOMAIN_PRICING = [
 ];
 
 export async function runSeed(): Promise<void> {
+  if (!pool) {
+    logger.warn("[seed] DATABASE_URL not set, skipping seed");
+    return;
+  }
   try {
     await pool.query(`
       CREATE TABLE IF NOT EXISTS admin_users (
