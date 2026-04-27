@@ -2,7 +2,9 @@ import { Router, type IRouter, type Request, type Response } from "express";
 import bcrypt from "bcryptjs";
 import { pool } from "@workspace/db";
 import { requireAdmin, signAdminToken } from "../middleware/auth";
+import { createTransport } from "../mailer";
 import { isDbUnavailableError } from "../utils/dbErrors";
+import { loadSmtpSettingsPublic, loadSmtpTransportConfig, saveSmtpSettings } from "../utils/smtpSettings";
 
 const router: IRouter = Router();
 
@@ -124,6 +126,37 @@ router.get("/admin/submissions", requireAdmin, async (req: Request, res: Respons
       return;
     }
     console.error("[admin] Submissions error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
+// DELETE /api/admin/submissions/:id — delete a submission
+router.delete("/admin/submissions/:id", requireAdmin, async (req: Request, res: Response) => {
+  if (!pool) {
+    res.status(503).json({ error: "Service is unavailable" });
+    return;
+  }
+
+  const rawId = req.params["id"];
+  const id = Number(rawId);
+  if (!Number.isInteger(id) || id <= 0) {
+    res.status(400).json({ error: "Invalid submission id" });
+    return;
+  }
+
+  try {
+    const result = await pool.query("DELETE FROM form_submissions WHERE id = $1", [id]);
+    if ((result.rowCount ?? 0) === 0) {
+      res.status(404).json({ error: "Submission not found" });
+      return;
+    }
+    res.json({ success: true });
+  } catch (err) {
+    if (isDbUnavailableError(err)) {
+      res.status(503).json({ error: "Service is unavailable" });
+      return;
+    }
+    console.error("[admin] Delete submission error:", err);
     res.status(500).json({ error: "Server error" });
   }
 });
@@ -282,6 +315,107 @@ router.delete("/admin/domain-pricing/:tld", requireAdmin, async (req: Request, r
     }
     console.error("[admin] domain-pricing delete error:", err);
     res.status(500).json({ error: "Server error" });
+  }
+});
+
+// ── SMTP Settings ─────────────────────────────────────────────────────────────
+
+router.get("/admin/smtp-settings", requireAdmin, async (_req: Request, res: Response) => {
+  if (!pool) {
+    res.status(503).json({ error: "Service is unavailable" });
+    return;
+  }
+  try {
+    const settings = await loadSmtpSettingsPublic();
+    res.json({ settings });
+  } catch (err) {
+    if (isDbUnavailableError(err)) {
+      res.status(503).json({ error: "Service is unavailable" });
+      return;
+    }
+    const msg = err instanceof Error ? err.message : "Server error";
+    res.status(500).json({ error: msg });
+  }
+});
+
+router.put("/admin/smtp-settings", requireAdmin, async (req: Request, res: Response) => {
+  if (!pool) {
+    res.status(503).json({ error: "Service is unavailable" });
+    return;
+  }
+  const body = req.body as {
+    host?: string;
+    port?: number;
+    secure?: boolean;
+    username?: string;
+    password?: string;
+    fromEmail?: string | null;
+    fromName?: string | null;
+  };
+  try {
+    const settings = await saveSmtpSettings({
+      host: body.host,
+      port: body.port,
+      secure: body.secure,
+      username: body.username,
+      password: body.password,
+      fromEmail: body.fromEmail ?? null,
+      fromName: body.fromName ?? null,
+    });
+    res.json({ settings });
+  } catch (err) {
+    if (isDbUnavailableError(err)) {
+      res.status(503).json({ error: "Service is unavailable" });
+      return;
+    }
+    const msg = err instanceof Error ? err.message : "Server error";
+    res.status(400).json({ error: msg });
+  }
+});
+
+router.post("/admin/smtp-settings/test", requireAdmin, async (_req: Request, res: Response) => {
+  if (!pool) {
+    res.status(503).json({ error: "Service is unavailable" });
+    return;
+  }
+  try {
+    const loaded = await loadSmtpTransportConfig();
+    if (!loaded) {
+      res.status(400).json({ error: "SMTP settings are not configured" });
+      return;
+    }
+
+    const transport = createTransport({
+      host: loaded.transport.host,
+      port: loaded.transport.port,
+      secure: loaded.transport.secure,
+      auth: loaded.transport.auth,
+    });
+
+    const to = [
+      "admin@website365.co.za",
+      "info@website365.co.za",
+      "webleads@website365.co.za",
+    ].join(", ");
+    const fromEmail = loaded.transport.fromEmail || loaded.transport.auth.user;
+    const fromName = loaded.transport.fromName || "Website365";
+
+    await transport.sendMail({
+      from: fromEmail ? `"${fromName}" <${fromEmail}>` : fromName,
+      to,
+      subject: "[Website365] SMTP Test Email",
+      text: "SMTP test succeeded.",
+      html: "<p>SMTP test succeeded.</p>",
+    });
+
+    res.json({ success: true });
+  } catch (err) {
+    if (isDbUnavailableError(err)) {
+      res.status(503).json({ error: "Service is unavailable" });
+      return;
+    }
+    const msg = err instanceof Error ? err.message : "Email error";
+    res.status(500).json({ error: msg });
   }
 });
 

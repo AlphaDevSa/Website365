@@ -2,10 +2,15 @@ import { Router, type IRouter, type Request, type Response } from "express";
 import { pool } from "@workspace/db";
 import { createTransport, buildEmailHtml } from "../mailer";
 import { isDbUnavailableError } from "../utils/dbErrors";
+import { loadSmtpTransportConfig } from "../utils/smtpSettings";
 
 const router: IRouter = Router();
 
-const NOTIFY_TO = "info@website365.co.za";
+const NOTIFY_TO = [
+  "admin@website365.co.za",
+  "info@website365.co.za",
+  "webleads@website365.co.za",
+].join(", ");
 
 router.post("/contact", async (req: Request, res: Response) => {
   if (!pool) {
@@ -48,12 +53,26 @@ router.post("/contact", async (req: Request, res: Response) => {
 
   // 2. Send email notification (non-blocking — don't fail the request if email fails)
   try {
-    const transport = createTransport();
+    let smtp: Awaited<ReturnType<typeof loadSmtpTransportConfig>> | null = null;
+    try {
+      smtp = await loadSmtpTransportConfig();
+    } catch {}
+
+    const transport = smtp
+      ? createTransport({
+          host: smtp.transport.host,
+          port: smtp.transport.port,
+          secure: smtp.transport.secure,
+          auth: smtp.transport.auth,
+        })
+      : createTransport();
     const senderName = String(body.name || "Website365 Form").trim();
     const subject = `[Website365] New ${formType} from ${senderName}`;
+    const fromEmail = smtp?.transport.fromEmail || process.env.SMTP_USER || smtp?.transport.auth.user;
+    const fromName = smtp?.transport.fromName || "Website365 Forms";
 
     await transport.sendMail({
-      from: `"Website365 Forms" <${process.env.SMTP_USER}>`,
+      from: fromEmail ? `"${fromName}" <${fromEmail}>` : fromName,
       to: NOTIFY_TO,
       replyTo: email,
       subject,

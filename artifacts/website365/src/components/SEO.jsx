@@ -41,40 +41,82 @@ const SEO = ({
   extraSchemas = [],
   noLocalExpansion = false,
 }) => {
-  const [metadata, setMetadata] = useState(null);
+  const [metadata, setMetadata] = useState(() => {
+    if (typeof window === 'undefined') return null;
+    try {
+      const cached = sessionStorage.getItem('website365:metadata');
+      if (!cached) return null;
+      return JSON.parse(cached);
+    } catch {
+      return null;
+    }
+  });
+  const [metadataLoading, setMetadataLoading] = useState(metadata === null);
+  const [metadataError, setMetadataError] = useState(null);
   const location = useLocation();
   const path = location.pathname;
 
   useEffect(() => {
     let alive = true;
+    const controller = new AbortController();
 
-    const fetchAndCacheMetadata = async () => {
-      try {
-        const r = await fetch('/metadata.json');
-        const data = r.ok ? await r.json() : {};
+    const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    const fetchAndCacheMetadata = async ({ background } = {}) => {
+      const maxRetries = 4;
+      const baseDelayMs = 300;
+
+      if (!background) {
+        if (alive) setMetadataLoading(true);
+      }
+      if (alive) setMetadataError(null);
+
+      let attempt = 0;
+      while (attempt <= maxRetries && alive && !controller.signal.aborted) {
         try {
-          sessionStorage.setItem('website365:metadata', JSON.stringify(data));
-        } catch {}
-        if (alive) setMetadata(data);
-      } catch {
-        if (alive) setMetadata({});
+          const r = await fetch('/metadata.json', { signal: controller.signal });
+          if (!r.ok) {
+            const err = new Error(`metadata.json request failed (${r.status})`);
+            err.retryable = r.status >= 500;
+            throw err;
+          }
+          const data = await r.json();
+          try {
+            sessionStorage.setItem('website365:metadata', JSON.stringify(data));
+          } catch {}
+          if (alive) setMetadata(data);
+          if (!background && alive) setMetadataLoading(false);
+          return;
+        } catch (err) {
+          if (controller.signal.aborted || !alive) return;
+
+          const retryable =
+            err && typeof err === 'object' && 'retryable' in err ? err.retryable === true : true;
+          if (!retryable || attempt >= maxRetries) {
+            if (alive) {
+              setMetadataError(err instanceof Error ? err.message : 'Failed to load metadata');
+              if (!background) setMetadataLoading(false);
+            }
+            return;
+          }
+
+          const jitter = Math.floor(Math.random() * 150);
+          const delay = baseDelayMs * 2 ** attempt + jitter;
+          attempt += 1;
+          await sleep(delay);
+        }
       }
     };
 
-    try {
-      const cached = sessionStorage.getItem('website365:metadata');
-      if (cached) {
-        const parsed = JSON.parse(cached);
-        if (alive) setMetadata(parsed);
-      } else {
-        fetchAndCacheMetadata();
-      }
-    } catch {
+    if (metadata === null) {
       fetchAndCacheMetadata();
+    } else {
+      fetchAndCacheMetadata({ background: true });
     }
 
     return () => {
       alive = false;
+      controller.abort();
     };
   }, []);
 
@@ -87,7 +129,7 @@ const SEO = ({
     localSeoPrefixes: [],
   };
 
-  const pageMeta = (metadata && metadata[path]) || defaultMeta;
+  const pageMeta = (!metadataLoading && metadata && metadata[path]) || defaultMeta;
 
   const resolvedTitle = titleOverride || title || pageMeta.title;
   const resolvedDescription = descriptionOverride || description || pageMeta.description;

@@ -68,6 +68,7 @@ const ProjectModal = ({ isOpen, onClose }) => {
           <div className="flex items-center justify-between p-6 border-b border-gray-100">
             <h2 className="text-2xl font-bold text-gray-900">Discuss Your Project</h2>
             <button
+              aria-label="Close"
               onClick={onClose}
               className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
             >

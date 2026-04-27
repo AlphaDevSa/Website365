@@ -63,6 +63,20 @@ export async function runSeed(): Promise<void> {
       )
     `);
 
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS smtp_settings (
+        id INTEGER PRIMARY KEY DEFAULT 1,
+        host TEXT NOT NULL,
+        port INTEGER NOT NULL,
+        secure BOOLEAN NOT NULL DEFAULT false,
+        username TEXT NOT NULL,
+        password_enc TEXT NOT NULL,
+        from_email TEXT,
+        from_name TEXT,
+        updated_at TIMESTAMPTZ DEFAULT NOW()
+      )
+    `);
+
     const adminResult = await pool.query(
       `INSERT INTO admin_users (username, password_hash)
        VALUES ($1, $2)

@@ -72,6 +72,7 @@ const DomainResellerModal = ({ isOpen, onClose }) => {
               <h2 className="text-2xl font-bold text-gray-900">Become a Reseller</h2>
             </div>
             <button
+              aria-label="Close"
               onClick={onClose}
               className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
             >

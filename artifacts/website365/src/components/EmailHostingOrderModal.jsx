@@ -220,7 +220,7 @@ const EmailHostingOrderModal = ({ isOpen, onClose, planId }) => {
                 <p className="text-sm text-gray-500">{plan.name} · {plan.accounts} accounts · {plan.storage}</p>
               </div>
             </div>
-            <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+            <button aria-label="Close" onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
               <X className="w-6 h-6" />
             </button>
           </div>

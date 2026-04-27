@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import {
   LogOut, Search, ChevronLeft, ChevronRight,
   FileText, Clock, BarChart2, RefreshCw, X, ChevronDown,
-  Globe, Plus, Trash2, Edit3, Check, Tag
+  Globe, Plus, Trash2, Edit3, Check, Tag, Mail
 } from 'lucide-react';
 
 const FORM_TYPES = [
@@ -15,6 +15,7 @@ const FORM_TYPES = [
 const TABS = [
   { id: 'submissions', label: 'Form Submissions', icon: FileText },
   { id: 'domain-pricing', label: 'Domain Pricing', icon: Globe },
+  { id: 'smtp', label: 'SMTP Settings', icon: Mail },
 ];
 
 const StatCard = ({ label, value, icon: Icon, color }) => (
@@ -32,6 +33,9 @@ const StatCard = ({ label, value, icon: Icon, color }) => (
 const SubmissionModal = ({ submission, onClose }) => {
   if (!submission) return null;
   const data = submission.data || {};
+  const entries = Object.entries(data)
+    .filter(([k]) => k !== 'form_type')
+    .sort(([a], [b]) => a.localeCompare(b));
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={onClose}>
       <div className="bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl w-full max-w-lg max-h-[80vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
@@ -45,10 +49,16 @@ const SubmissionModal = ({ submission, onClose }) => {
           <button onClick={onClose} className="text-gray-400 hover:text-white transition-colors"><X className="w-5 h-5" /></button>
         </div>
         <div className="p-6 space-y-3">
-          {Object.entries(data).filter(([k]) => k !== 'form_type').map(([key, value]) => (
+          {entries.map(([key, value]) => (
             <div key={key} className="flex gap-3">
               <span className="text-gray-500 text-sm capitalize min-w-[100px] shrink-0">{key.replace(/_/g, ' ')}</span>
-              <span className="text-gray-200 text-sm break-all">{String(value)}</span>
+              {value && typeof value === 'object' ? (
+                <pre className="text-gray-200 text-xs whitespace-pre-wrap break-words bg-gray-950/60 border border-gray-800 rounded-lg px-3 py-2 flex-1 overflow-x-auto">
+                  {JSON.stringify(value, null, 2)}
+                </pre>
+              ) : (
+                <span className="text-gray-200 text-sm break-all">{value === '' || value == null ? '—' : String(value)}</span>
+              )}
             </div>
           ))}
         </div>
@@ -300,6 +310,182 @@ const DomainPricingPanel = () => {
   );
 };
 
+const SmtpSettingsPanel = () => {
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
+  const [testing, setTesting] = useState(false);
+  const [msg, setMsg] = useState(null);
+  const [hasPassword, setHasPassword] = useState(false);
+  const [form, setForm] = useState({
+    host: '',
+    port: '587',
+    secure: false,
+    username: '',
+    password: '',
+    fromEmail: '',
+    fromName: 'Website365 Forms',
+  });
+
+  const flash = (text, type = 'ok') => {
+    setMsg({ text, type });
+    setTimeout(() => setMsg(null), 3500);
+  };
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    try {
+      const r = await fetch('/api/admin/smtp-settings', { credentials: 'include' });
+      const d = await r.json().catch(() => ({}));
+      const s = d.settings;
+      if (s) {
+        setHasPassword(Boolean(s.hasPassword));
+        setForm((f) => ({
+          ...f,
+          host: s.host || '',
+          port: String(s.port || '587'),
+          secure: Boolean(s.secure),
+          username: s.username || '',
+          password: '',
+          fromEmail: s.fromEmail || '',
+          fromName: s.fromName || 'Website365 Forms',
+        }));
+      } else {
+        setHasPassword(false);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  const save = async () => {
+    setSaving(true);
+    try {
+      const payload = {
+        host: form.host,
+        port: Number(form.port),
+        secure: Boolean(form.secure),
+        username: form.username,
+        password: form.password || undefined,
+        fromEmail: form.fromEmail || null,
+        fromName: form.fromName || null,
+      };
+      const r = await fetch('/api/admin/smtp-settings', {
+        method: 'PUT',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || 'Save failed');
+      setHasPassword(Boolean(d.settings?.hasPassword));
+      setForm((f) => ({ ...f, password: '' }));
+      flash('SMTP settings saved');
+    } catch (e) {
+      flash(e instanceof Error ? e.message : 'Save failed', 'err');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const sendTest = async () => {
+    setTesting(true);
+    try {
+      const r = await fetch('/api/admin/smtp-settings/test', {
+        method: 'POST',
+        credentials: 'include',
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(d.error || 'Test failed');
+      flash('Test email sent to admin@website365.co.za and info@website365.co.za');
+    } catch (e) {
+      flash(e instanceof Error ? e.message : 'Test failed', 'err');
+    } finally {
+      setTesting(false);
+    }
+  };
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-white text-lg font-bold">SMTP Settings</h2>
+          <p className="text-gray-400 text-sm mt-0.5">
+            Configure server-side SMTP for form notification emails. Password is never returned to the browser.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          {msg && (
+            <span className={`text-xs px-3 py-1.5 rounded-full font-medium ${msg.type === 'err' ? 'bg-red-900/50 text-red-300' : 'bg-green-900/50 text-green-300'}`}>
+              {msg.text}
+            </span>
+          )}
+          <button onClick={load} className="text-gray-400 hover:text-white p-2 rounded-lg border border-gray-700 transition-colors" disabled={loading}>
+            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+          </button>
+        </div>
+      </div>
+
+      <div className="bg-gray-900 border border-gray-800 rounded-xl p-5">
+        {loading ? (
+          <div className="py-14 flex justify-center"><RefreshCw className="w-6 h-6 text-gray-500 animate-spin" /></div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {[
+              { key: 'host', label: 'SMTP Host', placeholder: 'smtp.example.com' },
+              { key: 'port', label: 'SMTP Port', placeholder: '587' },
+              { key: 'username', label: 'SMTP Username', placeholder: 'user@example.com' },
+              { key: 'password', label: hasPassword ? 'SMTP Password (leave blank to keep)' : 'SMTP Password', placeholder: hasPassword ? '••••••••' : '' },
+              { key: 'fromEmail', label: 'From Email (optional)', placeholder: 'noreply@website365.co.za' },
+              { key: 'fromName', label: 'From Name (optional)', placeholder: 'Website365 Forms' },
+            ].map(({ key, label, placeholder }) => (
+              <div key={key}>
+                <label className="block text-gray-400 text-xs mb-1">{label}</label>
+                <input
+                  type={key === 'password' ? 'password' : (key === 'port' ? 'number' : 'text')}
+                  value={form[key]}
+                  onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
+                  placeholder={placeholder}
+                  className="w-full bg-gray-800 border border-gray-700 rounded-lg px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+            ))}
+
+            <div className="sm:col-span-2 flex items-center justify-between gap-3 pt-1">
+              <label className="flex items-center gap-2 text-sm text-gray-300">
+                <input
+                  type="checkbox"
+                  checked={form.secure}
+                  onChange={(e) => setForm((f) => ({ ...f, secure: e.target.checked }))}
+                  className="h-4 w-4 rounded border-gray-600 bg-gray-800 text-blue-600 focus:ring-blue-500"
+                />
+                Use SSL/TLS (usually port 465)
+              </label>
+              <div className="flex gap-2">
+                <button
+                  onClick={sendTest}
+                  disabled={testing || saving}
+                  className="text-gray-200 hover:text-white px-4 py-2 rounded-lg text-sm transition-colors border border-gray-700 hover:border-gray-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {testing ? 'Sending…' : 'Send Test Email'}
+                </button>
+                <button
+                  onClick={save}
+                  disabled={saving}
+                  className="bg-blue-600 hover:bg-blue-500 text-white px-5 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                >
+                  {saving ? 'Saving…' : 'Save Settings'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
 // ── Main Dashboard ────────────────────────────────────────────────────────────
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -323,10 +509,16 @@ const AdminDashboard = () => {
       .catch(() => navigate('/admin'));
   }, [navigate]);
 
-  useEffect(() => {
-    fetch('/api/admin/stats', { credentials: 'include' })
-      .then((r) => r.json()).then(setStats).catch(() => {});
+  const loadStats = useCallback(async () => {
+    try {
+      const r = await fetch('/api/admin/stats', { credentials: 'include' });
+      if (!r.ok) return;
+      const d = await r.json();
+      setStats(d);
+    } catch {}
   }, []);
+
+  useEffect(() => { loadStats(); }, [loadStats]);
 
   const loadSubmissions = useCallback(async () => {
     setLoading(true);
@@ -344,6 +536,19 @@ const AdminDashboard = () => {
   }, [page, formType, search, navigate]);
 
   useEffect(() => { loadSubmissions(); }, [loadSubmissions]);
+
+  const deleteSubmission = useCallback(async (submissionId) => {
+    if (!window.confirm('Delete this submission? This cannot be undone.')) return;
+    try {
+      const r = await fetch(`/api/admin/submissions/${submissionId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+      if (!r.ok) return;
+      setSelected((cur) => (cur?.id === submissionId ? null : cur));
+      await Promise.all([loadSubmissions(), loadStats()]);
+    } catch {}
+  }, [loadSubmissions, loadStats]);
 
   const handleLogout = async () => {
     await fetch('/api/admin/logout', { method: 'POST', credentials: 'include' });
@@ -486,7 +691,19 @@ const AdminDashboard = () => {
                             <td className="px-5 py-3.5 text-gray-400 whitespace-nowrap">
                               {new Date(s.submitted_at).toLocaleString('en-ZA', { dateStyle: 'short', timeStyle: 'short' })}
                             </td>
-                            <td className="px-5 py-3.5 text-right"><span className="text-blue-400 hover:text-blue-300 text-xs font-medium">View →</span></td>
+                            <td className="px-5 py-3.5 text-right">
+                              <div className="flex items-center justify-end gap-2">
+                                <span className="text-blue-400 hover:text-blue-300 text-xs font-medium">View →</span>
+                                <button
+                                  type="button"
+                                  onClick={(e) => { e.stopPropagation(); deleteSubmission(s.id); }}
+                                  className="text-gray-400 hover:text-red-300 transition-colors p-1.5 rounded-md hover:bg-gray-800"
+                                  title="Delete"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </td>
                           </tr>
                         );
                       })}
@@ -514,6 +731,7 @@ const AdminDashboard = () => {
         )}
 
         {activeTab === 'domain-pricing' && <DomainPricingPanel />}
+        {activeTab === 'smtp' && <SmtpSettingsPanel />}
       </main>
       </div>
     </>

@@ -1,10 +1,18 @@
 import nodemailer from "nodemailer";
 
-export function createTransport() {
-  const host = process.env.SMTP_HOST;
-  const port = Number(process.env.SMTP_PORT || "587");
-  const user = process.env.SMTP_USER;
-  const pass = process.env.SMTP_PASS;
+export type SmtpTransportOptions = {
+  host: string;
+  port: number;
+  secure?: boolean;
+  auth: { user: string; pass: string };
+  tlsRejectUnauthorized?: boolean;
+};
+
+export function createTransport(options?: SmtpTransportOptions) {
+  const host = options?.host ?? process.env.SMTP_HOST;
+  const port = options?.port ?? Number(process.env.SMTP_PORT || "587");
+  const user = options?.auth?.user ?? process.env.SMTP_USER;
+  const pass = options?.auth?.pass ?? process.env.SMTP_PASS;
 
   if (!host || !user || !pass) {
     throw new Error("SMTP_HOST, SMTP_USER and SMTP_PASS must be set");
@@ -13,9 +21,9 @@ export function createTransport() {
   return nodemailer.createTransport({
     host,
     port,
-    secure: port === 465,
+    secure: options?.secure ?? port === 465,
     auth: { user, pass },
-    tls: { rejectUnauthorized: false },
+    tls: { rejectUnauthorized: options?.tlsRejectUnauthorized ?? false },
   });
 }
 

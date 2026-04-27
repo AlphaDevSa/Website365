@@ -79,6 +79,7 @@ const VPSOrderModal = ({ isOpen, onClose, plan }) => {
               </div>
             </div>
             <button
+              aria-label="Close"
               onClick={onClose}
               className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
             >

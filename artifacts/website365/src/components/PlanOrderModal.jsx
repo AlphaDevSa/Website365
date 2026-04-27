@@ -344,7 +344,7 @@ const PlanOrderModal = ({ isOpen, onClose, plan, formType = 'Order' }) => {
                 <p className="text-sm text-gray-500">{plan.title}</p>
               </div>
             </div>
-            <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
+            <button aria-label="Close" onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
               <X className="w-6 h-6" />
             </button>
           </div>

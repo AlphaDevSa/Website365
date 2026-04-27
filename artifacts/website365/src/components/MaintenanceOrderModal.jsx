@@ -78,7 +78,7 @@ const MaintenanceOrderModal = ({ isOpen, onClose, plan }) => {
                 <p className="text-sm text-gray-500">{plan.title} — {plan.price}/month</p>
               </div>
             </div>
-            <button onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-lg hover:bg-gray-100">
+            <button aria-label="Close" onClick={onClose} className="p-2 text-gray-400 hover:text-gray-600 transition-colors rounded-lg hover:bg-gray-100">
               <X className="w-6 h-6" />
             </button>
           </div>
