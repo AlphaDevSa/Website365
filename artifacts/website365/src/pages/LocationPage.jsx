@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Helmet } from 'react-helmet-async';
 import { locationMap } from '../utils/saLocations';
 import {
   generateLocationServiceData,
-  generateBreadcrumbData,
   generateFAQData,
-  generateLocalBusinessData,
 } from '../utils/structuredData';
 import DomainSearchBar from '../components/DomainSearchBar';
+import SEO from '../components/SEO';
 import { submitForm } from '../utils/formSubmit';
 import {
   Server, Globe, Monitor, Zap, Shield, Heart, CheckCircle, Star,
@@ -63,11 +61,6 @@ const LocationPage = () => {
   ].join(', ');
 
   const locationSchema = generateLocationServiceData(cityName, province);
-  const localBusinessSchema = generateLocalBusinessData();
-  const breadcrumbSchema = generateBreadcrumbData([
-    { name: 'Home', path: '/' },
-    { name: `Hosting in ${cityName}`, path: `/location/${slug}` },
-  ]);
   const faqSchema = generateFAQData([
     {
       question: `Does Website365 offer web hosting for businesses in ${cityName}?`,
@@ -114,37 +107,20 @@ const LocationPage = () => {
 
   return (
     <>
-      <Helmet>
-        <title>{title}</title>
-        <meta name="description" content={description} />
-        <meta name="keywords" content={keywords} />
-        <link rel="canonical" href={canonicalUrl} />
-        <link rel="alternate" hrefLang="en-za" href={canonicalUrl} />
-        <link rel="alternate" hrefLang="x-default" href={canonicalUrl} />
-        <meta name="robots" content="index, follow" />
-        <meta name="geo.region" content="ZA" />
-        <meta name="geo.placename" content={cityName} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={canonicalUrl} />
-        <meta property="og:title" content={title} />
-        <meta property="og:description" content={description} />
-        <meta property="og:image" content="https://website365.co.za/opengraph.jpg" />
-        <meta property="og:image:alt" content={title} />
-        <meta property="og:site_name" content="Website365" />
-        <meta property="og:locale" content="en_ZA" />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:url" content={canonicalUrl} />
-        <meta name="twitter:title" content={title} />
-        <meta name="twitter:description" content={description} />
-        <meta name="twitter:image" content="https://website365.co.za/opengraph.jpg" />
-        <meta name="twitter:image:alt" content={title} />
-        <meta name="twitter:site" content="@website365" />
-        <meta name="twitter:creator" content="@website365" />
-        <script type="application/ld+json">{JSON.stringify(locationSchema)}</script>
-        <script type="application/ld+json">{JSON.stringify(localBusinessSchema)}</script>
-        <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>
-        <script type="application/ld+json">{JSON.stringify(faqSchema)}</script>
-      </Helmet>
+      <SEO
+        titleOverride={title}
+        descriptionOverride={description}
+        keywordsOverride={keywords}
+        canonicalOverride={canonicalUrl}
+        robotsOverride="index, follow"
+        geoPlacenameOverride={cityName}
+        breadcrumbItemsOverride={[
+          { name: 'Home', path: '/' },
+          { name: 'Hosting', path: '/hosting' },
+          { name: cityName, path: `/location/${slug}` },
+        ]}
+        extraSchemas={[locationSchema, faqSchema]}
+      />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <div className="relative bg-slate-900 overflow-hidden">

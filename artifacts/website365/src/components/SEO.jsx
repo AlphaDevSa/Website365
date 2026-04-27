@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet-async';
 import { useLocation } from 'react-router-dom';
 import {
@@ -40,6 +41,8 @@ const SEO = ({
   robotsOverride,
   extraSchemas = [],
   noLocalExpansion = false,
+  breadcrumbItemsOverride,
+  geoPlacenameOverride,
 }) => {
   const [metadata, setMetadata] = useState(() => {
     if (typeof window === 'undefined') return null;
@@ -171,6 +174,10 @@ const SEO = ({
   const webPageSchema = generateWebPageData({ title: resolvedTitle, description: resolvedDescription, canonicalUrl });
 
   const breadcrumbItems = (() => {
+    if (Array.isArray(breadcrumbItemsOverride) && breadcrumbItemsOverride.length > 0) {
+      return breadcrumbItemsOverride;
+    }
+
     const crumbs = [{ name: 'Home', path: '/' }];
     const segments = path.split('/').filter(Boolean);
     let current = '';
@@ -196,7 +203,7 @@ const SEO = ({
       <meta name="robots" content={robots} />
       <meta name="author" content="Website365" />
       <meta name="geo.region" content="ZA" />
-      <meta name="geo.placename" content="South Africa" />
+      <meta name="geo.placename" content={geoPlacenameOverride || 'South Africa'} />
       <meta httpEquiv="content-language" content="en-ZA" />
 
       {/* Open Graph */}
@@ -244,6 +251,27 @@ const SEO = ({
       ))}
     </Helmet>
   );
+};
+
+SEO.propTypes = {
+  title: PropTypes.string,
+  titleOverride: PropTypes.string,
+  description: PropTypes.string,
+  descriptionOverride: PropTypes.string,
+  keywords: PropTypes.string,
+  keywordsOverride: PropTypes.string,
+  canonical: PropTypes.string,
+  canonicalOverride: PropTypes.string,
+  robotsOverride: PropTypes.string,
+  extraSchemas: PropTypes.arrayOf(PropTypes.object),
+  noLocalExpansion: PropTypes.bool,
+  breadcrumbItemsOverride: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      path: PropTypes.string.isRequired,
+    }),
+  ),
+  geoPlacenameOverride: PropTypes.string,
 };
 
 export default SEO;
