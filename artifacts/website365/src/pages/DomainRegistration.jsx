@@ -13,8 +13,6 @@ const formatZar = (amount) => {
   return `R${Number(amount).toFixed(2)}`;
 };
 
-import SEO from '../components/SEO';
-
 const DomainRegistration = () => {
   const location = useLocation();
   const [query, setQuery] = useState('');
@@ -131,7 +129,6 @@ const DomainRegistration = () => {
 
   return (
     <div className="bg-white">
-      <SEO />
       <DomainRegistrationOrderModal
         isOpen={isOrderOpen}
         onClose={() => setIsOrderOpen(false)}

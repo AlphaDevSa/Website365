@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Section from '../components/Section';
-import SEO from '../components/SEO';
 import ProjectModal from '../components/ProjectModal';
 import { Link } from 'react-router-dom';
 import {
@@ -29,11 +28,6 @@ const Development = () => {
 
   return (
     <>
-      <SEO
-        title="Custom Web Development"
-        description="Tailored web development solutions. From custom web applications to API integrations, we build scalable digital products."
-        canonical="https://website365.co.za/web-design/development"
-      />
       <ProjectModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
       {/* ── Hero ─────────────────────────────────────────────── */}

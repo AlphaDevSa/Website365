@@ -2,6 +2,7 @@ import { Router, type IRouter, type Request, type Response } from "express";
 import bcrypt from "bcryptjs";
 import { pool } from "@workspace/db";
 import { requireAdmin, signAdminToken } from "../middleware/auth";
+import { isDbUnavailableError } from "../utils/dbErrors";
 
 const router: IRouter = Router();
 
@@ -48,6 +49,10 @@ router.post("/admin/login", async (req: Request, res: Response) => {
 
     res.json({ success: true, username: user.username });
   } catch (err) {
+    if (isDbUnavailableError(err)) {
+      res.status(503).json({ error: "Service is unavailable" });
+      return;
+    }
     console.error("[admin] Login error:", err);
     res.status(500).json({ error: "Server error" });
   }
@@ -114,6 +119,10 @@ router.get("/admin/submissions", requireAdmin, async (req: Request, res: Respons
       pages: Math.ceil(total / limit),
     });
   } catch (err) {
+    if (isDbUnavailableError(err)) {
+      res.status(503).json({ error: "Service is unavailable" });
+      return;
+    }
     console.error("[admin] Submissions error:", err);
     res.status(500).json({ error: "Server error" });
   }
@@ -140,6 +149,10 @@ router.get("/admin/stats", requireAdmin, async (_req: Request, res: Response) =>
       byType: byType.rows,
     });
   } catch (err) {
+    if (isDbUnavailableError(err)) {
+      res.status(503).json({ error: "Service is unavailable" });
+      return;
+    }
     console.error("[admin] Stats error:", err);
     res.status(500).json({ error: "Server error" });
   }
@@ -159,6 +172,10 @@ router.get("/admin/domain-pricing", requireAdmin, async (_req: Request, res: Res
     );
     res.json({ rows: result.rows });
   } catch (err) {
+    if (isDbUnavailableError(err)) {
+      res.status(503).json({ error: "Service is unavailable" });
+      return;
+    }
     console.error("[admin] domain-pricing list error:", err);
     res.status(500).json({ error: "Server error" });
   }
@@ -203,6 +220,10 @@ router.put("/admin/domain-pricing/:tld", requireAdmin, async (req: Request, res:
     if (result.rowCount === 0) { res.status(404).json({ error: "TLD not found" }); return; }
     res.json({ row: result.rows[0] });
   } catch (err) {
+    if (isDbUnavailableError(err)) {
+      res.status(503).json({ error: "Service is unavailable" });
+      return;
+    }
     console.error("[admin] domain-pricing update error:", err);
     res.status(500).json({ error: "Server error" });
   }
@@ -231,6 +252,10 @@ router.post("/admin/domain-pricing", requireAdmin, async (req: Request, res: Res
     );
     res.json({ row: result.rows[0] });
   } catch (err) {
+    if (isDbUnavailableError(err)) {
+      res.status(503).json({ error: "Service is unavailable" });
+      return;
+    }
     console.error("[admin] domain-pricing create error:", err);
     res.status(500).json({ error: "Server error" });
   }
@@ -251,6 +276,10 @@ router.delete("/admin/domain-pricing/:tld", requireAdmin, async (req: Request, r
     await pool.query("DELETE FROM domain_pricing WHERE tld = $1", [tld]);
     res.json({ success: true });
   } catch (err) {
+    if (isDbUnavailableError(err)) {
+      res.status(503).json({ error: "Service is unavailable" });
+      return;
+    }
     console.error("[admin] domain-pricing delete error:", err);
     res.status(500).json({ error: "Server error" });
   }

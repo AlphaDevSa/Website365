@@ -7,6 +7,7 @@ import { handleContactForm } from './server/contactFormHandler.mjs';
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
   const port = parseInt(process.env.PORT || '5173', 10);
+  const apiServerOrigin = env.API_SERVER_ORIGIN || process.env.API_SERVER_ORIGIN || 'http://localhost:3001';
 
   return {
     plugins: [
@@ -30,6 +31,13 @@ export default defineConfig(({ mode }) => {
       port,
       host: '0.0.0.0',
       allowedHosts: true,
+      proxy: {
+        '/api/admin': {
+          target: apiServerOrigin,
+          changeOrigin: true,
+          secure: false,
+        },
+      },
     },
     build: {
       outDir: 'dist/public',

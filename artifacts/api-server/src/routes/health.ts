@@ -18,7 +18,7 @@ router.get("/healthz/db", async (_req, res) => {
     await pool.query("select 1 as ok");
     res.json({ status: "ok" });
   } catch {
-    res.status(500).json({ status: "error" });
+    res.status(503).json({ status: "error" });
   }
 });
 

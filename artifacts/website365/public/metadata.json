@@ -167,5 +167,11 @@
     "description": "Review the Terms of Service for using Website365 products and services. This document outlines our mutual rights and responsibilities.",
     "keywords": "terms of service, website365 terms, hosting agreement za, service terms south africa",
     "localSeoPrefixes": []
+  },
+  "/thank-you": {
+    "title": "Thank You | Website365",
+    "description": "Thank you for your inquiry or order with Website365. We will be in touch shortly.",
+    "keywords": "website365",
+    "localSeoPrefixes": []
   }
 }

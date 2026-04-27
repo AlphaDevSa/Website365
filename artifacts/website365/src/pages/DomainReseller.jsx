@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Section from '../components/Section';
-import SEO from '../components/SEO';
 import Button from '../components/Button';
 import DomainResellerModal from '../components/DomainResellerModal';
 import {
@@ -15,11 +14,6 @@ const DomainReseller = () => {
   return (
     <>
       <DomainResellerModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
-      <SEO
-        title="Domain Reseller Program"
-        description="Launch your own domain registration business. Wholesale pricing on .co.za, .com and hundreds of other TLDs with full API access."
-        canonical="https://website365.co.za/domains/reseller"
-      />
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
       <div className="relative bg-slate-900 overflow-hidden py-20 lg:py-28">

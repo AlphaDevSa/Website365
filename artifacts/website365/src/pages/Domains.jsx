@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Section from '../components/Section';
 import FAQ from '../components/FAQ';
-import SEO from '../components/SEO';
 import DomainRegistrationOrderModal from '../components/DomainRegistrationOrderModal';
 import DomainSearchBar from '../components/DomainSearchBar';
 import {
@@ -120,11 +119,6 @@ const Domains = () => {
 
   return (
     <>
-      <SEO
-        title="Domain Names | Website365"
-        description="Search and register domain names with Website365. Get .co.za, .com, .africa and more with instant activation and free DNS management."
-      />
-
       <DomainRegistrationOrderModal
         isOpen={isOrderOpen}
         onClose={() => setIsOrderOpen(false)}

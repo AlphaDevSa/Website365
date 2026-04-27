@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import {
   LogOut, Search, ChevronLeft, ChevronRight,
   FileText, Clock, BarChart2, RefreshCw, X, ChevronDown,
@@ -350,8 +351,13 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-950 text-white">
-      {selected && <SubmissionModal submission={selected} onClose={() => setSelected(null)} />}
+    <>
+      <Helmet>
+        <title>Admin Dashboard | Website365</title>
+        <meta name="robots" content="noindex, nofollow" />
+      </Helmet>
+      <div className="min-h-screen bg-gray-950 text-white">
+        {selected && <SubmissionModal submission={selected} onClose={() => setSelected(null)} />}
 
       {/* Header */}
       <header className="border-b border-gray-800 bg-gray-900/80 backdrop-blur sticky top-0 z-10">
@@ -509,7 +515,8 @@ const AdminDashboard = () => {
 
         {activeTab === 'domain-pricing' && <DomainPricingPanel />}
       </main>
-    </div>
+      </div>
+    </>
   );
 };
 

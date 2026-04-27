@@ -119,6 +119,8 @@ const LocationPage = () => {
         <meta name="description" content={description} />
         <meta name="keywords" content={keywords} />
         <link rel="canonical" href={canonicalUrl} />
+        <link rel="alternate" hrefLang="en-za" href={canonicalUrl} />
+        <link rel="alternate" hrefLang="x-default" href={canonicalUrl} />
         <meta name="robots" content="index, follow" />
         <meta name="geo.region" content="ZA" />
         <meta name="geo.placename" content={cityName} />
@@ -127,11 +129,17 @@ const LocationPage = () => {
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:image" content="https://website365.co.za/opengraph.jpg" />
+        <meta property="og:image:alt" content={title} />
+        <meta property="og:site_name" content="Website365" />
         <meta property="og:locale" content="en_ZA" />
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:url" content={canonicalUrl} />
         <meta name="twitter:title" content={title} />
         <meta name="twitter:description" content={description} />
         <meta name="twitter:image" content="https://website365.co.za/opengraph.jpg" />
+        <meta name="twitter:image:alt" content={title} />
+        <meta name="twitter:site" content="@website365" />
+        <meta name="twitter:creator" content="@website365" />
         <script type="application/ld+json">{JSON.stringify(locationSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(localBusinessSchema)}</script>
         <script type="application/ld+json">{JSON.stringify(breadcrumbSchema)}</script>

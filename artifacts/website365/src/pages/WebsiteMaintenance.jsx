@@ -3,7 +3,6 @@ import Section from '../components/Section';
 import Card from '../components/Card';
 import MaintenanceOrderModal from '../components/MaintenanceOrderModal';
 import { Link } from 'react-router-dom';
-import SEO from '../components/SEO';
 import {
   Wrench, Shield, Clock, Activity, ArrowRight, RefreshCw, BarChart2,
   Bell, CheckCircle, HeartHandshake, MessageSquare, Zap, Lock, HardDrive
@@ -32,11 +31,6 @@ const WebsiteMaintenance = () => {
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         plan={selectedPlan}
-      />
-      <SEO
-        title="Website Maintenance Plans"
-        description="Professional website maintenance packages to keep your site secure, updated, and running smoothly. Starting from R199/pm."
-        canonical="https://website365.co.za/web-design/maintenance"
       />
 
       {/* ── Hero ─────────────────────────────────────────────── */}

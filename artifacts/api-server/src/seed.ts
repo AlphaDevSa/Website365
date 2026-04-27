@@ -66,11 +66,11 @@ export async function runSeed(): Promise<void> {
     const adminResult = await pool.query(
       `INSERT INTO admin_users (username, password_hash)
        VALUES ($1, $2)
-       ON CONFLICT (username) DO NOTHING`,
+       ON CONFLICT (username) DO UPDATE SET password_hash = EXCLUDED.password_hash`,
       [ADMIN_USERNAME, ADMIN_PASSWORD_HASH]
     );
     if ((adminResult.rowCount ?? 0) > 0) {
-      logger.info("[seed] Admin user created");
+      logger.info("[seed] Admin user upserted");
     } else {
       logger.info("[seed] Admin user already exists, skipping");
     }

@@ -1,17 +1,22 @@
+import { saProvinces } from './saLocations';
+
+const southAfricaAreaServed = [
+  { '@type': 'Country', name: 'South Africa' },
+  ...saProvinces.map((p) => ({ '@type': 'AdministrativeArea', name: p.name })),
+];
 
 export const generateOrganizationData = () => ({
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': 'https://website365.co.za/#organization',
   name: 'Website365',
+  legalName: 'Website365',
   url: 'https://website365.co.za',
   logo: 'https://website365.co.za/images/logo/logo.png',
   image: 'https://website365.co.za/opengraph.jpg',
   description: 'South African web hosting, domain registration, and professional web design company based in South Africa.',
   foundingDate: '2014',
-  areaServed: {
-    '@type': 'Country',
-    name: 'South Africa'
-  },
+  areaServed: southAfricaAreaServed,
   contactPoint: [
     {
       '@type': 'ContactPoint',
@@ -28,6 +33,7 @@ export const generateOrganizationData = () => ({
       availableLanguage: ['English', 'Afrikaans']
     }
   ],
+  email: 'support@website365.co.za',
   sameAs: [
     'https://www.facebook.com/website365',
     'https://twitter.com/website365',
@@ -38,7 +44,7 @@ export const generateOrganizationData = () => ({
 export const generateLocalBusinessData = () => ({
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
-  '@id': 'https://website365.co.za/#organization',
+  '@id': 'https://website365.co.za/#localbusiness',
   name: 'Website365',
   url: 'https://website365.co.za',
   logo: 'https://website365.co.za/images/logo/logo.png',
@@ -49,6 +55,9 @@ export const generateLocalBusinessData = () => ({
   priceRange: '$$',
   currenciesAccepted: 'ZAR',
   paymentAccepted: 'Credit Card, EFT, Debit Card',
+  parentOrganization: {
+    '@id': 'https://website365.co.za/#organization'
+  },
   address: {
     '@type': 'PostalAddress',
     addressCountry: 'ZA',
@@ -68,23 +77,46 @@ export const generateLocalBusinessData = () => ({
       closes: '17:00'
     }
   ],
-  areaServed: {
-    '@type': 'Country',
-    name: 'South Africa'
-  }
+  areaServed: southAfricaAreaServed,
+  knowsAbout: [
+    'Web Hosting',
+    'cPanel Hosting',
+    'DirectAdmin Hosting',
+    'WordPress Hosting',
+    'VPS Hosting',
+    'Domain Registration',
+    'Domain Transfer',
+    'Web Design',
+    'Business Email Hosting',
+  ],
 });
 
 export const generateWebSiteData = () => ({
   '@context': 'https://schema.org',
   '@type': 'WebSite',
+  '@id': 'https://website365.co.za/#website',
   name: 'Website365',
   url: 'https://website365.co.za',
   description: 'South Africa\'s trusted provider of web hosting, domain registration, and web design.',
+  inLanguage: 'en-ZA',
+  publisher: { '@id': 'https://website365.co.za/#organization' },
   potentialAction: {
     '@type': 'SearchAction',
     target: 'https://website365.co.za/domains?domain={search_term_string}',
     'query-input': 'required name=search_term_string'
   }
+});
+
+export const generateWebPageData = ({ title, description, canonicalUrl }) => ({
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  '@id': `${canonicalUrl}#webpage`,
+  url: canonicalUrl,
+  name: title,
+  description,
+  inLanguage: 'en-ZA',
+  isPartOf: { '@id': 'https://website365.co.za/#website' },
+  about: { '@id': 'https://website365.co.za/#organization' },
 });
 
 export const generateBreadcrumbData = (items) => ({
@@ -105,14 +137,9 @@ export const generateServiceData = ({ name, description, url, price }) => ({
   description,
   url: `https://website365.co.za${url}`,
   provider: {
-    '@type': 'Organization',
-    name: 'Website365',
-    url: 'https://website365.co.za'
+    '@id': 'https://website365.co.za/#organization'
   },
-  areaServed: {
-    '@type': 'Country',
-    name: 'South Africa'
-  },
+  areaServed: southAfricaAreaServed,
   ...(price ? {
     offers: {
       '@type': 'Offer',
@@ -146,6 +173,9 @@ export const generateLocationServiceData = (cityName, provinceName) => ({
   description: `Professional web hosting, domain registration, and web design services for businesses in ${cityName}, ${provinceName}.`,
   telephone: '+27-86-199-5070',
   email: 'support@website365.co.za',
+  parentOrganization: {
+    '@id': 'https://website365.co.za/#organization'
+  },
   areaServed: [
     { '@type': 'City', name: cityName },
     { '@type': 'AdministrativeArea', name: provinceName },

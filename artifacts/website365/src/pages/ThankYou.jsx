@@ -3,16 +3,10 @@ import { motion } from 'framer-motion';
 import { CheckCircle, ArrowLeft, Home, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Button from '../components/Button';
-import SEO from '../components/SEO';
 
 const ThankYou = () => {
   return (
     <div className="min-h-[80vh] flex items-center justify-center bg-white py-20 px-4">
-      <SEO 
-        title="Thank You" 
-        description="Thank you for your inquiry or order with Website365. We will be in touch shortly."
-      />
-      
       <div className="max-w-2xl w-full text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.5 }}

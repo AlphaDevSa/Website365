@@ -1,6 +1,7 @@
 import { Router, type IRouter, type Request, type Response } from "express";
 import { pool } from "@workspace/db";
 import { createTransport, buildEmailHtml } from "../mailer";
+import { isDbUnavailableError } from "../utils/dbErrors";
 
 const router: IRouter = Router();
 
@@ -35,6 +36,10 @@ router.post("/contact", async (req: Request, res: Response) => {
       [formType, JSON.stringify(data)]
     );
   } catch (err: unknown) {
+    if (isDbUnavailableError(err)) {
+      res.status(503).json({ error: "Service is unavailable" });
+      return;
+    }
     const msg = err instanceof Error ? err.message : "Database error";
     console.error("[contact] DB insert failed:", msg);
     res.status(500).json({ error: "Failed to save your submission. Please try again." });

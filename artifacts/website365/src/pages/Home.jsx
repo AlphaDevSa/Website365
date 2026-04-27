@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Section from '../components/Section';
 import TrustBar from '../components/TrustBar';
-import SEO from '../components/SEO';
 import LogoTicker from '../components/LogoTicker';
 import DomainSearchBar from '../components/DomainSearchBar';
 import WebDesignModal from '../components/WebDesignModal';
@@ -49,11 +48,6 @@ const Home = () => {
   return (
     <>
       <WebDesignModal isOpen={isWebDesignModalOpen} onClose={() => setIsWebDesignModalOpen(false)} />
-      <SEO
-        title="Home"
-        description="Website365 - Professional Web Hosting, Domain Registration, and Web Design in South Africa. Local NVMe hosting and conversion-focused design."
-        canonical="https://website365.co.za/"
-      />
 
       {/* ── HERO ──────────────────────────────────────────────────────────── */}
       <div className="relative bg-slate-900 overflow-hidden">

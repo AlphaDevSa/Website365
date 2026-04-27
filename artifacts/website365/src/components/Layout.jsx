@@ -143,7 +143,7 @@ const Layout = ({ children }) => {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <SEO />
+      {location.pathname.startsWith('/location/') ? null : <SEO />}
 
       {/* ── TOP BAR ─────────────────────────────────────────────────────── */}
       <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 text-slate-300 text-xs py-2 border-b border-slate-800/60">

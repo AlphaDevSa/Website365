@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import Section from '../components/Section';
-import SEO from '../components/SEO';
 import DomainSearchBar from '../components/DomainSearchBar';
 import DomainTransferOrderModal from '../components/DomainTransferOrderModal';
 import {
@@ -56,10 +55,6 @@ const DomainTransfer = () => {
 
   return (
     <>
-      <SEO
-        title="Domain Transfer | Website365"
-        description="Transfer your domain to Website365. Zero downtime, free 1-year extension on most TLDs, and local SA support."
-      />
       <DomainTransferOrderModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
