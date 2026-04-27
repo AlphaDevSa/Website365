@@ -1,8 +1,5 @@
 import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
-import { handleDomainCheck } from './server/domainCheckHandler.mjs';
-import { handleDomainPricing } from './server/domainPricingHandler.mjs';
-import { handleContactForm } from './server/contactFormHandler.mjs';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
@@ -13,15 +10,34 @@ export default defineConfig(({ mode }) => {
     plugins: [
       react(),
       {
-        name: 'website365-domain-check',
+        name: 'website365-dev-api',
         configureServer(devServer) {
+          let handlersPromise;
+          const loadHandlers = async () => {
+            if (!handlersPromise) {
+              handlersPromise = Promise.all([
+                import('./server/domainCheckHandler.mjs'),
+                import('./server/domainPricingHandler.mjs'),
+                import('./server/contactFormHandler.mjs'),
+              ]).then(([domainCheck, domainPricing, contact]) => ({
+                handleDomainCheck: domainCheck.handleDomainCheck,
+                handleDomainPricing: domainPricing.handleDomainPricing,
+                handleContactForm: contact.handleContactForm,
+              }));
+            }
+            return handlersPromise;
+          };
+
           devServer.middlewares.use('/api/domain/check', async (req, res) => {
+            const { handleDomainCheck } = await loadHandlers();
             await handleDomainCheck(req, res, { origin: devServer.config.server.origin || `http://localhost:${port}`, env });
           });
           devServer.middlewares.use('/api/domain/pricing', async (req, res) => {
+            const { handleDomainPricing } = await loadHandlers();
             await handleDomainPricing(req, res, { origin: devServer.config.server.origin || `http://localhost:${port}`, env });
           });
           devServer.middlewares.use('/api/contact', async (req, res) => {
+            const { handleContactForm } = await loadHandlers();
             await handleContactForm(req, res, { origin: devServer.config.server.origin || `http://localhost:${port}`, env });
           });
         }
