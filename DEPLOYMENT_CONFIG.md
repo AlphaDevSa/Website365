@@ -2,34 +2,61 @@
 # This file contains all necessary information for deploying to Coolify
 
 ## Environment Variables Required
-# === Database ===
-DATABASE_URL=postgresql://neondb_owner:npg_3TBaWqD7irSb@ep-ancient-meadow-al0sbbrt-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
 
-# === Security ===
+### Critical: GitHub Token for npm Rate Limit Fix
+**⚠️ THIS FIXES THE RATE LIMIT ERROR YOU EXPERIENCED**
+
+The GitHub API rate limit issue during Docker builds happens because npm/pnpm makes unauthenticated requests to GitHub's API. Even though you upgraded your account, you need to pass your GitHub token to the Docker build process.
+
+**Steps to get your GitHub token:**
+1. Go to https://github.com/settings/tokens
+2. Click "Generate new token (classic)"
+3. Select only the "read:packages" scope
+4. Copy the generated token
+5. Add to your .env file: `GITHUB_TOKEN=your_token_here`
+
+### Database Configuration
+```
+DATABASE_URL=postgresql://neondb_owner:npg_3TBaWqD7irSb@ep-ancient-meadow-al0sbbrt-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+```
+
+### Security Configuration
+```
 # Generate a new secure JWT_SECRET
 JWT_SECRET=your-secure-random-jwt-secret-change-this
 
 # Password hash for admin (bcrypt format)
 ADMIN_PASSWORD_HASH=$2b$12$8jXjKjn3vuZRCrU/NLzTmeAH5Vllip/n6wI4oBLyK.aMOdSU.NNii
+```
 
-# === Email Configuration (Optional) ===
+### GitHub Authentication (FIX FOR RATE LIMITS)
+```
+# Get from https://github.com/settings/tokens (select "read:packages" scope)
+GITHUB_TOKEN=your-github-token-here
+```
+
+### Email Configuration (Optional)
+```
 SMTP_HOST=smtp.gmail.com
 SMTP_PORT=587
 SMTP_USER=your-email@gmail.com
 SMTP_PASS=your-app-password
+```
 
-# === URLs ===
+### URLs
+```
 # Update these with your actual domain
 API_ORIGIN=https://api.website365.your-domain.com
 CORS_ORIGIN=https://website365.your-domain.com
+```
 
-# === Logging ===
+### Logging & Environment
+```
 LOG_LEVEL=info
 NODE_ENV=production
-
-# === Build Variables ===
 REGISTRY=registry.your-domain.com
 VERSION=latest
+```
 
 ## Deployment Steps
 

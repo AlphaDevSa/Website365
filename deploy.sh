@@ -85,16 +85,41 @@ setup_environment() {
         echo "  SMTP_PASS=..."
         echo "  API_ORIGIN=..."
         echo "  CORS_ORIGIN=..."
+        echo "  GITHUB_TOKEN=... (for npm rate limit handling)"
         echo ""
         exit 1
     else
         log_info ".env file found"
+        
+        # Load environment variables
+        export $(cat "$DEPLOYMENT_DIR/.env" | xargs)
+        log_info "Environment variables loaded"
+    fi
+    
+    # Verify GitHub token is set
+    if [ -z "$GITHUB_TOKEN" ]; then
+        log_warn "GITHUB_TOKEN not set - npm rate limiting may occur"
+        log_warn "Set GITHUB_TOKEN in .env to avoid GitHub API rate limits"
+        echo ""
+        echo "To generate a GitHub token:"
+        echo "  1. Go to https://github.com/settings/tokens"
+        echo "  2. Click 'Generate new token (classic)'"
+        echo "  3. Select 'read:packages' scope"
+        echo "  4. Copy the token and add to .env as GITHUB_TOKEN=your_token"
     fi
 }
 
 build_and_deploy() {
-    log_info "Building Docker images..."
-    docker-compose build --no-cache
+    log_info "Building Docker images with authentication..."
+    
+    # Pass GitHub token to build if available
+    if [ -n "$GITHUB_TOKEN" ]; then
+        log_info "Using GitHub token for build"
+        docker-compose build --no-cache --build-arg GITHUB_TOKEN="$GITHUB_TOKEN"
+    else
+        log_warn "No GITHUB_TOKEN provided - using unauthenticated npm install (may hit rate limits)"
+        docker-compose build --no-cache
+    fi
     
     log_info "Stopping existing services..."
     docker-compose down || true

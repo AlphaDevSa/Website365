@@ -24,6 +24,9 @@ Website365 is a monorepo containing:
 In Coolify, set the following environment variables:
 
 ```
+# CRITICAL: Set GITHUB_TOKEN to avoid npm rate limit errors during builds!
+GITHUB_TOKEN=your-github-token-here
+
 DATABASE_URL=postgresql://neondb_owner:npg_3TBaWqD7irSb@ep-ancient-meadow-al0sbbrt-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
 JWT_SECRET=<generate-a-secure-secret>
 ADMIN_PASSWORD_HASH=$2b$12$8jXjKjn3vuZRCrU/NLzTmeAH5Vllip/n6wI4oBLyK.aMOdSU.NNii
@@ -36,6 +39,12 @@ LOG_LEVEL=info
 CORS_ORIGIN=https://website365.your-domain.com
 API_ORIGIN=https://api.website365.your-domain.com
 ```
+
+**⚠️ GITHUB_TOKEN FIX FOR RATE LIMITS:**
+This was causing your build errors. To generate:
+1. Go to https://github.com/settings/tokens
+2. Create new token (classic) with "read:packages" scope
+3. Copy and paste the token in Coolify as `GITHUB_TOKEN`
 
 ### 3. Create Services
 
