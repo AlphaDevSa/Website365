@@ -21,7 +21,7 @@ services:
       LOG_LEVEL: info
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3001/api', (r) => {process.exit(r.statusCode === 404 ? 0 : 1);})"]
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3001/api/healthz', (r) => {process.exit(r.statusCode === 404 ? 1 : 0);})"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -33,9 +33,9 @@ services:
     image: ${REGISTRY}/website365-web:${VERSION:-latest}
     build:
       context: .
-      dockerfile: Dockerfile.web
+      dockerfile: Dockerfile.coolify.web
     ports:
-      - "3000:3000"
+      - "3000:80"
     environment:
       VITE_API_URL: ${API_ORIGIN}
     depends_on:
@@ -43,7 +43,7 @@ services:
         condition: service_healthy
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/"]
+      test: ["CMD", "curl", "-f", "http://localhost/"]
       interval: 30s
       timeout: 10s
       retries: 3
