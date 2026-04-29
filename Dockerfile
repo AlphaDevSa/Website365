@@ -23,7 +23,39 @@ RUN pnpm install --frozen-lockfile
 # Skip non-production packages to avoid build errors
 RUN pnpm run build:prod
 
-# Production stage - API
+# Production stage - Unified server (for Coolify/Nixpacks)
+FROM node:22.13-alpine as production
+
+WORKDIR /app
+
+# Install pnpm for production dependencies
+RUN npm install -g pnpm@10.33.0
+
+# Copy only necessary files
+COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
+COPY lib ./lib
+COPY artifacts ./artifacts
+
+# Install production dependencies only
+RUN pnpm install --frozen-lockfile --prod
+
+# Copy built frontend and API
+COPY --from=builder /app/artifacts/website365/dist ./artifacts/website365/dist
+COPY --from=builder /app/artifacts/api-server/dist ./artifacts/api-server/dist
+
+# Copy production server
+COPY server.js ./
+
+EXPOSE 3000
+
+# Health check - test if frontend is serving
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost:3000/ || exit 1
+
+# Start production server
+CMD ["node", "./server.js"]
+
+# Production stage - API (for docker-compose)
 FROM node:22.13-alpine as api-runtime
 
 WORKDIR /app
@@ -51,9 +83,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 # Start API server
 CMD ["node", "--enable-source-maps", "./artifacts/api-server/dist/index.mjs"]
 
----
-
-# Production stage - Web (alternative)
+# Production stage - Web (for docker-compose)
 FROM node:22.13-alpine as web-runtime
 
 WORKDIR /app
