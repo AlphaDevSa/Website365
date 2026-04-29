@@ -4,6 +4,8 @@
 cmd = ["pnpm", "run", "build:prod"]
 
 [start]
-# Start command - runs API server which is the main app
-cmd = "node --enable-source-maps ./artifacts/api-server/dist/index.mjs"
+# Serve the frontend and proxy API requests
+cmd = "node ./server.js"
+
+
 
