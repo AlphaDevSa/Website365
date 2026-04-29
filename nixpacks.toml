@@ -1,0 +1,28 @@
+# Nixpacks Configuration for Coolify/Railway Deployment
+# This file helps the build system properly detect and configure the project
+
+{ pkgs, ... }:
+
+{
+  # Explicitly set Node.js version
+  nodejs = "22.13.0";
+  
+  # Disable npm warnings
+  npmIgnoreScripts = true;
+  
+  # Use pnpm as package manager
+  packageManager = "pnpm@10.33.0";
+  
+  # Build commands
+  buildCommand = ''
+    pnpm run typecheck && pnpm -r --filter "./artifacts/**" --if-present run build
+  '';
+  
+  # Start command for the application
+  startCommand = "node --enable-source-maps ./artifacts/api-server/dist/index.mjs";
+  
+  # Enable production mode
+  env = {
+    NODE_ENV = "production";
+  };
+}
