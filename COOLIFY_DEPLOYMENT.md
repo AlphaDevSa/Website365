@@ -70,13 +70,37 @@ Coolify will automatically detect and use `docker-compose.yml`
 
 **Web Service:**
 1. Create new service → Docker → Custom
-2. Dockerfile: `Dockerfile.web`
+2. Dockerfile: `Dockerfile.coolify.web`
 3. Build context: `/`
-4. Port: `3000:3000`
+4. Port: `80:80` (serves static files via Nginx internally)
 5. Set `VITE_API_URL=https://api.website365.your-domain.com`
 
 ### 4. Configure Reverse Proxy (Nginx)
 
+If you are using Method B (Individual Services), the Web service uses a specialized Nginx configuration.
+
+**Web Nginx Config (Internal):**
+The `Dockerfile.coolify.web` uses `nginx.web.conf` which handles React routing and caching:
+
+```nginx
+server {
+    listen 80;
+    server_name localhost;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
+        expires 30d;
+        add_header Cache-Control "public, no-transform";
+    }
+}
+```
+
+**Coolify Reverse Proxy (External):**
 Point your domain to Coolify services:
 
 ```nginx
