@@ -12,12 +12,8 @@ RUN npm install -g pnpm@10.33.0
 ARG GITHUB_TOKEN
 ARG NPM_TOKEN
 
-# Copy .npmrc with token support
-COPY .npmrc .npmrc.template ./
-RUN if [ -n "$GITHUB_TOKEN" ]; then \
-      sed "s/\${GITHUB_TOKEN}/$GITHUB_TOKEN/g; s/\${NPM_TOKEN}/$NPM_TOKEN/g" .npmrc.template > .npmrc && \
-      npm config set //npm.pkg.github.com/:_authToken=$GITHUB_TOKEN; \
-    fi
+# Copy npmrc if it exists
+COPY .npmrc* ./
 
 # Copy configuration files
 COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
