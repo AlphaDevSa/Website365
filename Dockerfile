@@ -23,30 +23,24 @@ RUN pnpm install --frozen-lockfile
 # Skip non-production packages to avoid build errors
 RUN pnpm run build:prod
 
-# Production stage - Unified server (for Coolify/Nixpacks)
-FROM node:22.13-alpine as production
+# Nginx production stage - serve the built website
+FROM nginx:alpine as production
 
-WORKDIR /app
+WORKDIR /usr/share/nginx/html
 
-# Install pnpm for production dependencies
-RUN npm install -g pnpm@10.33.0
+# Copy built frontend
+COPY --from=builder /app/artifacts/website365/dist/public .
 
-# Copy only necessary files
-COPY pnpm-workspace.yaml pnpm-lock.yaml package.json ./
-COPY lib ./lib
-COPY artifacts ./artifacts
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Install production dependencies only
-RUN pnpm install --frozen-lockfile --prod
+EXPOSE 80
 
-# Copy built frontend and API
-COPY --from=builder /app/artifacts/website365/dist ./artifacts/website365/dist
-COPY --from=builder /app/artifacts/api-server/dist ./artifacts/api-server/dist
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+  CMD wget --no-verbose --tries=1 --spider http://localhost/ || exit 1
 
-# Copy production server
-COPY server.js ./
-
-EXPOSE 3000
+CMD ["nginx", "-g", "daemon off;"]
 
 # Health check - test if frontend is serving
 HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
