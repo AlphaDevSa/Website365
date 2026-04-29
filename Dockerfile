@@ -19,9 +19,9 @@ COPY artifacts ./artifacts
 # Install dependencies
 RUN pnpm install --frozen-lockfile
 
-# Build TypeScript and all packages
-RUN pnpm run typecheck
-RUN pnpm -r --filter "./artifacts/**" --if-present run build
+# Build TypeScript and all packages for production
+# Skip non-production packages to avoid build errors
+RUN pnpm run build:prod
 
 # Production stage - API
 FROM node:22.13-alpine as api-runtime

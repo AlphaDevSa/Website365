@@ -1,7 +1,7 @@
 # Nixpacks configuration for Coolify deployment
 [build]
-# Build commands for the project
-cmd = ["pnpm", "run", "build"]
+# Build commands for the project - only build production packages
+cmd = ["pnpm", "run", "build:prod"]
 
 [start]
 # Start command - runs API server which is the main app
