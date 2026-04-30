@@ -39,6 +39,11 @@ app.use(express.urlencoded({ extended: true }));
 // API Routes
 app.use("/api", router);
 
+// API 404 fallback - prevents Express from returning HTML text "Cannot GET /api/..."
+app.use("/api", (req, res) => {
+  res.status(404).json({ error: "API endpoint not found" });
+});
+
 // Serve static frontend files if they exist (Unified Deployment)
 const frontendPath = path.join(__dirname, "..", "public");
 app.use(express.static(frontendPath));
