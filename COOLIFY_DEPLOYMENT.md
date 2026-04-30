@@ -29,7 +29,8 @@ GITHUB_TOKEN=your-github-token-here
 
 DATABASE_URL=postgresql://neondb_owner:npg_3TBaWqD7irSb@ep-ancient-meadow-al0sbbrt-pooler.c-3.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
 JWT_SECRET=<generate-a-secure-secret>
-ADMIN_PASSWORD_HASH=$2b$12$8jXjKjn3vuZRCrU/NLzTmeAH5Vllip/n6wI4oBLyK.aMOdSU.NNii
+ADMIN_PASSWORD_HASH=$2b$12$BLOstwhYL7PPa/osw6KjO.qW9vhYnPsMNZ9l5LGjUJAqJJXsMl.jG
+# (The hash above corresponds to the password: admin123)
 SMTP_HOST=<your-smtp-host>
 SMTP_PORT=587
 SMTP_USER=<your-smtp-user>
@@ -91,6 +92,14 @@ server {
 
     location / {
         try_files $uri $uri/ /index.html;
+    }
+
+    location /api/ {
+        proxy_pass http://website365-api:3001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
     }
 
     location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot)$ {
