@@ -17,7 +17,8 @@ const AdminLogin = () => {
 
     try {
       const apiUrl = import.meta.env.VITE_API_URL || '';
-      const fullUrl = `${apiUrl}/api/admin/login`.replace(/([^:]\/)\/+/g, "$1");
+      // Ensure we don't create URLs like https://domain.com//api/...
+      const fullUrl = apiUrl ? `${apiUrl}/api/admin/login`.replace(/([^:]\/)\/+/g, "$1") : '/api/admin/login';
       console.log('Login attempt to:', fullUrl);
       
       const res = await fetch(fullUrl, {

@@ -1,19 +1,16 @@
-version: '3.8'
+version: "3.8"
 
 services:
-  api:
+  website365:
+    image: website365-unified:latest
     build:
       context: .
-      dockerfile: Dockerfile.api
+      dockerfile: Dockerfile.unified
       args:
-        GITHUB_TOKEN: ${GITHUB_TOKEN:-}
-        NPM_TOKEN: ${NPM_TOKEN:-}
-    container_name: website365-api
+        - GITHUB_TOKEN=${GITHUB_TOKEN}
     ports:
       - "3001:3001"
     environment:
-      - NODE_ENV=production
-      - PORT=3001
       - DATABASE_URL=${DATABASE_URL}
       - JWT_SECRET=${JWT_SECRET}
       - ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH}
@@ -21,40 +18,11 @@ services:
       - SMTP_PORT=${SMTP_PORT}
       - SMTP_USER=${SMTP_USER}
       - SMTP_PASS=${SMTP_PASS}
-      - API_ORIGIN=http://localhost:3001
-      - CORS_ORIGIN=http://localhost:3000
-      - LOG_LEVEL=info
+      - API_ORIGIN=${API_ORIGIN:-/api}
+      - NODE_ENV=production
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3001/api/healthz', (r) => {process.exit(r.statusCode === 404 ? 1 : 0);})"]
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/healthz"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
-
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile.coolify.web
-      args:
-        GITHUB_TOKEN: ${GITHUB_TOKEN:-}
-        NPM_TOKEN: ${NPM_TOKEN:-}
-    container_name: website365-web
-    ports:
-      - "3000:80"
-    environment:
-      - VITE_API_URL=${API_ORIGIN:-http://localhost:3001}
-      - BACKEND_HOST=api:3001
-    depends_on:
-      - api
-    restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-
-networks:
-  default:
-    name: website365-network

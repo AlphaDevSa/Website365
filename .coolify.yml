@@ -1,51 +1,28 @@
+version: "3.8"
+
 services:
-  api:
-    image: ${REGISTRY}/website365-api:${VERSION:-latest}
+  website365:
+    image: website365-unified:latest
     build:
       context: .
-      dockerfile: Dockerfile.api
+      dockerfile: Dockerfile.unified
+      args:
+        - GITHUB_TOKEN=${GITHUB_TOKEN}
     ports:
       - "3001:3001"
     environment:
-      NODE_ENV: production
-      PORT: 3001
-      DATABASE_URL: ${DATABASE_URL}
-      JWT_SECRET: ${JWT_SECRET}
-      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH}
-      SMTP_HOST: ${SMTP_HOST}
-      SMTP_PORT: ${SMTP_PORT:-587}
-      SMTP_USER: ${SMTP_USER}
-      SMTP_PASS: ${SMTP_PASS}
-      API_ORIGIN: ${API_ORIGIN}
-      CORS_ORIGIN: ${CORS_ORIGIN}
-      LOG_LEVEL: info
+      - DATABASE_URL=${DATABASE_URL}
+      - JWT_SECRET=${JWT_SECRET}
+      - ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - API_ORIGIN=${API_ORIGIN:-/api}
+      - NODE_ENV=production
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3001/api/healthz', (r) => {process.exit(r.statusCode === 404 ? 1 : 0);})"]
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/healthz"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
-    networks:
-      - website365-network
-
-  web:
-    image: ${REGISTRY}/website365-web:${VERSION:-latest}
-    build:
-      context: .
-      dockerfile: Dockerfile.coolify.web
-    ports:
-      - "3000:80"
-    environment:
-      VITE_API_URL: ${API_ORIGIN}
-      BACKEND_HOST: api:3001
-    depends_on:
-      api:
-        condition: service_healthy
-    networks:
-      - website365-network
-
-networks:
-  website365-network:
-    driver: bridge
-    name: website365-network
