@@ -95,7 +95,9 @@ server {
     }
 
     location /api/ {
-        proxy_pass http://website365-api:3001;
+        resolver 127.0.0.11 valid=30s;
+        set $backend_host ${BACKEND_HOST};
+        proxy_pass http://$backend_host:3001;
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
