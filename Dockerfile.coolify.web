@@ -45,6 +45,7 @@ COPY --from=builder /app/artifacts/website365/dist/public .
 COPY nginx.web.conf /etc/nginx/templates/default.conf.template
 
 # Set default backend host (matches service name and port in docker-compose.yml)
+# Using 'api:3001' as the internal default
 ENV BACKEND_HOST=api:3001
 
 EXPOSE 80

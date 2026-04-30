@@ -10,7 +10,9 @@ const router: IRouter = Router();
 
 // POST /api/admin/login
 router.post("/admin/login", async (req: Request, res: Response) => {
+  console.log("[admin] Login attempt for:", req.body?.username);
   if (!pool) {
+    console.error("[admin] Login failed: Database pool not initialized");
     res.status(503).json({ error: "Service is unavailable" });
     return;
   }
