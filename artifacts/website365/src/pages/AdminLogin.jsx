@@ -17,7 +17,10 @@ const AdminLogin = () => {
 
     try {
       const apiUrl = import.meta.env.VITE_API_URL || '';
-      const res = await fetch(`${apiUrl}/api/admin/login`, {
+      const fullUrl = `${apiUrl}/api/admin/login`.replace(/([^:]\/)\/+/g, "$1");
+      console.log('Login attempt to:', fullUrl);
+      
+      const res = await fetch(fullUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
