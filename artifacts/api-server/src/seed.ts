@@ -4,7 +4,7 @@ import { logger } from "./lib/logger";
 const ADMIN_USERNAME = "admin@website365.co.za";
 const ADMIN_PASSWORD_HASH =
   process.env["ADMIN_PASSWORD_HASH"] ||
-  "$2b$12$3EYN9l96c8Oykd1u06JCaOt7YDSncfIGJvbfyt31nR3SlZ/I/S9a.";
+  "$2b$12$BLOstwhYL7PPa/osw6KjO.qW9vhYnPsMNZ9l5LGjUJAqJJXsMl.jG";
 
 const DOMAIN_PRICING = [
   { tld: "co.za",     register: 99,  renew: 99,  transfer: 0,   sort_order: 1  },
