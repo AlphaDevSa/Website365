@@ -8,6 +8,11 @@ import { loadSmtpSettingsPublic, loadSmtpTransportConfig, saveSmtpSettings } fro
 
 const router: IRouter = Router();
 
+// Redirect /api/admin to the frontend admin page
+router.get("/admin", (_req: Request, res: Response) => {
+  res.redirect(301, "/admin");
+});
+
 // POST /api/admin/login
 router.post("/admin/login", async (req: Request, res: Response) => {
   console.log("[admin] Login attempt for:", req.body?.username);
