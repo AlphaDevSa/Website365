@@ -53,7 +53,8 @@ import fs from "fs";
 // Fallback for React Router (SPA) with Dynamic Meta Tag Injection
 app.use((req, res, next) => {
   if (req.path.startsWith("/api") || req.method !== "GET") {
-    return next();
+    next();
+    return;
   }
   
   const indexPath = path.join(frontendPath, "index.html");
@@ -62,7 +63,8 @@ app.use((req, res, next) => {
   fs.readFile(indexPath, "utf8", (err, htmlData) => {
     if (err) {
       console.error("[SSR] Error reading index.html", err);
-      return res.status(500).send("Error loading application");
+      res.status(500).send("Error loading application");
+      return;
     }
 
     fs.readFile(metadataPath, "utf8", (metaErr, metaData) => {
