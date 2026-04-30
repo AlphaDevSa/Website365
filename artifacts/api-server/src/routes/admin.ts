@@ -78,6 +78,45 @@ router.get("/admin/me", requireAdmin, (req: Request, res: Response) => {
   res.json({ username: (req as Request & { adminUser?: string }).adminUser });
 });
 
+// POST /api/admin/change-password
+router.post("/admin/change-password", requireAdmin, async (req: Request, res: Response) => {
+  if (!pool) {
+    res.status(503).json({ error: "Service is unavailable" });
+    return;
+  }
+  const username = (req as Request & { adminUser?: string }).adminUser;
+  const { currentPassword, newPassword } = req.body;
+
+  if (!currentPassword || !newPassword) {
+    res.status(400).json({ error: "Current password and new password are required" });
+    return;
+  }
+
+  try {
+    const result = await pool.query("SELECT id, password_hash FROM admin_users WHERE username = $1", [username]);
+    const user = result.rows[0];
+
+    if (!user) {
+      res.status(404).json({ error: "Admin user not found" });
+      return;
+    }
+
+    const valid = await bcrypt.compare(currentPassword, user.password_hash);
+    if (!valid) {
+      res.status(401).json({ error: "Incorrect current password" });
+      return;
+    }
+
+    const newHash = await bcrypt.hash(newPassword, 12);
+    await pool.query("UPDATE admin_users SET password_hash = $1 WHERE id = $2", [newHash, user.id]);
+
+    res.json({ success: true, message: "Password updated successfully" });
+  } catch (err) {
+    console.error("[admin] Change password error:", err);
+    res.status(500).json({ error: "Server error" });
+  }
+});
+
 // GET /api/admin/submissions — list all submissions
 router.get("/admin/submissions", requireAdmin, async (req: Request, res: Response) => {
   if (!pool) {
