@@ -39,9 +39,9 @@ NODE_ENV=production
 LOG_LEVEL=info
 CORS_ORIGIN=https://website365.your-domain.com
 API_ORIGIN=https://api.website365.your-domain.com
-- `BACKEND_HOST`: The internal Docker hostname of the API service.
-    - If using **Method A (Docker Compose)**, set this to `api`.
-    - If using **Method B (Individual Services)**, set this to the **Service Name** of your API in Coolify.
+- `BACKEND_HOST`: The internal Docker hostname and port of the API service.
+    - If using **Method A (Docker Compose)**, set this to `api:3001`.
+    - If using **Method B (Individual Services)**, set this to `service-name:3001` (replace `service-name` with your actual API service name in Coolify).
 ```
 
 **⚠️ GITHUB_TOKEN FIX FOR RATE LIMITS:**

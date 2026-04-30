@@ -44,7 +44,7 @@ services:
       - "3000:80"
     environment:
       - VITE_API_URL=${API_ORIGIN:-http://localhost:3001}
-      - BACKEND_HOST=api
+      - BACKEND_HOST=api:3001
     depends_on:
       - api
     restart: unless-stopped

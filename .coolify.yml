@@ -38,7 +38,7 @@ services:
       - "3000:80"
     environment:
       VITE_API_URL: ${API_ORIGIN}
-      BACKEND_HOST: api
+      BACKEND_HOST: api:3001
     depends_on:
       api:
         condition: service_healthy

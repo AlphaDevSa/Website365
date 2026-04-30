@@ -44,8 +44,8 @@ COPY --from=builder /app/artifacts/website365/dist/public .
 # Copy nginx configuration as a template for envsubst
 COPY nginx.web.conf /etc/nginx/templates/default.conf.template
 
-# Set default backend host (matches service name in docker-compose.yml)
-ENV BACKEND_HOST=api
+# Set default backend host (matches service name and port in docker-compose.yml)
+ENV BACKEND_HOST=api:3001
 
 EXPOSE 80
 
