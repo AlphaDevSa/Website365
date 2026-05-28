@@ -31,6 +31,7 @@ import Ecommerce from './pages/Ecommerce';
 import ThankYou from './pages/ThankYou';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
+import FairUsagePolicy from './pages/FairUsagePolicy';
 import LocationPage from './pages/LocationPage';
 
 const ScrollToTop = () => {
@@ -85,6 +86,7 @@ const PublicSite = () => (
       <Route path="/thank-you" element={<ThankYou />} />
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />
+      <Route path="/fair-usage-policy" element={<FairUsagePolicy />} />
     </Routes>
   </Layout>
 );

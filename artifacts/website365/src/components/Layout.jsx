@@ -523,6 +523,8 @@ const Layout = ({ children }) => {
                   { label: 'Contact Us', to: '/contact' },
                   { label: 'Privacy Policy', to: '/privacy' },
                   { label: 'Terms of Service', to: '/terms' },
+                  { label: 'Fair Usage Policy', to: '/fair-usage-policy' },
+
                 ].map(({ label, to }) => (
                   <li key={to}>
                     <Link to={to} className="text-sm text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 group">
@@ -597,6 +599,7 @@ const Layout = ({ children }) => {
               <div className="flex items-center gap-4">
                 <Link to="/privacy" className="hover:text-slate-300 transition-colors">Privacy Policy</Link>
                 <Link to="/terms" className="hover:text-slate-300 transition-colors">Terms of Service</Link>
+                <Link to="/fair-usage-policy" className="hover:text-slate-300 transition-colors">Fair Usage Policy</Link>
                 <Link to="/contact" className="hover:text-slate-300 transition-colors">Contact</Link>
               </div>
             </div>

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import Section from '../components/Section';
 import Card from '../components/Card';
 import {
@@ -174,6 +175,9 @@ const ResellerCPanel = () => {
               "SiteJet builder"
             ]}
           />
+        </div>
+        <div className="text-center text-sm text-slate-500 mt-12 bg-slate-50 border border-slate-100/60 rounded-2xl py-4 px-6 max-w-2xl mx-auto">
+          Subject to <Link to="/fair-usage-policy" className="text-orange-600 hover:text-orange-500 font-semibold underline transition-colors">Fair Usage and Acceptable Usage Policy</Link>
         </div>
       </Section>
 
