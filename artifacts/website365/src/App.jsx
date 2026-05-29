@@ -32,6 +32,8 @@ import ThankYou from './pages/ThankYou';
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
 import FairUsagePolicy from './pages/FairUsagePolicy';
+import ResellerHostingPolicy from './pages/ResellerHostingPolicy';
+import ServiceLevelAgreement from './pages/ServiceLevelAgreement';
 import LocationPage from './pages/LocationPage';
 
 const ScrollToTop = () => {
@@ -87,6 +89,8 @@ const PublicSite = () => (
       <Route path="/privacy" element={<Privacy />} />
       <Route path="/terms" element={<Terms />} />
       <Route path="/fair-usage-policy" element={<FairUsagePolicy />} />
+      <Route path="/reseller-hosting-policy" element={<ResellerHostingPolicy />} />
+      <Route path="/service-level-agreement" element={<ServiceLevelAgreement />} />
     </Routes>
   </Layout>
 );

@@ -524,6 +524,8 @@ const Layout = ({ children }) => {
                   { label: 'Privacy Policy', to: '/privacy' },
                   { label: 'Terms of Service', to: '/terms' },
                   { label: 'Fair Usage Policy', to: '/fair-usage-policy' },
+                  { label: 'Reseller Hosting Policy', to: '/reseller-hosting-policy' },
+                  { label: 'Service Level Agreement (SLA)', to: '/service-level-agreement' },
 
                 ].map(({ label, to }) => (
                   <li key={to}>
@@ -600,6 +602,8 @@ const Layout = ({ children }) => {
                 <Link to="/privacy" className="hover:text-slate-300 transition-colors">Privacy Policy</Link>
                 <Link to="/terms" className="hover:text-slate-300 transition-colors">Terms of Service</Link>
                 <Link to="/fair-usage-policy" className="hover:text-slate-300 transition-colors">Fair Usage Policy</Link>
+                <Link to="/reseller-hosting-policy" className="hover:text-slate-300 transition-colors">Reseller Hosting Policy</Link>
+                <Link to="/service-level-agreement" className="hover:text-slate-300 transition-colors">Service Level Agreement (SLA)</Link>
                 <Link to="/contact" className="hover:text-slate-300 transition-colors">Contact</Link>
               </div>
             </div>
