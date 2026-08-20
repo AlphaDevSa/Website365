@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply text-slate-800 bg-white;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  @apply font-bold tracking-tight text-slate-900;
+}
+
+@layer utilities {
+  .animate-scroll {
+    animation: scroll 25s linear infinite;
+  }
+  
+  .pause {
+    animation-play-state: paused;
+  }
+}
+
+/* Ensure hover works for custom class */
+.hover\:pause:hover {
+  animation-play-state: paused;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
